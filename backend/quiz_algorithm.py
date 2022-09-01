@@ -28,8 +28,8 @@ HAIR_COLOR_QUESTION_TOKEN = QuestionToken("q_hair_color")
 
 
 def get_dominant(scores):
-    sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    return sorted_scores[0][0], sorted_scores[1][0], sorted_scores[2][0]
+    sorted_scores = np.sort(scores)
+    return sorted_scores[-1], sorted_scores[-2], sorted_scores[-3]
 
 
 def get_next_non_asked_question_for_sign(sign: Sign) -> str:
@@ -37,11 +37,11 @@ def get_next_non_asked_question_for_sign(sign: Sign) -> str:
 
 
 def get_next_sign_for_question(
-        last_step: AlgorithmStep,
-        last_substep: AlgorithmSubStep,
-        current_dm: Optional[Sign],
-        scores: np.ndarray,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
 ) -> Tuple[Sign, AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    last_substep = last_question.quiz_substep
     scores = {
         'Огонь': fire,
         'Земля': earth,
@@ -52,6 +52,9 @@ def get_next_sign_for_question(
 
     if last_step == AlgorithmStep.STEP_1:
         require(lambda: int(last_substep) > int(Step1SubSteps.STEP1_SUBSTEP_40), "first 4 steps are handled elsewhere")
+
+        if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
+            dm, zn2, zn3 = get_dominant(scores)
 
     # If it's the start of the questionnaire
     if last_step is None:
@@ -85,16 +88,20 @@ def get_next_sign_for_question(
 
 
 def get_next_question(
-        last_step: Optional[AlgorithmStep],
-        last_substep: Optional[AlgorithmSubStep],
-        current_dm: Optional[Sign],
-        scores: Optional[np.ndarray],
+        last_question: Optional[QuizQuestion],
+        last_answer: Optional[QuizAnswer],
+        # last_step: Optional[AlgorithmStep],
+        # last_substep: Optional[AlgorithmSubStep],
+        # current_dm: Optional[Sign],
+        # scores: Optional[np.ndarray],
 ) -> Tuple[QuestionToken, AlgorithmStep, AlgorithmSubStep]:
-    if last_step is None:
-        require(lambda: last_substep is None, "last_substep must be None if last_step is None")
+    if last_question is None:
+        require(lambda: last_answer is None, "last_question and last_answer must be both be None or not None")
         return HEIGHT_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_10
+    require_not_none(last_answer, "last_question and last_answer must be both be None or not None")
 
-    require_not_none(last_substep, "last_substep must not be None if last_step is not None")
+    last_step = last_question.quiz_step
+    last_substep = last_question.quiz_substep
 
     if last_step == AlgorithmStep.STEP_1:
         if last_substep == Step1SubSteps.STEP1_SUBSTEP_10:
@@ -106,9 +113,12 @@ def get_next_question(
         if last_substep == Step1SubSteps.STEP1_SUBSTEP_30:
             return HAIR_COLOR_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_40
 
-    (next_sign, next_step, next_substep) = get_next_sign_for_question(last_step, last_substep, current_dm, scores)
+    (next_sign, next_step, next_substep) = get_next_sign_for_question(
+        last_question=last_question,
+        last_answer=last_answer,
+    )
     next_question_token = get_next_non_asked_question_for_sign(next_sign)
-    return next_question_token, next_step, next_substep
+    return QuestionToken(value=next_question_token), next_step, next_substep
 
 
 def get_last_quiz_question(quiz_token: QuizToken) -> Optional[QuizQuestion]:
@@ -116,6 +126,10 @@ def get_last_quiz_question(quiz_token: QuizToken) -> Optional[QuizQuestion]:
 
 
 def get_last_quiz_answer(quiz_token: QuizToken) -> Optional[QuizAnswer]:
+    TODO()
+
+
+def get_last_quiz_answer_by_quiz_id(quiz_id: int) -> Optional[QuizAnswer]:
     TODO()
 
 
@@ -128,9 +142,9 @@ def get_quiz_by_token(quiz_token: QuizToken) -> Quiz:
 
 
 def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
-    quiz = get_quiz_by_token(quiz_token)
     last_quiz_question = get_last_quiz_question(quiz_token)
     last_quiz_answer = get_last_quiz_answer(quiz_token)
+    quiz = get_quiz_by_token(quiz_token)
 
     if last_quiz_answer is None:
         if last_quiz_question is not None:
@@ -138,10 +152,8 @@ def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
             return last_quiz_question
 
         next_question_token, next_step, next_substep = get_next_question(
-            last_step=None,
-            last_substep=None,
-            current_dm=None,
-            scores=None,
+            last_question=None,
+            last_answer=None,
         )
         new_question = get_question_by_token(next_question_token)
         return QuizQuestion(
@@ -190,15 +202,17 @@ def get_answer_by_token(answer_token: AnswerToken) -> Answer:
 def api_post_question(quiz_question_token: QuizQuestionToken, answer_token: AnswerToken):
     quiz_question = get_quiz_question_by_token(quiz_question_token)
     answer = get_answer_by_token(answer_token)
+    last_quiz_answer = get_last_quiz_answer_by_quiz_id(quiz_question.quiz_id)
 
-    a = QuizAnswer(
+    quiz_answer = QuizAnswer(
         token="new",
         quiz_id=quiz_question.quiz_id,
         quiz_question_id=quiz_question.id,
-        current_dominant_sign=current_dominant_sign,
-        current_fire_sign_score=current_fire_sign_score,
-        current_earth_sign_score=current_earth_sign_score,
-        current_metal_sign_score=current_metal_sign_score,
-        current_water_sign_score=current_water_sign_score,
-        current_wood_sign_score=current_wood_sign_score,
+        answer_id=answer.id,
+        # current_dominant_sign=current_dominant_sign, ??
+        current_fire_sign_score=last_quiz_answer.current_fire_sign_score + answer.fire_sign_score,
+        current_earth_sign_score=last_quiz_answer.current_earth_sign_score + answer.earth_sign_score,
+        current_metal_sign_score=last_quiz_answer.current_metal_sign_score + answer.metal_sign_score,
+        current_water_sign_score=last_quiz_answer.current_water_sign_score + answer.water_sign_score,
+        current_wood_sign_score=last_quiz_answer.current_wood_sign_score + answer.wood_sign_score,
     )
