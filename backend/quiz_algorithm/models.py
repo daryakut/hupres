@@ -1,5 +1,6 @@
 from enum import Enum
-
+import numpy as np
+import numpy as np
 from pydantic import BaseModel
 from typing import Optional
 
@@ -102,9 +103,20 @@ class QuizAnswer(BaseModel):
     quiz_id: int
     quiz_question_id: int
     answer_id: int
-    current_dominant_sign: Optional[Sign] = None
+    current_dm: Optional[Sign] = None
+    current_zn2: Optional[Sign] = None
+    current_zn3: Optional[Sign] = None
     current_fire_sign_score: int
     current_earth_sign_score: int
     current_metal_sign_score: int
     current_water_sign_score: int
     current_wood_sign_score: int
+
+    def get_scores(self) -> np.ndarray:
+        return np.array([
+            self.current_fire_sign_score,
+            self.current_earth_sign_score,
+            self.current_metal_sign_score,
+            self.current_water_sign_score,
+            self.current_wood_sign_score,
+        ])

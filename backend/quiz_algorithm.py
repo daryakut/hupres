@@ -1,8 +1,10 @@
 from typing import Optional, Tuple
+from __future__ import annotations
 
 import numpy as np
+from pydantic import BaseModel
 
-from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign
+from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps
 from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Question, Quiz, QuizAnswer, QuizQuestionToken, \
     Answer, AnswerToken
 
@@ -27,9 +29,29 @@ EYE_COLOR_QUESTION_TOKEN = QuestionToken("q_eye_color")
 HAIR_COLOR_QUESTION_TOKEN = QuestionToken("q_hair_color")
 
 
-def get_dominant(scores):
-    sorted_scores = np.sort(scores)
-    return sorted_scores[-1], sorted_scores[-2], sorted_scores[-3]
+class SignWithScore(BaseModel):
+    sign: Sign
+    score: int
+
+    @staticmethod
+    def from_sign_and_score(sign_value_and_score: Tuple[int, int]) -> SignWithScore:
+        return SignWithScore(sign=Sign(sign_value_and_score[0]), score=sign_value_and_score[1])
+
+
+def get_dominant(scores: np.ndarray) -> Tuple[SignWithScore, SignWithScore, SignWithScore]:
+    # sorted_scores = np.sort(scores)
+    indexed_scores = list(enumerate(scores))
+    sorted_index_score_pairs = sorted(
+        indexed_scores,
+        # Fancy way to sort by score first, then index, so that sorting is consistent
+        key=lambda index_and_value: index_and_value[1] * 1000 + index_and_value[0],
+        reverse=True,
+    )
+    return (
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-1]),
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-2]),
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-3]),
+    )
 
 
 def get_next_non_asked_question_for_sign(sign: Sign) -> str:
@@ -39,28 +61,33 @@ def get_next_non_asked_question_for_sign(sign: Sign) -> str:
 def get_next_sign_for_question(
         last_question: QuizQuestion,
         last_answer: QuizAnswer,
-) -> Tuple[Sign, AlgorithmStep, AlgorithmSubStep]:
+) -> Tuple[Optional[Sign], Optional[Sign], Optional[Sign], AlgorithmStep, AlgorithmSubStep]:
     last_step = last_question.quiz_step
     last_substep = last_question.quiz_substep
-    scores = {
-        'Огонь': fire,
-        'Земля': earth,
-        'Металл': metal,
-        'Вода': water,
-        'Дерево': wood,
-    }
 
     if last_step == AlgorithmStep.STEP_1:
         require(lambda: int(last_substep) > int(Step1SubSteps.STEP1_SUBSTEP_40), "first 4 steps are handled elsewhere")
 
+        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
         if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
-            dm, zn2, zn3 = get_dominant(scores)
+            diff = dm.score - zn2.score
 
-    # If it's the start of the questionnaire
-    if last_step is None:
-        return 1, 10, None
+            if diff > 5:
+                # Dm known, moving to step 2
+                return dm.sign, zn2.sign, zn3.sign, AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10
+            if dm.score == zn2.score:
+                return None, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_50
 
-    dm, zn2, zn3 = get_dominant(scores)
+            # Recalculation using first two questions
+            # ... here you'd integrate logic for recalculation based on the first two questions, which wasn't detailed in the provided algorithm
+            # For now, we can return to 1, 50 for simplicity
+            return 1, 50, dm
+
+        if last_substep == Step1SubSteps.STEP1_SUBSTEP_50:
+            return dm.sign, zn2.sign, zn3.sign, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_60
+
+        if last_substep == Step1SubSteps.STEP1_SUBSTEP_60:
+            get_next_non_asked_question_for_sign(last_answer.current_zn2)
 
     if last_substep == 40:  # After Цвет волос
         diff = scores[dm] - scores[zn2]
@@ -203,6 +230,11 @@ def api_post_question(quiz_question_token: QuizQuestionToken, answer_token: Answ
     quiz_question = get_quiz_question_by_token(quiz_question_token)
     answer = get_answer_by_token(answer_token)
     last_quiz_answer = get_last_quiz_answer_by_quiz_id(quiz_question.quiz_id)
+    last_fire_sign_score = last_quiz_answer.current_fire_sign_score or
+    last_earth_sign_score = last_quiz_answer.current_earth_sign_score or
+    last_metal_sign_score = last_quiz_answer.current_metal_sign_score or
+    last_water_sign_score = last_quiz_answer.current_water_sign_score or
+    last_wood_sign_score = last_quiz_answer.current_wood_sign_score or
 
     quiz_answer = QuizAnswer(
         token="new",
