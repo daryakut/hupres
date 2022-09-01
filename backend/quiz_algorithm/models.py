@@ -4,7 +4,7 @@ import numpy as np
 from pydantic import BaseModel
 from typing import Optional
 
-from quiz_algorithm.constants import Sign
+from quiz_algorithm.constants import Sign, AlgorithmStep, AlgorithmSubStep
 
 
 class UserRole(Enum):
@@ -111,6 +111,8 @@ class QuizAnswer(BaseModel):
     current_metal_sign_score: int
     current_water_sign_score: int
     current_wood_sign_score: int
+    next_quiz_step: AlgorithmStep
+    next_quiz_substep: AlgorithmSubStep
 
     def get_scores(self) -> np.ndarray:
         return np.array([
