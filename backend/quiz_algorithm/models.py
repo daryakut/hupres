@@ -2,7 +2,7 @@ from enum import Enum
 import numpy as np
 import numpy as np
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Tuple
 
 from quiz_algorithm.constants import Sign, AlgorithmStep, AlgorithmSubStep
 
@@ -82,6 +82,10 @@ class QuizQuestionToken(BaseModel):
     value: str
 
 
+class QuizAnswerToken(BaseModel):
+    value: str
+
+
 # Model for 'quiz_questions' table
 class QuizQuestion(BaseModel):
     id: int
@@ -92,10 +96,6 @@ class QuizQuestion(BaseModel):
     quiz_substep: int
 
 
-class QuizAnswerToken(BaseModel):
-    value: str
-
-
 # Model for 'quiz_answers' table
 class QuizAnswer(BaseModel):
     id: int
@@ -103,16 +103,17 @@ class QuizAnswer(BaseModel):
     quiz_id: int
     quiz_question_id: int
     answer_id: int
-    current_dm: Optional[Sign] = None
-    current_zn2: Optional[Sign] = None
-    current_zn3: Optional[Sign] = None
+    # current_dm: Optional[Sign] = None
+    # current_zn2: Optional[Sign] = None
+    # current_zn3: Optional[Sign] = None
     current_fire_sign_score: int
     current_earth_sign_score: int
     current_metal_sign_score: int
     current_water_sign_score: int
     current_wood_sign_score: int
-    next_quiz_step: AlgorithmStep
-    next_quiz_substep: AlgorithmSubStep
+    # next_quiz_step: AlgorithmStep
+    # next_quiz_substep: AlgorithmSubStep
+    signs_for_next_questions: Tuple[Sign]
 
     def get_scores(self) -> np.ndarray:
         return np.array([

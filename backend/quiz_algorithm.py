@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 from __future__ import annotations
 
 import numpy as np
@@ -58,15 +58,16 @@ def get_next_non_asked_question_for_sign(sign: Sign) -> str:
     return None
 
 
-def get_next_sign_for_question(
+def get_next_signs_for_questions(
         last_question: QuizQuestion,
         last_answer: QuizAnswer,
-) -> Tuple[Optional[Sign], Optional[Sign], Optional[Sign], AlgorithmStep, AlgorithmSubStep]:
+# ) -> Tuple[Tuple[Sign], AlgorithmStep, AlgorithmSubStep]:
+) -> List[Sign]:
     last_step = last_question.quiz_step
     last_substep = last_question.quiz_substep
 
     if last_step == AlgorithmStep.STEP_1:
-        require(lambda: int(last_substep) > int(Step1SubSteps.STEP1_SUBSTEP_40), "first 4 steps are handled elsewhere")
+        require(lambda: int(last_substep) >= int(Step1SubSteps.STEP1_SUBSTEP_40), "first 3 steps are handled elsewhere")
 
         dm, zn2, zn3 = get_dominant(last_answer.get_scores())
         if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
@@ -74,7 +75,7 @@ def get_next_sign_for_question(
 
             if diff > 5:
                 # Dm known, moving to step 2
-                return dm.sign, zn2.sign, zn3.sign, AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10
+                return [dm.sign, zn2.sign]
             if dm.score == zn2.score:
                 return None, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_50
 
@@ -115,34 +116,34 @@ def get_next_sign_for_question(
 
 
 def get_next_question(
-        last_question: Optional[QuizQuestion],
-        last_answer: Optional[QuizAnswer],
+        current_question: Optional[QuizQuestion],
+        current_answer: Optional[QuizAnswer],
         # last_step: Optional[AlgorithmStep],
         # last_substep: Optional[AlgorithmSubStep],
         # current_dm: Optional[Sign],
         # scores: Optional[np.ndarray],
 ) -> Tuple[QuestionToken, AlgorithmStep, AlgorithmSubStep]:
-    if last_question is None:
-        require(lambda: last_answer is None, "last_question and last_answer must be both be None or not None")
+    if current_question is None:
+        require(lambda: current_answer is None, "last_question and last_answer must be both be None or not None")
         return HEIGHT_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_10
-    require_not_none(last_answer, "last_question and last_answer must be both be None or not None")
+    require_not_none(current_answer, "last_question and last_answer must be both be None or not None")
 
-    last_step = last_question.quiz_step
-    last_substep = last_question.quiz_substep
+    current_step = current_question.quiz_step
+    current_substep = current_question.quiz_substep
 
-    if last_step == AlgorithmStep.STEP_1:
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_10:
+    if current_step == AlgorithmStep.STEP_1:
+        if current_substep == Step1SubSteps.STEP1_SUBSTEP_10:
             return BODY_SCHEMA_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_20
 
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_20:
+        if current_substep == Step1SubSteps.STEP1_SUBSTEP_20:
             return EYE_COLOR_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_30
 
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_30:
+        if current_substep == Step1SubSteps.STEP1_SUBSTEP_30:
             return HAIR_COLOR_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_40
 
-    (next_sign, next_step, next_substep) = get_next_sign_for_question(
-        last_question=last_question,
-        last_answer=last_answer,
+    (next_sign, next_step, next_substep) = get_next_signs_for_questions(
+        last_question=current_question,
+        last_answer=current_answer,
     )
     next_question_token = get_next_non_asked_question_for_sign(next_sign)
     return QuestionToken(value=next_question_token), next_step, next_substep
@@ -179,8 +180,8 @@ def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
             return last_quiz_question
 
         next_question_token, next_step, next_substep = get_next_question(
-            last_question=None,
-            last_answer=None,
+            current_question=None,
+            current_answer=None,
         )
         new_question = get_question_by_token(next_question_token)
         return QuizQuestion(
