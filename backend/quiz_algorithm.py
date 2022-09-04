@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 from pydantic import BaseModel
 
-from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps
+from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps
 from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Question, Quiz, QuizAnswer, QuizQuestionToken, \
     Answer, AnswerToken
 
@@ -117,45 +117,35 @@ def get_next_signs_for_questions(
             diff = dm.score - zn2.score
             if diff > 0:
                 # TODO: here we need to record that DM is dm
-                return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
+                quiz.dm_after_step_1 = dm.sign
+                # TODO: THIS FALLS THROUGH TO STEP 2
 
             return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_90_100
 
         if last_substep == Step1SubSteps.STEP1_SUBSTEP_90_100:
             dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+            quiz.dm_after_step_1 = dm.sign
             # TODO: here we need to record that DM is dm
-            return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
+            # TODO: THIS FALLS THROUGH TO STEP 2
 
-        raise Exception("Unknown substep")
+        # raise Exception("Unknown substep")
 
-    if last_step == AlgorithmStep.STEP_2 or AlgorithmStep.STEP_1:
+    if last_step == AlgorithmStep.STEP_1:
+        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+        # we have fallen through when saying that "we know dm and move to step 2"
+        return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
+
+    if last_step == AlgorithmStep.STEP_2:
         # It means that we have answers for both questions for Step 2
         dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-        quiz.dm_after_step_1 = dm.sign
+        quiz.dm_after_step_2 = dm.sign
 
-    if last_substep == 40:  # After Цвет волос
-        diff = scores[dm] - scores[zn2]
-        if diff > 5:
-            # Dm known, moving to step 2
-            return 2, 10, dm
-        elif scores[dm] == scores[zn2]:
-            # Move to Подшаг 50 and 60
-            return 1, 50, dm
-        elif diff <= 5:
-            # Recalculation using first two questions
-            # ... here you'd integrate logic for recalculation based on the first two questions, which wasn't detailed in the provided algorithm
-            # For now, we can return to 1, 50 for simplicity
-            return 1, 50, dm
-    elif last_substep in [50, 60, 70, 80]:
-        # Assuming that we already asked the two additional questions to Dm and Zn2
-        # and added those results to the total, we now have to check if we've got a dominant sign or if they're still tied
-        if scores[dm] == scores[zn2]:
-            return 1, 90, dm  # Here we're asking another question for the dominant sign
-        else:
-            return 2, 10, dm  # Move to next step with the dominant sign
+        # Now we are on Step 3
 
-    # Default (this should ideally never happen)
-    return None, None, None
+        if quiz.dm_after_step_2 == quiz.dm_after_step_1:
+            if dm.score > zn2.score + 5 and zn2.score > zn3.score + 3:
+                return [zn2.sign, zn2.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_10_20
+
 
 
 def get_next_question(
