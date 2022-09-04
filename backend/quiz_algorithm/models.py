@@ -98,7 +98,7 @@ class QuizQuestion(BaseModel):
     question_id: int
     quiz_step: int
     quiz_substep: int
-    signs_for_next_questions: List[Sign]
+    followup_question_signs: List[Sign]
 
 
 # Model for 'quiz_answers' table
