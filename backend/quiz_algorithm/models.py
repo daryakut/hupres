@@ -1,10 +1,10 @@
 from enum import Enum
-import numpy as np
+from typing import List
+
 import numpy as np
 from pydantic import BaseModel
-from typing import Optional, List, Tuple
 
-from quiz_algorithm.constants import Sign, AlgorithmStep, AlgorithmSubStep
+from quiz_algorithm.constants import Sign
 
 
 class UserRole(Enum):
