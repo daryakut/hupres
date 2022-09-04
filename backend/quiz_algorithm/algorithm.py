@@ -6,7 +6,8 @@ import numpy as np
 from pydantic import BaseModel
 
 from quiz_algorithm.common import check, check_not_none
-from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps
+from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps, \
+    Step4SubSteps, Step5SubSteps, Step6SubSteps
 from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Quiz, QuizAnswer
 from quiz_algorithm.queries import get_next_non_asked_question_for_sign, get_last_quiz_answer, get_last_quiz_question, \
     get_quiz_by_token, get_first_two_non_zero_tablet_answers
@@ -42,14 +43,16 @@ def get_dominant(scores: np.ndarray) -> Tuple[SignWithScore, SignWithScore, Sign
     )
 
 
+def get_dominant_four(scores: np.ndarray) -> Tuple[SignWithScore, SignWithScore, SignWithScore, SignWithScore]:
+    pass
+
+
 def get_next_signs_for_questions(
         quiz: Quiz,
         last_question: QuizQuestion,
         last_answer: QuizAnswer,
 ) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
-    # ) -> List[Sign]:
     last_step = last_question.quiz_step
-    last_substep = last_question.quiz_substep
 
     # First four questions of Step 1 are handled separately, so here we only handle the remaining questions in it
     if last_step == AlgorithmStep.STEP_1:
@@ -68,6 +71,29 @@ def get_next_signs_for_questions(
             last_question=last_question,
             last_answer=last_answer,
         )
+
+    if last_step == AlgorithmStep.STEP_3:
+        return get_next_signs_for_questions_step4(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
+
+    if last_step == AlgorithmStep.STEP_4:
+        return get_next_signs_for_questions_step5(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
+
+    if last_step == AlgorithmStep.STEP_5:
+        return get_next_signs_for_questions_step6(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
+
+    raise Exception("Unknown step")
 
 
 def get_next_signs_for_questions_step1(
@@ -215,8 +241,74 @@ def get_next_signs_for_questions_step3(
     # we are writing it as a separate condition
     return [zn2.sign, zn3.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_50_60
 
-    # Dm has changed between Steps 1 and 2
 
+def get_next_signs_for_questions_step4(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_3, "Step 3 is not active")
+
+    # On the first step we have determined Dm, now we ask additional questions
+    # In the doc this is still at the end of Step 3
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    quiz.dm_after_step_3 = dm.sign
+
+    if dm.score == zn2.score:
+        # Step 4.3
+        return [dm.sign, zn2.sign], AlgorithmStep.STEP_4, Step4SubSteps.STEP4_SUBSTEP_70_80
+
+    if quiz.dm_after_step_3 != dm.sign:
+        # Step 4.2
+        return [dm.sign, dm.sign], AlgorithmStep.STEP_4, Step4SubSteps.STEP4_SUBSTEP_50_60
+
+    # Step 4.1
+    if zn2.score > zn3.score + 3:
+        # Step 4.1a
+        return [zn3.sign, zn3.sign], AlgorithmStep.STEP_4, Step4SubSteps.STEP4_SUBSTEP_10_20
+
+    # Step 4.1b
+    return [zn2.sign, zn3.sign], AlgorithmStep.STEP_4, Step4SubSteps.STEP4_SUBSTEP_30_40
+
+
+def get_next_signs_for_questions_step5(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_4, "Step 4 is not active")
+
+    # On the first step we have determined Dm, now we ask additional questions
+    # In the doc this is still at the end of Step 3
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    quiz.dm_after_step_4 = dm.sign
+
+    if dm.score == zn2.score:
+        # Step 5.3
+        return [dm.sign, zn2.sign], AlgorithmStep.STEP_5, Step5SubSteps.STEP5_SUBSTEP_90_100
+
+    if quiz.dm_after_step_4 != dm.sign:
+        # Step 5.2
+        return [dm.sign, dm.sign], AlgorithmStep.STEP_5, Step5SubSteps.STEP5_SUBSTEP_70_80
+
+    # Step 5.1
+    return [dm.sign, zn2.sign, zn3.sign], AlgorithmStep.STEP_5, Step5SubSteps.STEP5_SUBSTEP_10_20_30
+
+
+def get_next_signs_for_questions_step6(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_5, "Step 5 is not active")
+
+    # On the first step we have determined Dm, now we ask additional questions
+    # In the doc this is still at the end of Step 3
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    return [dm.sign, zn2.sign, zn3.sign], AlgorithmStep.STEP_6, Step6SubSteps.STEP6_SUBSTEP_10_20_30
 
 
 def get_next_question(
