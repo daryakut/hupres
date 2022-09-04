@@ -116,6 +116,9 @@ class QuizAnswer(BaseModel):
     current_metal_sign_score: int
     current_water_sign_score: int
     current_wood_sign_score: int
+    current_sign_scores: List[int]
+    # In some steps (e.g. step 1) we need to re-calculate the current scores and redefined them
+    original_sign_scores: List[int]
     # next_quiz_step: AlgorithmStep
     # next_quiz_substep: AlgorithmSubStep
     signs_for_next_questions: List[Sign]

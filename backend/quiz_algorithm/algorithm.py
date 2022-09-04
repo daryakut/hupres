@@ -5,11 +5,11 @@ from typing import Tuple, List
 import numpy as np
 from pydantic import BaseModel
 
-from quiz_algorithm.common import require, require_not_none
+from quiz_algorithm.common import check, check_not_none
 from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps
 from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Quiz, QuizAnswer
 from quiz_algorithm.queries import get_next_non_asked_question_for_sign, get_last_quiz_answer, get_last_quiz_question, \
-    get_quiz_by_token
+    get_quiz_by_token, get_first_two_non_zero_tablet_answers
 
 HEIGHT_QUESTION_TOKEN = QuestionToken(value="q_height")
 BODY_SCHEMA_QUESTION_TOKEN = QuestionToken(value="q_body_schema")
@@ -51,69 +51,172 @@ def get_next_signs_for_questions(
     last_step = last_question.quiz_step
     last_substep = last_question.quiz_substep
 
+    # First four questions of Step 1 are handled separately, so here we only handle the remaining questions in it
     if last_step == AlgorithmStep.STEP_1:
-        require(lambda: int(last_substep) > int(Step1SubSteps.STEP1_SUBSTEP_40),
-                "First 4 questions are asked elsewhere")
+        return get_next_signs_for_questions_step1(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
 
-        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
-            diff = dm.score - zn2.score
-
-            if diff > 5:
-                # Dm known, moving to step 2
-                # TODO: THIS FALLS THROUGH TO STEP 2
-                quiz.dm_after_step_1 = dm.sign
-                # return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
-            if dm.score == zn2.score:
-                return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_50_60
-
-            # Recalculate last_answer.get_scores() based on first two questions and fall through
-
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_40 or last_substep == Step1SubSteps.STEP1_SUBSTEP_50_60:
-            # we are here https://www.notion.so/1-cf4a40b40d874ecb9604b7a3a15c2405?pvs=4#7977f9bfe89f4ef8bdfca33d23f1c36b
-            dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-            diff = dm.score - zn2.score
-            if diff > 0:
-                # TODO: here we need to record that DM is dm
-                quiz.dm_after_step_1 = dm.sign
-                # TODO: THIS FALLS THROUGH TO STEP 2
-
-            # dm and zn2 are equal
-            return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_70_80
-
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_70_80:
-            dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-            diff = dm.score - zn2.score
-            if diff > 0:
-                # TODO: here we need to record that DM is dm
-                quiz.dm_after_step_1 = dm.sign
-                # TODO: THIS FALLS THROUGH TO STEP 2
-
-            return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_90_100
-
-        if last_substep == Step1SubSteps.STEP1_SUBSTEP_90_100:
-            dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-            quiz.dm_after_step_1 = dm.sign
-            # TODO: here we need to record that DM is dm
-            # TODO: THIS FALLS THROUGH TO STEP 2
-
-        # raise Exception("Unknown substep")
-
-    if last_step == AlgorithmStep.STEP_1:
-        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-        # we have fallen through when saying that "we know dm and move to step 2"
-        return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
+    # We don't have conditions to get to step 2 in this exact method because `get_next_signs_for_questions_step1`
+    # will redirect to step 2 if needed
 
     if last_step == AlgorithmStep.STEP_2:
-        # It means that we have answers for both questions for Step 2
+        return get_next_signs_for_questions_step3(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
+
+
+def get_next_signs_for_questions_step1(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_1, "Step 1 is not active")
+
+    last_substep = last_question.quiz_substep
+    check(lambda: int(last_substep) > int(Step1SubSteps.STEP1_SUBSTEP_40), "First 4 questions are asked elsewhere")
+
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
+        # Step 1.1
+        # We have just received answers for first 4 tablet questions
+        if dm.score > zn2.score + 5:
+            # Step 1.1a
+            # Dm is already determined known, moving to step 2
+            quiz.dm_after_step_1 = dm.sign
+            return get_next_signs_for_questions_step2(
+                quiz=quiz,
+                last_question=last_question,
+                last_answer=last_answer,
+            )
+
+        if dm.score == zn2.score:
+            # Step 1.1b
+            # We need more information to determined Dm on step 1
+            return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_50_60
+
+        # Step 1.1c
+        first_two_non_zero_tablet_answers = get_first_two_non_zero_tablet_answers(quiz.token)
+        if len(first_two_non_zero_tablet_answers) < 2:
+            raise Exception("Not enough information to proceed with the quiz")
+        # We store the original sign scores for the last answer just in case
+        last_answer.original_sign_scores = last_answer.current_sign_scores
+        # We redefined the original sign scores for the last answer based on the first two questions
+        # Scores in the second of the two questions is going to contain the sum of scores for both
+        last_answer.current_sign_scores = first_two_non_zero_tablet_answers[1].current_sign_scores
+
+    if last_substep == Step1SubSteps.STEP1_SUBSTEP_40 or last_substep == Step1SubSteps.STEP1_SUBSTEP_50_60:
+        # Step 2.2
         dm, zn2, zn3 = get_dominant(last_answer.get_scores())
-        quiz.dm_after_step_2 = dm.sign
+        if dm.score > zn2.score:
+            # Step 2.2a
+            # TODO: here we need to record that DM is dm
+            # Dm is determined to be the largest one, moving to step 2
+            quiz.dm_after_step_1 = dm.sign
+            return get_next_signs_for_questions_step2(
+                quiz=quiz,
+                last_question=last_question,
+                last_answer=last_answer,
+            )
 
-        # Now we are on Step 3
+        # Step 2.2b
+        # We need more information to determine Dm on step 1
+        return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_70_80
 
-        if quiz.dm_after_step_2 == quiz.dm_after_step_1:
-            if dm.score > zn2.score + 5 and zn2.score > zn3.score + 3:
-                return [zn2.sign, zn2.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_10_20
+    if last_substep == Step1SubSteps.STEP1_SUBSTEP_70_80:
+        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+        if dm.score > zn2.score:
+            # Step 2.2b.i
+            # TODO: here we need to record that DM is dm
+            # Dm is determined to be the largest one, moving to step 2
+            quiz.dm_after_step_1 = dm.sign
+            return get_next_signs_for_questions_step2(
+                quiz=quiz,
+                last_question=last_question,
+                last_answer=last_answer,
+            )
+
+        # Step 2.2b.ii
+        # We need more information to determine Dm on step 1
+        return [dm.sign, zn2.sign], AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_90_100
+
+    if last_substep == Step1SubSteps.STEP1_SUBSTEP_90_100:
+        dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+        quiz.dm_after_step_1 = dm.sign
+        # TODO: here we need to record that DM is dm
+        return get_next_signs_for_questions_step2(
+            quiz=quiz,
+            last_question=last_question,
+            last_answer=last_answer,
+        )
+
+    raise Exception("Unknown substep")
+
+
+def get_next_signs_for_questions_step2(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_1, "Step 1 is not active")
+
+    # On the first step we have determined Dm, now we ask additional questions
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    return [dm.sign, dm.sign], AlgorithmStep.STEP_2, Step2SubSteps.STEP2_SUBSTEP_10_20
+
+
+def get_next_signs_for_questions_step3(
+        quiz: Quiz,
+        last_question: QuizQuestion,
+        last_answer: QuizAnswer,
+) -> Tuple[List[Sign], AlgorithmStep, AlgorithmSubStep]:
+    last_step = last_question.quiz_step
+    check(last_step == AlgorithmStep.STEP_2, "Step 2 is not active")
+
+    # It means that we have answers for both questions for Step 2
+    dm, zn2, zn3 = get_dominant(last_answer.get_scores())
+    quiz.dm_after_step_2 = dm.sign
+
+    # Now we are on Step 3
+    if dm.score == zn2.score and zn2.score == zn3.score:
+        # Step 3.4
+        return [dm.sign, zn2.sign, zn3.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_110_120_130
+
+    if dm.score == zn2.score:
+        # Step 3.3
+        # We want to ask two questions to the sign that was not dominant on Step 1
+        if quiz.dm_after_step_1 == dm.sign:
+            new_dm = zn2.sign
+        else:
+            new_dm = dm.sign
+        return [new_dm, new_dm], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_90_100
+
+    if quiz.dm_after_step_1 != dm.sign:
+        # Step 3.2
+        return [dm.sign, dm.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_70_80
+
+    # Step 3.1
+    if dm.score > zn2.score + 5 and zn2.score > zn3.score + 3:
+        # Step 3.1a
+        return [zn2.sign, zn2.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_10_20
+
+    if dm.score > zn2.score + 5:
+        # Step 3.1b
+        return [zn2.sign, zn3.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_30_40
+
+    # Step 3.1c
+    # this has exactly the same logic as the substep before, but just to be consistent with the Notion doc
+    # we are writing it as a separate condition
+    return [zn2.sign, zn3.sign], AlgorithmStep.STEP_3, Step3SubSteps.STEP3_SUBSTEP_50_60
+
+    # Dm has changed between Steps 1 and 2
+
 
 
 def get_next_question(
@@ -133,7 +236,7 @@ def get_next_question(
         return HEIGHT_QUESTION_TOKEN, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_10
 
     last_answer = get_last_quiz_answer(quiz_token)
-    require_not_none(last_answer, "There is no answer for the last question. This indicates a bug")
+    check_not_none(last_answer, "There is no answer for the last question. This indicates a bug")
 
     last_step = last_question.quiz_step
     last_substep = last_question.quiz_substep

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, List
 
 from quiz_algorithm.constants import Sign
 from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Question, Quiz, QuizAnswer, QuizQuestionToken, \
@@ -12,6 +12,10 @@ def get_next_non_asked_question_for_sign(sign: Sign) -> str:
 
 
 def get_quiz_by_token(quiz_token: QuizToken) -> Quiz:
+    pass
+
+
+def get_first_two_non_zero_tablet_answers(quiz_token: QuizToken) -> List[QuizAnswer]:
     pass
 
 
