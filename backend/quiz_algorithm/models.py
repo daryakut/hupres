@@ -76,6 +76,10 @@ class Quiz(BaseModel):
     user_id: int
     subject_name: str
     pronounce: Pronounce
+    dm_after_step_1: Sign
+    dm_after_step_2: Sign
+    dm_after_step_3: Sign
+    dm_after_step_4: Sign
 
 
 class QuizQuestionToken(BaseModel):
@@ -94,6 +98,7 @@ class QuizQuestion(BaseModel):
     question_id: int
     quiz_step: int
     quiz_substep: int
+    signs_for_next_questions: List[Sign]
 
 
 # Model for 'quiz_answers' table
@@ -113,7 +118,7 @@ class QuizAnswer(BaseModel):
     current_wood_sign_score: int
     # next_quiz_step: AlgorithmStep
     # next_quiz_substep: AlgorithmSubStep
-    signs_for_next_questions: Tuple[Sign]
+    signs_for_next_questions: List[Sign]
 
     def get_scores(self) -> np.ndarray:
         return np.array([
