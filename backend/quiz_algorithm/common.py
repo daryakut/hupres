@@ -10,3 +10,7 @@ def check(predicate, message):
 
 def TODO():
     raise NotImplementedError("TODO")
+
+
+def first_or_none(collection):
+    return next(iter(collection), None)

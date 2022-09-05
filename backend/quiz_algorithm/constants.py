@@ -3,13 +3,13 @@ from enum import Enum, IntEnum
 from typing_extensions import Type
 
 
-class Sign(IntEnum):
+class Sign(Enum):
     # It's important to start with 0 because we want indexes in the array to match the enum values
-    FIRE = 0
-    EARTH = 1
-    METAL = 2
-    WATER = 3
-    WOOD = 4
+    FIRE = "FIRE"
+    EARTH = "EARTH"
+    METAL = "METAL"
+    WATER = "WATER"
+    WOOD = "WOOD"
 
 
 class AlgorithmSubStep(IntEnum):
