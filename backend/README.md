@@ -1,5 +1,26 @@
 ## Running Locally
 
+Postgresql install:
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew update
+    brew install postgresql
+
+Start/Stop/Restart Postgresql:
+    
+    brew services start postgresql
+    brew services stop postgresql
+    brew services restart postgresql
+
+Create a user and a database (enter password when prompted 123456)
+
+    createuser --username=postgres --no-superuser --pwprompt --createdb my_user
+    createdb hupres_test
+
+Test database connection:
+
+    psql -U hupres -P 123456 -d hupres_test -h localhost -p 5432
+
 Install:
 
     python -m pip install -r requirements.txt

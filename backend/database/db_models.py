@@ -3,17 +3,15 @@ from __future__ import annotations
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey, Column, Integer, String, Boolean
 from sqlalchemy import JSON
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
+from database.common import DbBase
 from quiz_algorithm.common import first_or_none
 from quiz_algorithm.constants import Sign
 from quiz_algorithm.models import UserRole, Pronounce, User, Question, Answer, Quiz
 
-Base = declarative_base()
 
-
-class DbUser(Base):
+class DbUser(DbBase):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
@@ -28,7 +26,7 @@ class DbUser(Base):
         )
 
 
-class DbQuestion(Base):
+class DbQuestion(DbBase):
     __tablename__ = 'questions'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
@@ -44,7 +42,8 @@ class DbQuestion(Base):
             is_tablet=self.is_tablet
         )
 
-class DbAnswer(Base):
+
+class DbAnswer(DbBase):
     __tablename__ = 'answers'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
@@ -62,7 +61,8 @@ class DbAnswer(Base):
             sign_scores=self.sign_scores
         )
 
-class DbQuiz(Base):
+
+class DbQuiz(DbBase):
     __tablename__ = 'quizzes'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
@@ -78,7 +78,6 @@ class DbQuiz(Base):
     quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
     quiz_answers = relationship('DbQuizAnswer', back_populates='quiz', lazy='select')
 
-
     def to_model(self) -> Quiz:
         return Quiz(
             token=self.token,
@@ -91,7 +90,8 @@ class DbQuiz(Base):
             dm_after_step_4=Sign(self.dm_after_step_4)
         )
 
-class DbQuizQuestion(Base):
+
+class DbQuizQuestion(DbBase):
     __tablename__ = 'quiz_questions'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
@@ -115,7 +115,7 @@ class DbQuizQuestion(Base):
         return first_or_none(quiz_answers)
 
 
-class DbQuizAnswer(Base):
+class DbQuizAnswer(DbBase):
     __tablename__ = 'quiz_answers'
     id = Column(Integer, primary_key=True)
     token = Column(String(32), unique=True)
