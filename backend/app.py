@@ -10,8 +10,10 @@ from sqlalchemy import create_engine, Column, Integer, String, Sequence, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from database.db_models import DbUser
+from database.factories import create_user
 from database.transaction import transaction
-from quiz_algorithm.models import Quiz
+from quiz_algorithm.models import Quiz, User, UserRole
 
 app = FastAPI()
 
@@ -58,11 +60,16 @@ async def create_quiz() -> CreateQuizResponse:
     return CreateQuizResponse(quiz=Quiz())
 
 
-class CreateQuizResponse(BaseModel):
-    quiz: Quiz
+class UserSignupRequest(BaseModel):
+    email_address: str
 
 
-@app.post("/users")
-async def create_user() -> CreateQuizResponse:
+class UserSignupResponse(BaseModel):
+    user: User
 
-    return CreateQuizResponse(quiz=Quiz())
+
+@app.post("/users/signup")
+async def user_signup(request: UserSignupRequest) -> UserSignupResponse:
+    with transaction() as session:
+        db_user = DbUser.create_user(session, email_address=request.email_address, role=UserRole.RESPONDENT)
+        return UserSignupResponse(user=db_user.to_model())

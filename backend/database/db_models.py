@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, Column, Integer, String, Boolean
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship, backref
 
-from database.common import DbBase
+from database.common import DbBase, Session
 from quiz_algorithm.common import first_or_none
 from quiz_algorithm.constants import Sign
 from quiz_algorithm.models import UserRole, Pronounce, User, Question, Answer, Quiz
@@ -24,6 +24,12 @@ class DbUser(DbBase):
             email_address=self.email_address,
             role=UserRole(self.role)
         )
+
+    @staticmethod
+    def create_user(session: Session, email_address: str, role: UserRole) -> DbUser:
+        db_user = DbUser(email_address=email_address, role=role.value)
+        session.add(db_user)
+        return db_user
 
 
 class DbQuestion(DbBase):
