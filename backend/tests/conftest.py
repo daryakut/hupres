@@ -14,8 +14,8 @@ relative_path = current_file.relative_to(current_file.parent.parent)
 @pytest.fixture(autouse=True, scope='session')
 def setup_before_all_tests():
     print("Setting up before ALL tests!")
-    # alembic_cfg = Config(str(Path(__file__).parent / "alembic.ini"))
-    # command.upgrade(alembic_cfg, "head")
+    alembic_cfg = Config(str(Path(__file__).parent.parent / "alembic.ini"))
+    command.upgrade(alembic_cfg, "head")
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -26,3 +26,4 @@ def setup_each_function():
     print(table_list)
     # with database_engine.connect() as conn:
     #     conn.execute("TRUNCATE TABLE table1, table2, table3 RESTART IDENTITY CASCADE;")
+gs
