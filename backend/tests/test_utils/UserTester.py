@@ -1,20 +1,27 @@
-from app import UserSignupResponse, user_signup, UserSignupRequest
+from __future__ import annotations
 
-from fastapi.testclient import TestClient
-from app import app
+from app import user_signup, UserSignupRequest
 
-client = TestClient(app)
+from quiz_algorithm.models import User
 
 
-def test_read_item():
-    item_id = 1
-    response = client.get(f"/items/{item_id}")
-
-    assert response.status_code == 200
-    assert response.json() == {"item_id": 1, "name": "Item Name"}
+# client = TestClient(app)
+#
+# def test_read_item():
+#     item_id = 1
+#     response = client.get(f"/items/{item_id}")
+#
+#     assert response.status_code == 200
+#     assert response.json() == {"item_id": 1, "name": "Item Name"}
 
 
 class UserTester:
+    user: User
 
-    def signup(self, email_address: str) -> UserSignupResponse:
-        return user_signup(UserSignupRequest(email_address=email_address))
+    def __init__(self, user: User):
+        self.user = user
+
+    @staticmethod
+    async def signup(email_address: str = "georgii@hupres.com") -> UserTester:
+        response = await user_signup(UserSignupRequest(email_address=email_address))
+        return UserTester(response.user)
