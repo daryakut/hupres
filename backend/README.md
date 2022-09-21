@@ -14,12 +14,16 @@ Start/Stop/Restart Postgresql:
 
 Create a user and a database (enter password when prompted 123456)
 
-    createuser --username=postgres --no-superuser --pwprompt --createdb my_user
-    createdb hupres_test
+    createuser --username=postgres --no-superuser --pwprompt --createdb hupres
+    createdb -U hupres -h localhost -p 5432 hupres_test
 
 Test database connection:
 
-    psql -U hupres -P 123456 -d hupres_test -h localhost -p 5432
+    psql -U hupres -W -d hupres_test -h localhost -p 5432
+
+List Postgres users:
+
+    psql -U postgres -h localhost -p 5432 -c "\du"
 
 Install:
 
