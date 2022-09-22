@@ -4,8 +4,8 @@ Application definition
 import json
 import os
 
+import httpx
 from authlib.integrations.starlette_client import OAuth
-from authlib.oauth2 import OAuth2Client
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
@@ -17,34 +17,16 @@ from database.db_models import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import Quiz, User, UserRole
 
-from authlib.integrations.starlette_client import OAuth
-from authlib.integrations.base_client.async_openid import AsyncOpenIDMixin
 
-from authlib.oidc.core import IDToken
-
-from authlib.oauth2.rfc6749.wrappers import OAuth2Token
-
-
-class CustomOAuth2Token(OAuth2Token):
-    def validate_iss(self, iss):
-        print("=========== validate_iss")
-        # Skip iss check or customize the validation logic here
-        pass
-
-
-# class CustomIDToken(IDToken):
-#
-#     def validate_iss(self):
-#         print("=========== validate_iss")
-#         # Override to suppress iss check
-#         pass
-
+# Manually fetch the server metadata to fix the issuer
+response = httpx.get('https://accounts.google.com/.well-known/openid-configuration')
+metadata = response.json()
+# The issuer in the metadata is wrong. It is 'https://accounts.google.com' but should be 'accounts.google.com'
+metadata['issuer'] = 'accounts.google.com'
 
 oauth = OAuth()
 oauth.register(
     name='google',
-    issuer='accounts.google.com',
-    # issuer='wrong.issuer.name',
     client_id=os.environ['HUPRES_GOOGLE_0AUTH_CLIENT_ID'],
     client_secret=os.environ['HUPRES_GOOGLE_0AUTH_CLIENT_SECRET'],
     authorize_url='https://accounts.google.com/o/oauth2/auth',
@@ -55,71 +37,7 @@ oauth.register(
     redirect_uri='https://f4d9-2607-fea8-86e5-fc00-2457-6377-7d54-1aff.ngrok-free.app/auth',
     client_kwargs={'scope': 'openid profile email'},
     # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-
-
-    authorization_endpoint = "https://accounts.google.com/o/oauth2/v2/auth",
-    device_authorization_endpoint = "https://oauth2.googleapis.com/device/code",
-    token_endpoint = "https://oauth2.googleapis.com/token",
-    userinfo_endpoint = "https://openidconnect.googleapis.com/v1/userinfo",
-    revocation_endpoint = "https://oauth2.googleapis.com/revoke",
-    jwks_uri = "https://www.googleapis.com/oauth2/v3/certs",
-    response_types_supported =
-    [
-        "code",
-        "token",
-        "id_token",
-        "code token",
-        "code id_token",
-        "token id_token",
-        "code token id_token",
-        "none"
-    ],
-    subject_types_supported =
-    [
-        "public"
-    ],
-    id_token_signing_alg_values_supported =
-    [
-        "RS256"
-    ],
-    scopes_supported =
-    [
-        "openid",
-        "email",
-        "profile"
-    ],
-    token_endpoint_auth_methods_supported =
-    [
-        "client_secret_post",
-        "client_secret_basic"
-    ],
-    claims_supported =
-    [
-        "aud",
-        "email",
-        "email_verified",
-        "exp",
-        "family_name",
-        "given_name",
-        "iat",
-        "iss",
-        "locale",
-        "name",
-        "picture",
-        "sub"
-    ],
-    code_challenge_methods_supported =
-    [
-        "plain",
-        "S256"
-    ],
-    grant_types_supported =
-    [
-        "authorization_code",
-        "refresh_token",
-        "urn:ietf:params:oauth:grant-type:device_code",
-        "urn:ietf:params:oauth:grant-type:jwt-bearer"
-    ]
+    **metadata,
 )
 # oauth.google.client_metadata['issuer'] = 'accounts.google.com'
 
