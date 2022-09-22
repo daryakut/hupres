@@ -43,8 +43,8 @@ class CustomOAuth2Token(OAuth2Token):
 oauth = OAuth()
 oauth.register(
     name='google',
-    issuer='https://accounts.google.com',
-    iss='https://accounts.google.com',
+    issuer='accounts.google.com',
+    # issuer='wrong.issuer.name',
     client_id=os.environ['HUPRES_GOOGLE_0AUTH_CLIENT_ID'],
     client_secret=os.environ['HUPRES_GOOGLE_0AUTH_CLIENT_SECRET'],
     authorize_url='https://accounts.google.com/o/oauth2/auth',
@@ -54,13 +54,74 @@ oauth.register(
     refresh_token_url=None,
     redirect_uri='https://f4d9-2607-fea8-86e5-fc00-2457-6377-7d54-1aff.ngrok-free.app/auth',
     client_kwargs={'scope': 'openid profile email'},
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    # client_kwargs={
-    #     'scope': 'openid profile email',
-    #     'token_endpoint_auth_method': 'client_secret_basic',
-    #     'id_token_cls': CustomIDToken  # Use the custom ID token class
-    # }
+    # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+
+
+    authorization_endpoint = "https://accounts.google.com/o/oauth2/v2/auth",
+    device_authorization_endpoint = "https://oauth2.googleapis.com/device/code",
+    token_endpoint = "https://oauth2.googleapis.com/token",
+    userinfo_endpoint = "https://openidconnect.googleapis.com/v1/userinfo",
+    revocation_endpoint = "https://oauth2.googleapis.com/revoke",
+    jwks_uri = "https://www.googleapis.com/oauth2/v3/certs",
+    response_types_supported =
+    [
+        "code",
+        "token",
+        "id_token",
+        "code token",
+        "code id_token",
+        "token id_token",
+        "code token id_token",
+        "none"
+    ],
+    subject_types_supported =
+    [
+        "public"
+    ],
+    id_token_signing_alg_values_supported =
+    [
+        "RS256"
+    ],
+    scopes_supported =
+    [
+        "openid",
+        "email",
+        "profile"
+    ],
+    token_endpoint_auth_methods_supported =
+    [
+        "client_secret_post",
+        "client_secret_basic"
+    ],
+    claims_supported =
+    [
+        "aud",
+        "email",
+        "email_verified",
+        "exp",
+        "family_name",
+        "given_name",
+        "iat",
+        "iss",
+        "locale",
+        "name",
+        "picture",
+        "sub"
+    ],
+    code_challenge_methods_supported =
+    [
+        "plain",
+        "S256"
+    ],
+    grant_types_supported =
+    [
+        "authorization_code",
+        "refresh_token",
+        "urn:ietf:params:oauth:grant-type:device_code",
+        "urn:ietf:params:oauth:grant-type:jwt-bearer"
+    ]
 )
+# oauth.google.client_metadata['issuer'] = 'accounts.google.com'
 
 app = FastAPI()
 
@@ -76,17 +137,17 @@ async def login(request: Request):
 
 @app.get("/auth")
 async def auth(request: Request):
-    print("request", request.__dir__())
+    # print("request", request.__dir__())
 
     token = await oauth.google.authorize_access_token(request)
     print(f"token {token}")
-
-    # Fetch the user's profile
-    user = await oauth.google.parse_id_token(request, token)
-    print(f"user {user}")
-
-    # Here you can create a user session or do whatever you'd like
-    return {"email": user['email'], "name": user['name']}
+    #
+    # # Fetch the user's profile
+    # user = await oauth.google.parse_id_token(request, token)
+    # print(f"user {user}")
+    #
+    # # Here you can create a user session or do whatever you'd like
+    # return {"email": user['email'], "name": user['name']}
 
 
 @app.get("/set-session")
