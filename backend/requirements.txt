@@ -16,3 +16,5 @@ alembic
 pytest
 httpx
 pytest-asyncio
+Authlib
+itsdangerous
