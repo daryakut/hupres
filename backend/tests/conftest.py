@@ -1,15 +1,21 @@
+import os
+from pathlib import Path
+
 import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import inspect, text
 
 from database.common import database_engine
-from pathlib import Path
 
 current_file = Path(__file__)
 relative_path = current_file.relative_to(current_file.parent.parent)
 
 TABLES_TO_AVOID_TRUNCATING = ['alembic_version']
+
+
+def pytest_configure():
+    os.environ["HUPRES_SECRET_SESSION_KEY"] = "test_key"
 
 
 @pytest.fixture(autouse=True, scope='session')
