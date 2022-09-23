@@ -1,13 +1,15 @@
 import os
+from typing import List, Tuple, Any
 
 from starlette.middleware.sessions import SessionMiddleware
 
-from app import SessionDataMiddleware
+from users.sessions import SessionDataMiddleware
 
 """
 All middlewares must be added here in the order of execution of the "before" phase (and rever order of "after" phase)
+Format: (middleware_class, {options})
 """
-middlewares = [
+middlewares: List[Tuple[Any, dict]] = [
     (SessionMiddleware, {'secret_key': os.environ['HUPRES_SECRET_SESSION_KEY']}),
     (SessionDataMiddleware,)
 ]

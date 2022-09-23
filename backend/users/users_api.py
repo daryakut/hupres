@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from database.db_models import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import User, UserRole
-from users.google_oauth import google_oauth, GOOGLE_AUTH_CALLBACK_PATH
+from users.google_oauth import google_oauth, GOOGLE_AUTH_CALLBACK_PATH, decode_id_token_email_address
 
 router = APIRouter()
 
@@ -21,13 +21,10 @@ async def auth(request: Request):
     token = await google_oauth.google.authorize_access_token(request)
     print(f"token {token}")
 
-    # Fetch the user's profile
-    user = await google_oauth.google.parse_id_token(request, token)
-    print(f"user {user}")
+    email_address = decode_id_token_email_address(token)
+    print(f"email_address {email_address}")
 
-    # Here you can create a user session or do whatever you'd like
-    return {"email": user['email'], "name": user['name']}
-
+    return {"email": email_address}
 
 
 # @router.get("/set-session")
@@ -39,7 +36,6 @@ async def auth(request: Request):
 # @router.get("/get-session")
 # def get_session(request: Request):
 #     return {"session_value": request.session.get("message")}
-
 
 
 class UserSignupRequest(BaseModel):

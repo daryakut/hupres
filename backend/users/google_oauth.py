@@ -2,8 +2,13 @@ import os
 
 import httpx
 from authlib.integrations.starlette_client import OAuth
+import jwt
+from authlib.jose import JsonWebKey
+from authlib.jose import jwt as authlib_jwt
 
 GOOGLE_AUTH_CALLBACK_PATH = "/users/google-auth-callback"
+
+google_public_keys = httpx.get('https://www.googleapis.com/oauth2/v3/certs').json()
 
 # Manually fetch the server metadata to fix the issuer
 response = httpx.get('https://accounts.google.com/.well-known/openid-configuration')
@@ -26,3 +31,20 @@ google_oauth.register(
     # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     **metadata,
 )
+
+
+def decode_id_token_email_address(token: dict):
+    # Technically, we don't need to decode the id_token because we already have 'email' in the token itself
+    # However, decoding id_token is considered a better security practice
+    # If this ever stops working and you don't have time to figure it out, just return token['email']
+    id_token = token['id_token']
+
+    kid = jwt.get_unverified_header(id_token)['kid']
+    for public_key in google_public_keys["keys"]:
+        if public_key['kid'] != kid:
+            continue
+        jwk = JsonWebKey()
+        jwk_key = jwk.import_key(public_key)
+        decoded_key = authlib_jwt.decode(id_token, jwk_key.as_pem())
+        return decoded_key['email']
+    raise ValueError(f"Could not decode id_token: could not find public key with matching kid ${kid}")
