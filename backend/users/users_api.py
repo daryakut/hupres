@@ -33,16 +33,18 @@ async def auth(request: Request):
     print(f"email_address {email_address}")
 
     # Google ignores dots in email addresses
-    sanitized_email_address = re.sub(r'\+[^@]*@', '@', email_address.replace(".", ""))
+    email_first_part, email_second_part = email_address.split("@")
+    address_without_dots = email_first_part.replace(".", "") + "@" + email_second_part
+    sanitized_email_address = re.sub(r'\+[^@]*@', '@', address_without_dots)
     with transaction() as session:
-        existing_users = session.query(User).filter(User.email_address == sanitized_email_address).all()
+        existing_users = session.query(DbUser).filter(DbUser.email_address == sanitized_email_address).all()
         if len(existing_users) == 0:
             role = UserRole.ADMIN if sanitized_email_address in ADMIN_USER_EMAIL_ADDRESSES else UserRole.RESPONDENT
             db_user = DbUser.create_user(session, email_address=sanitized_email_address, role=role)
-            user_token = db_user.user_token
+            user_token = db_user.token
         elif len(existing_users) == 1:
             db_user = existing_users[0]
-            user_token = db_user.user_token
+            user_token = db_user.token
         else:
             raise Exception(f"Multiple users with email address {sanitized_email_address}")
 
