@@ -13,10 +13,15 @@ from sqlalchemy import func
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 
+from common.clock import now, now_ms
 from database.db_models import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import Quiz, User, UserRole
-
+from fastapi import FastAPI, Request
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.responses import Response
+import os
 
 # Manually fetch the server metadata to fix the issuer
 response = httpx.get('https://accounts.google.com/.well-known/openid-configuration')
@@ -39,12 +44,25 @@ oauth.register(
     # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     **metadata,
 )
-# oauth.google.client_metadata['issuer'] = 'accounts.google.com'
 
 app = FastAPI()
 
-# This is important for OAuth2 to store temporary state
+
+class SessionDataMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        session_created_at = request.session.get("created_at", None)
+        if not session_created_at:
+            request.session["created_at"] = now_ms()
+        return await call_next(request)
+
+
+app.add_middleware(SessionDataMiddleware)
 app.add_middleware(SessionMiddleware, secret_key=os.environ['HUPRES_SECRET_SESSION_KEY'])
+
+
+@app.get("/")
+async def home():
+    return HTMLResponse("Hello world!")
 
 
 @app.get("/login")
@@ -68,15 +86,15 @@ async def auth(request: Request):
     # return {"email": user['email'], "name": user['name']}
 
 
-@app.get("/set-session")
-def set_session(request: Request):
-    request.session["message"] = "Hello, World!"
-    return {"status": "session set"}
-
-
-@app.get("/get-session")
-def get_session(request: Request):
-    return {"session_value": request.session.get("message")}
+# @app.get("/set-session")
+# def set_session(request: Request):
+#     request.session["message"] = "Hello, World!"
+#     return {"status": "session set"}
+#
+#
+# @app.get("/get-session")
+# def get_session(request: Request):
+#     return {"session_value": request.session.get("message")}
 
 
 # # Base = declarative_base()
@@ -99,7 +117,7 @@ def get_session(request: Request):
 # session = Session()
 
 
-@app.get("/")
+@app.get("/time")
 async def home():
     with transaction() as session:
         current_timestamp = session.query(func.now()).scalar()
