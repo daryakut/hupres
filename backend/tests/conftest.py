@@ -43,9 +43,5 @@ def setup_each_function(request):
     comma_separated_table_list = ", ".join(table_list)
     if len(table_list):
         print(f"Truncating tables: {comma_separated_table_list}")
-        with database_engine.connect() as conn:
-            conn.execute(text(f"TRUNCATE TABLE {comma_separated_table_list} RESTART IDENTITY CASCADE;"))
-
-    # with transaction() as session:
-    #     existing_users = session.query(DbUser).all()
-    #     assert existing_users == []
+        with transaction() as session:
+            session.execute(text(f"TRUNCATE TABLE {comma_separated_table_list} RESTART IDENTITY CASCADE;"))
