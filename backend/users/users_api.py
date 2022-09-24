@@ -1,3 +1,5 @@
+import re
+
 from fastapi import APIRouter
 from fastapi import Request
 from pydantic import BaseModel
@@ -5,32 +7,19 @@ from pydantic import BaseModel
 from database.db_models import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import User, UserRole
-from users.google_oauth import google_oauth, GOOGLE_AUTH_CALLBACK_PATH, decode_id_token_email_address
-import re
-
-from users.sessions import update_current_session
+from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
+from users.sessions import update_current_session, get_current_session
 
 router = APIRouter()
-
 
 ADMIN_USER_EMAIL_ADDRESSES = [
     "olgeorge@gmail.com",
 ]
 
 
-@router.get("/users/google-login")
-async def login(request: Request):
-    redirect_uri = request.url_for('auth')
-    return await google_oauth.google.authorize_redirect(request, redirect_uri)
-
-
 @router.get(GOOGLE_AUTH_CALLBACK_PATH)
-async def auth(request: Request):
-    token = await google_oauth.google.authorize_access_token(request)
-    print(f"token {token}")
-
-    email_address = decode_id_token_email_address(token)
-    print(f"email_address {email_address}")
+async def google_auth(request: Request):
+    email_address = await google_oauth_service.authorize_access_token_and_get_email_address(request)
 
     # Google ignores dots in email addresses
     email_first_part, email_second_part = email_address.split("@")
@@ -52,6 +41,14 @@ async def auth(request: Request):
     return {"email": email_address, "user_token": user_token}
 
 
+@router.get("/users/google-login")
+async def google_login(request: Request):
+    # This is http://localhost:8000/users/google-auth-callback
+    redirect_uri = request.url_for(google_auth.__name__)
+    print(f"redirect_uri {redirect_uri}")
+    return await google_oauth_service.authorize_redirect(request, redirect_uri)
+
+
 # @router.get("/set-session")
 # def set_session(request: Request):
 #     request.session["message"] = "Hello, World!"
@@ -63,12 +60,31 @@ async def auth(request: Request):
 #     return {"session_value": request.session.get("message")}
 
 
+class GetCurrentUserResponse(BaseModel):
+    user: User
+
+
+@router.get("/users/current")
+async def get_current_user_response() -> GetCurrentUserResponse:
+    user_token = get_current_session().user_token
+    with transaction() as session:
+        db_user = session.query(DbUser).filter(DbUser.token == user_token).one()
+        return GetCurrentUserResponse(user=db_user.to_model())
+
+
 class UserSignupRequest(BaseModel):
     email_address: str
 
 
 class UserSignupResponse(BaseModel):
     user: User
+
+
+@router.get("/users/current")
+async def get_current_user() -> UserSignupResponse:
+    with transaction() as session:
+        db_user = DbUser.create_user(session, email_address=request.email_address, role=UserRole.RESPONDENT)
+        return UserSignupResponse(user=db_user.to_model())
 
 
 @router.post("/users/signup")

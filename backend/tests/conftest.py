@@ -6,6 +6,7 @@ from alembic import command
 from alembic.config import Config
 from sqlalchemy import inspect, text
 
+from common.env import env, EnvStage
 from database.common import database_engine
 
 current_file = Path(__file__)
@@ -15,7 +16,10 @@ TABLES_TO_AVOID_TRUNCATING = ['alembic_version']
 
 
 def pytest_configure():
+    env.stage = EnvStage.TEST
     os.environ["HUPRES_SECRET_SESSION_KEY"] = "test_key"
+    os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_ID"] = "test_client_id"
+    os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_SECRET"] = "test_client_secret"
 
 
 @pytest.fixture(autouse=True, scope='session')
