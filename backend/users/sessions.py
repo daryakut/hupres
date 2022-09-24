@@ -2,9 +2,11 @@ from contextvars import ContextVar
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
-from pydantic import BaseModel
 
 from common.clock import now_ms
+from common.env import env
+from tests.users.sessions import get_test_session_data_provider
+from users.session_data import SessionData
 
 session_context_var: ContextVar[dict] = ContextVar("session", default={})
 
@@ -21,19 +23,18 @@ class SessionDataMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
-class SessionData(BaseModel):
-    created_at: str
-    user_token: str
+class SessionDataProvider:
+
+    def get_current_session(self) -> SessionData:
+        session = session_context_var.get()
+        return SessionData(
+            created_at=session.get("created_at"),
+            user_token=session.get("user_token")
+        )
+
+    def update_current_session(self, user_token: str):
+        session = session_context_var.get()
+        session["user_token"] = user_token
 
 
-def get_current_session() -> SessionData:
-    session = session_context_var.get()
-    return SessionData(
-        created_at=session.get("created_at"),
-        user_token=session.get("user_token")
-    )
-
-
-def update_current_session(user_token: str):
-    session = session_context_var.get()
-    session["user_token"] = user_token
+session_data_provider = SessionDataProvider() if env.is_not_test() else get_test_session_data_provider()

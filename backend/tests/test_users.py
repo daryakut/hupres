@@ -9,7 +9,7 @@ def setup_module(module):
 
 @pytest.mark.asyncio
 async def test_can_create_user():
-    await UserTester.signup()
+    await UserTester.login_with_google()
     # user_tester = await UserTester.signup()
     # assert user_tester.user.email_address == "georgii@hupres.com"
 
