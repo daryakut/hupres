@@ -8,6 +8,8 @@ from sqlalchemy import inspect, text
 
 from common.env import env, EnvStage
 from database.common import database_engine
+from database.db_models import DbUser
+from database.transaction import transaction
 
 current_file = Path(__file__)
 relative_path = current_file.relative_to(current_file.parent.parent)
@@ -33,12 +35,17 @@ def setup_before_all_tests():
 
 
 @pytest.fixture(autouse=True, scope='function')
-def setup_each_function():
-    print("Cleaning the database")
+def setup_each_function(request):
+# def pytest_runtest_setup():
+    print("Cleaning the database", request.node.name)
     inspector = inspect(database_engine)
     table_list = [table for table in inspector.get_table_names() if table not in TABLES_TO_AVOID_TRUNCATING]
-    comme_separated_table_list = ", ".join(table_list)
-    print(f"Truncating tables: {comme_separated_table_list}")
+    comma_separated_table_list = ", ".join(table_list)
     if len(table_list):
+        print(f"Truncating tables: {comma_separated_table_list}")
         with database_engine.connect() as conn:
-            conn.execute(text(f"TRUNCATE TABLE {comme_separated_table_list} RESTART IDENTITY CASCADE;"))
+            conn.execute(text(f"TRUNCATE TABLE {comma_separated_table_list} RESTART IDENTITY CASCADE;"))
+
+    # with transaction() as session:
+    #     existing_users = session.query(DbUser).all()
+    #     assert existing_users == []

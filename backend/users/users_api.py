@@ -13,7 +13,7 @@ from users.sessions import session_data_provider
 router = APIRouter()
 
 ADMIN_USER_EMAIL_ADDRESSES = [
-    "olgeorge@gmail.com",
+    "olgeorgeacc@gmail.com",
 ]
 
 
@@ -25,8 +25,10 @@ async def google_auth(request: Request):
     email_first_part, email_second_part = email_address.split("@")
     address_without_dots = email_first_part.replace(".", "") + "@" + email_second_part
     sanitized_email_address = re.sub(r'\+[^@]*@', '@', address_without_dots)
+    print('sanitized_email_address', sanitized_email_address)
     with transaction() as session:
         existing_users = session.query(DbUser).filter(DbUser.email_address == sanitized_email_address).all()
+        print('existing_users', existing_users)
         if len(existing_users) == 0:
             role = UserRole.ADMIN if sanitized_email_address in ADMIN_USER_EMAIL_ADDRESSES else UserRole.RESPONDENT
             db_user = DbUser.create_user(session, email_address=sanitized_email_address, role=role)

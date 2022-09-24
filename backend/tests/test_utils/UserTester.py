@@ -29,8 +29,5 @@ class UserTester:
         response = await google_auth(None)
         user_token = response['user_token']
         get_test_session_data_provider().update_current_session(user_token)
-        print('response', response)
         response = await get_current_user_response()
-        #
-        # response = await user_signup(UserSignupRequest(email_address=email_address))
         return UserTester(response.user)
