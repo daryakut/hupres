@@ -6,31 +6,9 @@ from sqlalchemy import JSON
 from sqlalchemy.orm import relationship, backref
 
 from database.common import DbBase, Session
-from database.database_utils import generate_user_token
 from quiz_algorithm.common import first_or_none
 from quiz_algorithm.constants import Sign
 from quiz_algorithm.models import UserRole, Pronounce, User, Question, Answer, Quiz
-
-
-class DbUser(DbBase):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    token = Column(String(32), unique=True)
-    email_address = Column(String, nullable=False)
-    role = Column(String(50), nullable=False)
-
-    def to_model(self) -> User:
-        return User(
-            token=self.token,
-            email_address=self.email_address,
-            role=UserRole(self.role)
-        )
-
-    @staticmethod
-    def create_user(session: Session, email_address: str, role: UserRole) -> DbUser:
-        db_user = DbUser(token=generate_user_token().value, email_address=email_address, role=role.value)
-        session.add(db_user)
-        return db_user
 
 
 # class DbQuestion(DbBase):

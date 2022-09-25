@@ -1,6 +1,6 @@
 import pytest
 
-from database.db_models import DbUser
+from database.db_user import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import UserRole
 from tests.test_utils.UserTester import UserTester
@@ -12,17 +12,23 @@ def setup_module(module):
 
 @pytest.mark.asyncio
 async def test_can_create_user():
-    user_tester = await UserTester.login_with_google(email_address="georgii@hupres.com")
-    assert user_tester.user.email_address == "georgii@hupres.com"
-    assert user_tester.user.role == UserRole.RESPONDENT
-
-
-@pytest.mark.asyncio
-async def test_can_create_admin_user():
     with transaction() as session:
         existing_users = session.query(DbUser).all()
         assert existing_users == []
 
+    user_tester = await UserTester.login_with_google(email_address="georgii@hupres.com")
+    assert user_tester.user.email_address == "georgii@hupres.com"
+    assert user_tester.user.role == UserRole.RESPONDENT
+
+    with transaction() as session:
+        db_user = DbUser.find_by_token(session, user_tester.user.token)
+        assert db_user.token.startswith("u_")
+        assert db_user.email_address == "georgii@hupres.com"
+        assert db_user.role == UserRole.RESPONDENT.value
+
+
+@pytest.mark.asyncio
+async def test_can_create_admin_user():
     admin_user_tester = await UserTester.login_with_google(email_address="olgeorge.acc@gmail.com")
     assert admin_user_tester.user.email_address == "olgeorgeacc@gmail.com"
     assert admin_user_tester.user.role == UserRole.ADMIN

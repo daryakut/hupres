@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from fastapi import Request
 from pydantic import BaseModel
 
-from database.db_models import DbUser
+from database.db_user import DbUser
 from database.transaction import transaction
 from quiz_algorithm.models import User, UserRole
 from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
@@ -27,7 +27,7 @@ async def google_auth(request: Request):
     sanitized_email_address = re.sub(r'\+[^@]*@', '@', address_without_dots)
     print('sanitized_email_address', sanitized_email_address)
     with transaction() as session:
-        existing_users = session.query(DbUser).filter(DbUser.email_address == sanitized_email_address).all()
+        existing_users = DbUser.find_all_by_email_address(session, sanitized_email_address)
         print('existing_users', existing_users)
         if len(existing_users) == 0:
             role = UserRole.ADMIN if sanitized_email_address in ADMIN_USER_EMAIL_ADDRESSES else UserRole.RESPONDENT

@@ -8,7 +8,6 @@ from sqlalchemy import inspect, text
 
 from common.env import env, EnvStage
 from database.common import database_engine
-from database.db_models import DbUser
 from database.transaction import transaction
 
 current_file = Path(__file__)
