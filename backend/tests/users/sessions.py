@@ -1,6 +1,7 @@
 from typing import Optional
 
 from common import clock
+from models.token import generate_session_token
 from users.session_data import SessionData
 
 _test_instance = None
@@ -9,15 +10,19 @@ _test_instance = None
 class TestSessionDataProvider:
     session_data: Optional[SessionData] = None
 
+    def initialize_session(self) -> SessionData:
+        self.session_data = SessionData(
+            created_at=clock.now_ms(),
+            session_token=generate_session_token(),
+        )
+        print(f"INITIALIZED SESSION {self.session_data.session_token}")
+        return self.session_data
+
     def get_current_session(self) -> SessionData:
         return self.session_data
 
-    def initialize_session(self):
-        self.session_data = SessionData(
-            created_at=clock.now_ms(),
-        )
-
     def update_current_session(self, user_token: str):
+        print(f"Logging in user {user_token}, {self.session_data.session_token}")
         self.session_data.user_token = user_token
 
 

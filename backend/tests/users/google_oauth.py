@@ -12,7 +12,6 @@ class TestGoogleOAuthService:
         pass
 
     async def authorize_access_token_and_get_email_address(self, request: Request) -> str:
-        get_test_session_data_provider().initialize_session()
         return self.email_address_to_return
 
 

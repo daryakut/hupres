@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Optional, List
 
-from quiz_algorithm.constants import Sign
-from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Question, Quiz, QuizAnswer, QuizQuestionToken, \
+from quizzes.constants import Sign
+from quizzes.models import QuizQuestion, QuizToken, QuestionToken, Question, Quiz, QuizAnswer, QuizQuestionToken, \
     Answer, AnswerToken
 
 

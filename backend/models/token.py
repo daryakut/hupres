@@ -4,12 +4,13 @@ import re
 import secrets
 from typing import TypeVar, Generic
 
-from quiz_algorithm.models import User, Question, Answer, Quiz, QuizQuestion, QuizAnswer
+from quizzes.models import User, Question, Answer, Quiz, QuizQuestion, QuizAnswer
 
 # Define the types for which the Token can be used
 T = TypeVar('T', bound='Base')  # T is bounded to the Base class
 
 MAX_TOKEN_LENGTH = 10
+MAX_SESSION_TOKEN_LENGTH = 50
 NON_SMALL_LETTERS_OR_NUMBERS_REGEX = r'[^a-z0-9]'
 
 
@@ -51,3 +52,8 @@ class Token(Generic[T]):
     @staticmethod
     def generate_quiz_answer_token() -> Token[QuizAnswer]:
         return Token._generate_token("qa")
+
+
+def generate_session_token() -> str:
+    random_string = secrets.token_urlsafe(MAX_SESSION_TOKEN_LENGTH)
+    return re.sub(NON_SMALL_LETTERS_OR_NUMBERS_REGEX, '', random_string)

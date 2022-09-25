@@ -5,4 +5,5 @@ from pydantic import BaseModel
 
 class SessionData(BaseModel):
     created_at: str
+    session_token: str
     user_token: Optional[str]

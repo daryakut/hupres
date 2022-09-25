@@ -5,11 +5,11 @@ from typing import Tuple, List
 import numpy as np
 from pydantic import BaseModel
 
-from quiz_algorithm.common import check, check_not_none
-from quiz_algorithm.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps, \
+from quizzes.common import check, check_not_none
+from quizzes.constants import AlgorithmSubStep, AlgorithmStep, Step1SubSteps, Sign, Step2SubSteps, Step3SubSteps, \
     Step4SubSteps, Step5SubSteps, Step6SubSteps
-from quiz_algorithm.models import QuizQuestion, QuizToken, QuestionToken, Quiz, QuizAnswer
-from quiz_algorithm.queries import get_next_non_asked_question_for_sign, get_last_quiz_answer, get_last_quiz_question, \
+from quizzes.models import QuizQuestion, QuizToken, QuestionToken, Quiz, QuizAnswer
+from quizzes.queries import get_next_non_asked_question_for_sign, get_last_quiz_answer, get_last_quiz_question, \
     get_quiz_by_token, get_first_two_non_zero_tablet_answers
 
 HEIGHT_QUESTION_TOKEN = QuestionToken(value="q_height")

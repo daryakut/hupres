@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from quiz_algorithm.algorithm import get_next_question
-from quiz_algorithm.constants import AlgorithmStep
-from quiz_algorithm.models import QuizQuestion, QuizToken, QuizAnswer, QuizQuestionToken, \
+from quizzes.algorithm import get_next_question
+from quizzes.constants import AlgorithmStep
+from quizzes.models import QuizQuestion, QuizToken, QuizAnswer, QuizQuestionToken, \
     AnswerToken
-from quiz_algorithm.queries import get_last_quiz_question, get_last_quiz_answer, get_quiz_by_token, \
+from quizzes.queries import get_last_quiz_question, get_last_quiz_answer, get_quiz_by_token, \
     get_question_by_token, get_quiz_question_by_token, get_answer_by_token, get_last_quiz_answer_by_quiz_id
 
 

@@ -1,10 +1,10 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 from pydantic import BaseModel
 
-from quiz_algorithm.constants import Sign
+from quizzes.constants import Sign
 
 class UserRole(Enum):
     ADMIN = 'ADMIN'
@@ -44,13 +44,13 @@ class Answer(BaseModel):
 # Model for 'quizzes' table
 class Quiz(BaseModel):
     token: str
-    user_token: str
-    subject_name: str
-    pronounce: Pronounce
-    dm_after_step_1: Sign
-    dm_after_step_2: Sign
-    dm_after_step_3: Sign
-    dm_after_step_4: Sign
+    user_token: Optional[str]
+    subject_name: Optional[str]
+    pronounce: Optional[Pronounce]
+    dm_after_step_1: Optional[Sign]
+    dm_after_step_2: Optional[Sign]
+    dm_after_step_3: Optional[Sign]
+    dm_after_step_4: Optional[Sign]
 
 
 # Model for 'quiz_questions' table

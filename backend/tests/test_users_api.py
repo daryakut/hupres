@@ -2,8 +2,8 @@ import pytest
 
 from database.db_user import DbUser
 from database.transaction import transaction
-from quiz_algorithm.models import UserRole
-from tests.test_utils.UserTester import UserTester
+from quizzes.models import UserRole
+from tests.test_utils.user_tester import UserTester
 
 
 def setup_module(module):

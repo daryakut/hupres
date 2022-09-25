@@ -10,7 +10,7 @@ from database.db_models import DbAnswer
 from database.db_models import DbQuiz
 from database.db_models import DbQuizQuestion
 from database.db_models import DbQuizAnswer
-from quiz_algorithm.models import UserRole
+from quizzes.models import UserRole
 
 
 def create_user(email_address: str, role: UserRole):

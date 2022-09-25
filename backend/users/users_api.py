@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from database.db_user import DbUser
 from database.transaction import transaction
-from quiz_algorithm.models import User, UserRole
+from quizzes.models import User, UserRole
 from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
 from users.sessions import session_data_provider
 

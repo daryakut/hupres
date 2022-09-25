@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import List, Union
 
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from database.common import DbBase, Session
 from models.token import Token
-from quiz_algorithm.models import UserRole, User
+from quizzes.models import UserRole, User
 
 
 class DbUser(DbBase):
@@ -15,6 +16,8 @@ class DbUser(DbBase):
     token = Column(String(32), unique=True)
     email_address = Column(String, nullable=False)
     role = Column(String(50), nullable=False)
+
+    quizzes = relationship('DbQuiz', back_populates='user', lazy='select')
 
     def to_model(self) -> User:
         return User(
