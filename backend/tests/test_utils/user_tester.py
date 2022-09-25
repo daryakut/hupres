@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from quizzes.models import User
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse
@@ -19,13 +21,13 @@ from users.users_api import google_auth, get_current_user_response
 #     assert response.json() == {"item_id": 1, "name": "Item Name"}
 
 
-class AnonymousUserTester:
+class UserTester:
     session_token: str
+    user: User
 
-    def __init__(self, session_token: str):
-        # This emulates first page visit when session is created. We test outside of scope of sessions,
-        # so we need to do it manually
+    def __init__(self, session_token: str, user: Optional[User] = None):
         self.session_token = session_token
+        self.user = user
 
     async def create_quiz(self) -> CreateQuizResponse:
         return await create_quiz()
@@ -33,25 +35,22 @@ class AnonymousUserTester:
     async def get_quizzes(self) -> GetQuizzesResponse:
         return await get_quizzes()
 
-    @staticmethod
-    async def visit():
-        # Simulates a new anonymous user visiting the site
-        return AnonymousUserTester(get_test_session_data_provider().initialize_session().session_token)
+    def is_logged_in(self) -> bool:
+        return self.user is not None
 
-
-class UserTester(AnonymousUserTester):
-    user: User
-
-    def __init__(self, session_token: str, user: User):
-        super().__init__(session_token)
-        self.user = user
-
-    @staticmethod
-    # async def signup(email_address: str = "georgii@hupres.com") -> UserTester:
-    async def login_with_google(email_address: str = "georgii@hupres.com"):
-        session_token = get_test_session_data_provider().initialize_session().session_token
-
+    async def login_with_google(self, email_address: str = "georgii@hupres.com"):
         get_test_google_oauth_service().email_address_to_return = email_address
         await google_auth(None)
         response = await get_current_user_response()
-        return UserTester(session_token, response.user)
+        self.user = response.user
+
+    @staticmethod
+    def visit():
+        # Simulates a new anonymous user visiting the site
+        return UserTester(get_test_session_data_provider().initialize_session().session_token)
+
+    @staticmethod
+    async def signup_with_google(email_address: str = "georgii@hupres.com"):
+        user_tester = UserTester.visit()
+        await user_tester.login_with_google(email_address)
+        return user_tester
