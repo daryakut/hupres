@@ -6,11 +6,6 @@ from pydantic import BaseModel
 
 from quiz_algorithm.constants import Sign
 
-
-class Token(BaseModel):
-    value: str
-
-
 class UserRole(Enum):
     ADMIN = 'ADMIN'
     RESPONDENT = 'RESPONDENT'
