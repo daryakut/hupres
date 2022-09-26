@@ -29,7 +29,7 @@ async def test_can_create_user():
 
 @pytest.mark.asyncio
 async def test_can_create_admin_user():
-    admin_user_tester = await UserTester.signup_with_google(email_address="olgeorge.acc@gmail.com")
+    admin_user_tester = await UserTester.signup_admin()
     assert admin_user_tester.user.email_address == "olgeorgeacc@gmail.com"
     assert admin_user_tester.user.role == UserRole.ADMIN
 

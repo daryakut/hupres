@@ -1,6 +1,7 @@
 import pytest
 
 from common.clock import clock
+from common.exceptions import BadRequest, Unauthorized
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
@@ -119,3 +120,81 @@ async def test_anonymous_user_can_delete_quiz():
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz.token)
         assert db_quiz.deleted_at == clock.now()
+
+
+@pytest.mark.asyncio
+async def test_logged_in_user_can_delete_quiz():
+    user_tester = await UserTester.signup_with_google()
+    quiz = (await user_tester.create_quiz()).quiz
+
+    quizzes = (await user_tester.get_quizzes()).quizzes
+    assert len(quizzes) == 1
+
+    await user_tester.delete_quiz(quiz.token)
+
+    quizzes_after_delete = (await user_tester.get_quizzes()).quizzes
+    assert quizzes_after_delete == []
+
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, quiz.token)
+        assert db_quiz.deleted_at == clock.now()
+
+
+@pytest.mark.asyncio
+async def test_logged_in_user_can_delete_their_quiz_from_another_session():
+    user_tester = await UserTester.signup_with_google("user@gmail.com")
+    quiz = (await user_tester.create_quiz()).quiz
+
+    same_user_tester = await UserTester.signup_with_google("user@gmail.com")
+    await same_user_tester.delete_quiz(quiz.token)
+
+    quizzes_after_delete = (await same_user_tester.get_quizzes()).quizzes
+    assert quizzes_after_delete == []
+
+
+@pytest.mark.asyncio
+async def test_cannot_delete_quiz_twice():
+    user_tester = await UserTester.signup_with_google()
+    quiz = (await user_tester.create_quiz()).quiz
+
+    await user_tester.delete_quiz(quiz.token)
+
+    with pytest.raises(BadRequest) as e:
+        await user_tester.delete_quiz(quiz.token)
+        assert "Cannot find quiz" in e.value.message
+
+
+@pytest.mark.asyncio
+async def test_logged_in_user_cannot_delete_other_logged_in_users_quiz():
+    user_tester = await UserTester.signup_with_google("user@gmail.com")
+    quiz = (await user_tester.create_quiz()).quiz
+
+    user_tester2 = await UserTester.signup_with_google("other.user@gmail.com")
+
+    with pytest.raises(Unauthorized) as e:
+        await user_tester2.delete_quiz(quiz.token)
+        assert "not allowed" in e.value.message
+
+
+@pytest.mark.asyncio
+async def test_anonymous_user_cannot_delete_other_anonymous_users_quiz():
+    user_tester = await UserTester.visit()
+    quiz = (await user_tester.create_quiz()).quiz
+
+    user_tester2 = await UserTester.visit()
+
+    with pytest.raises(Unauthorized) as e:
+        await user_tester2.delete_quiz(quiz.token)
+        assert "not allowed" in e.value.message
+
+
+@pytest.mark.asyncio
+async def test_anonymous_user_cannot_delete_other_anonymous_users_quiz():
+    user_tester = await UserTester.visit()
+    quiz = (await user_tester.create_quiz()).quiz
+
+    user_tester2 = await UserTester.visit()
+
+    with pytest.raises(Unauthorized) as e:
+        await user_tester2.delete_quiz(quiz.token)
+        assert "not allowed" in e.value.message

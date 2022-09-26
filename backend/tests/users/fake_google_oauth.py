@@ -1,11 +1,11 @@
 from fastapi import Request
 
-from tests.users.fake_sessions import get_test_session_data_provider
+from tests.users.fake_sessions import get_fake_session_data_provider
 
-_test_instance = None
+_fake_instance = None
 
 
-class TestGoogleOAuthService:
+class FakeGoogleOAuthService:
     email_address_to_return: str
 
     async def authorize_redirect(self, request: Request, redirect_uri: str):
@@ -15,10 +15,10 @@ class TestGoogleOAuthService:
         return self.email_address_to_return
 
 
-def get_test_google_oauth_service() -> TestGoogleOAuthService:
+def get_fake_google_oauth_service() -> FakeGoogleOAuthService:
     # This way we emulate a singleton that is not created when module is imported unless this method is called
-    global _test_instance
-    if _test_instance is None:
-        _test_instance = TestGoogleOAuthService()
+    global _fake_instance
+    if _fake_instance is None:
+        _fake_instance = FakeGoogleOAuthService()
 
-    return _test_instance
+    return _fake_instance

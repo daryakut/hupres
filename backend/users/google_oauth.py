@@ -8,7 +8,7 @@ from authlib.jose import jwt as authlib_jwt
 from fastapi import Request
 
 from common.env import env
-from tests.users.fake_google_oauth import get_test_google_oauth_service
+from tests.users.fake_google_oauth import get_fake_google_oauth_service
 
 GOOGLE_AUTH_CALLBACK_PATH = "/users/google-auth-callback"
 
@@ -70,4 +70,4 @@ class GoogleOAuthService:
         raise ValueError(f"Could not decode id_token: could not find public key with matching kid ${kid}")
 
 
-google_oauth_service = GoogleOAuthService() if env.is_not_test() else get_test_google_oauth_service()
+google_oauth_service = GoogleOAuthService() if env.is_not_test() else get_fake_google_oauth_service()

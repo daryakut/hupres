@@ -64,7 +64,7 @@ async def delete_quiz(quiz_token: str):
         if db_quiz.deleted_at is not None:
             raise BadRequest(f"Cannot find quiz {quiz_token}")
 
-        if not session_data.is_admin_or_owner_of(db_quiz):
+        if not session_data.is_owner_of(db_quiz):
             raise Unauthorized("You are not allowed to delete this quiz")
         db_quiz.deleted_at = clock.now()
 

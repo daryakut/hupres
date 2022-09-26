@@ -5,10 +5,10 @@ from models.token import generate_session_token
 from quizzes.models import UserRole
 from users.session_data import SessionData
 
-_test_instance = None
+_fake_instance = None
 
 
-class TestSessionDataProvider:
+class FakeSessionDataProvider:
     session_data: Optional[SessionData] = None
 
     def initialize_session(self) -> SessionData:
@@ -28,10 +28,10 @@ class TestSessionDataProvider:
         self.session_data.user_role = user_role
 
 
-def get_test_session_data_provider() -> TestSessionDataProvider:
+def get_fake_session_data_provider() -> FakeSessionDataProvider:
     # This way we emulate a singleton that is not created when module is imported unless this method is called
-    global _test_instance
-    if _test_instance is None:
-        _test_instance = TestSessionDataProvider()
+    global _fake_instance
+    if _fake_instance is None:
+        _fake_instance = FakeSessionDataProvider()
 
-    return _test_instance
+    return _fake_instance
