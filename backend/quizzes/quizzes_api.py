@@ -1,9 +1,10 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from common import clock
+from common.clock import clock
 from common.exceptions import Unauthorized, BadRequest
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries

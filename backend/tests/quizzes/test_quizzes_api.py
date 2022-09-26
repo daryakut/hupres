@@ -1,5 +1,6 @@
 import pytest
 
+from common.clock import clock
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
@@ -16,7 +17,7 @@ async def test_anonymous_user_can_create_quiz():
         existing_quizzes = session.query(DbQuiz).all()
         assert existing_quizzes == []
 
-    anonymous_user_tester = UserTester.visit()
+    anonymous_user_tester = await UserTester.visit()
     quiz = (await anonymous_user_tester.create_quiz()).quiz
     assert quiz.token.startswith("q_")
     assert quiz.user_token is None
@@ -67,7 +68,7 @@ async def test_logged_in_user_can_create_quiz():
 
 @pytest.mark.asyncio
 async def test_when_anonymous_user_logs_in_quiz_ownership_is_transferred():
-    user_tester = UserTester.visit()
+    user_tester = await UserTester.visit()
     await user_tester.create_quiz()
 
     quizzes = (await user_tester.get_quizzes()).quizzes
@@ -87,7 +88,7 @@ async def test_when_anonymous_user_logs_in_quiz_ownership_is_not_transferred_fro
     already_owned_quiz = (await logged_in_user_tester.create_quiz()).quiz
     assert already_owned_quiz.user_token == logged_in_user_tester.user.token
 
-    user_tester = UserTester.visit()
+    user_tester = await UserTester.visit()
     quiz = (await user_tester.create_quiz()).quiz
 
     with transaction() as session:
@@ -100,3 +101,21 @@ async def test_when_anonymous_user_logs_in_quiz_ownership_is_not_transferred_fro
     assert len(logged_in_quizzes) == 1
     assert logged_in_quizzes[0].user_token == user_tester.user.token
     assert logged_in_quizzes[0].token == quiz.token
+
+
+@pytest.mark.asyncio
+async def test_anonymous_user_can_delete_quiz():
+    anonymous_user_tester = await UserTester.visit()
+    quiz = (await anonymous_user_tester.create_quiz()).quiz
+
+    quizzes = (await anonymous_user_tester.get_quizzes()).quizzes
+    assert len(quizzes) == 1
+
+    await anonymous_user_tester.delete_quiz(quiz.token)
+
+    quizzes_after_delete = (await anonymous_user_tester.get_quizzes()).quizzes
+    assert quizzes_after_delete == []
+
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, quiz.token)
+        assert db_quiz.deleted_at == clock.now()

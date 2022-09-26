@@ -3,7 +3,7 @@ from contextvars import ContextVar
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from common.clock import now_ms
+from common.clock import clock
 from common.env import env
 from models.token import generate_session_token
 from quizzes.models import UserRole
@@ -22,7 +22,7 @@ class SessionDataMiddleware(BaseHTTPMiddleware):
         # This ensures every client gets a session cookies populated
         session_created_at = session_data.get("created_at", None)
         if not session_created_at:
-            session_data["created_at"] = now_ms()
+            session_data["created_at"] = clock.now_ms()
 
         session_token = session_data.get("session_token", None)
         if not session_token:

@@ -4,7 +4,7 @@ from typing import Optional
 
 from quizzes.models import User
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
-    GetQuizzesResponse
+    GetQuizzesResponse, delete_quiz
 from tests.users.google_oauth import get_test_google_oauth_service
 from tests.users.sessions import get_test_session_data_provider
 from users.session_data import SessionData
@@ -35,6 +35,9 @@ class UserTester:
     async def get_quizzes(self) -> GetQuizzesResponse:
         return await get_quizzes()
 
+    async def delete_quiz(self, quiz_token: str) -> CreateQuizResponse:
+        return await delete_quiz(quiz_token)
+
     def is_logged_in(self) -> bool:
         return self.user is not None
 
@@ -45,12 +48,12 @@ class UserTester:
         self.user = response.user
 
     @staticmethod
-    def visit():
+    async def visit():
         # Simulates a new anonymous user visiting the site
         return UserTester(get_test_session_data_provider().initialize_session().session_token)
 
     @staticmethod
     async def signup_with_google(email_address: str = "georgii@hupres.com"):
-        user_tester = UserTester.visit()
+        user_tester = await UserTester.visit()
         await user_tester.login_with_google(email_address)
         return user_tester

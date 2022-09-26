@@ -1,9 +1,16 @@
 from datetime import datetime
 
+from common.env import env
+from tests.common.fake_clock import get_fake_clock
 
-def now() -> datetime:
-    return datetime.now()
+
+class Clock:
+
+    def now(self) -> datetime:
+        return datetime.now()
+
+    def now_ms(self) -> int:
+        return int(datetime.now().timestamp() * 1000)
 
 
-def now_ms() -> int:
-    return int(datetime.now().timestamp() * 1000)
+clock = Clock() if env.is_not_test() else get_fake_clock()

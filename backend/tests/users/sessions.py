@@ -1,6 +1,6 @@
 from typing import Optional
 
-from common import clock
+from common.clock import clock
 from models.token import generate_session_token
 from quizzes.models import UserRole
 from users.session_data import SessionData
