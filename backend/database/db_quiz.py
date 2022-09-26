@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from sqlalchemy import ForeignKey, Column, Integer, String
+from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from database.common import DbBase, Session
@@ -18,6 +18,7 @@ class DbQuiz(DbBase):
     token = Column(String(32), unique=True)
     session_token = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
+    deleted_at = Column(DateTime)
     subject_name = Column(String(100))
     pronounce = Column(String(50))
     dm_after_step_1 = Column(String(10))

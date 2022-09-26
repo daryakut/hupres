@@ -3,10 +3,12 @@ from typing import List
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from common import clock
+from common.exceptions import Unauthorized, BadRequest
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
-from quizzes.models import Quiz
+from quizzes.models import Quiz, QuizQuestion, Answer
 from users.sessions import session_data_provider
 
 router = APIRouter()
@@ -53,6 +55,18 @@ async def get_quizzes() -> GetQuizzesResponse:
     return GetQuizzesResponse(quizzes=quizzes)
 
 
+@router.delete("/quizzes/{quiz_token}")
+async def delete_quiz(quiz_token: str):
+    session_data = session_data_provider.get_current_session()
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, token=quiz_token)
+        if db_quiz.deleted_at is not None:
+            raise BadRequest(f"Cannot find quiz {quiz_token}")
+
+        if not session_data.is_admin_or_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to delete this quiz")
+        db_quiz.deleted_at = clock.now()
+
 # class GetNextQuizQuestionResponse(BaseModel):
 #     quiz_question: QuizQuestion
 #     available_answers: List[Answer]
@@ -60,4 +74,4 @@ async def get_quizzes() -> GetQuizzesResponse:
 #
 # @router.post("/quizzes/{quiz_token}/get-next-question")
 # async def get_next_quiz_question() -> GetNextQuizQuestionResponse:
-#     return CreateQuizResponse(quiz=Quiz())
+#     return GetNextQuizQuestionResponse(quiz=Quiz())

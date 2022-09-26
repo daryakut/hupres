@@ -2,6 +2,7 @@ from typing import Optional
 
 from common import clock
 from models.token import generate_session_token
+from quizzes.models import UserRole
 from users.session_data import SessionData
 
 _test_instance = None
@@ -21,9 +22,10 @@ class TestSessionDataProvider:
     def get_current_session(self) -> SessionData:
         return self.session_data
 
-    def update_current_session(self, user_token: str):
+    def update_current_session(self, user_token: str, user_role: UserRole):
         print(f"Logging in user {user_token}, {self.session_data.session_token}")
         self.session_data.user_token = user_token
+        self.session_data.user_role = user_role
 
 
 def get_test_session_data_provider() -> TestSessionDataProvider:

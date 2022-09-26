@@ -1,10 +1,8 @@
 import pytest
 
 from database.db_quiz import DbQuiz
-from database.db_user import DbUser
-from database.quiz_queries import QuizQueries, find_all_by_session_token
+from database.quiz_queries import QuizQueries
 from database.transaction import transaction
-from quizzes.models import UserRole
 from tests.test_utils.user_tester import UserTester
 
 

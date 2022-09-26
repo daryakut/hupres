@@ -11,7 +11,7 @@ class UserRole(Enum):
     RESPONDENT = 'RESPONDENT'
 
 
-# Instead of the gender, this is what western world uses. Hopefully that's enough
+# Instead of the gender, this is what western world uses. Hopefully these choices is enough
 class Pronounce(Enum):
     HE_HIM = 'HE_HIM'
     SHE_HER = 'SHE_HER'

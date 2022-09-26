@@ -36,6 +36,7 @@ async def google_auth(request: Request):
             user_token = db_user.token
         elif len(existing_users) == 1:
             db_user = existing_users[0]
+            role = db_user.role
             user_token = db_user.token
         else:
             raise Exception(f"Multiple users with email address {sanitized_email_address}")
@@ -48,7 +49,7 @@ async def google_auth(request: Request):
         for db_quiz in db_quizzes_owned_by_session:
             db_quiz.user_id = db_user.id
 
-    session_data_provider.update_current_session(user_token)
+    session_data_provider.update_current_session(user_token=user_token, user_role=role)
     return {"email": email_address, "user_token": user_token}
 
 

@@ -6,6 +6,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from common.clock import now_ms
 from common.env import env
 from models.token import generate_session_token
+from quizzes.models import UserRole
 from tests.users.sessions import get_test_session_data_provider
 from users.session_data import SessionData
 import secrets
@@ -42,10 +43,11 @@ class SessionDataProvider:
             user_token=session.get("user_token")
         )
 
-    def update_current_session(self, user_token: str):
+    def update_current_session(self, user_token: str, user_role: UserRole):
         print(f"Logging in user {user_token}")
         session = session_context_var.get()
         session["user_token"] = user_token
+        session["user_role"] = user_role
 
 
 session_data_provider = SessionDataProvider() if env.is_not_test() else get_test_session_data_provider()
