@@ -10,9 +10,10 @@ from database.db_user import DbUser
 class QuizQueries:
 
     @staticmethod
-    def find_all_by_session_token(session: Session, session_token: str) -> List[DbQuiz]:
+    def find_all_by_logged_out_session_token(session: Session, session_token: str) -> List[DbQuiz]:
         return session.query(DbQuiz) \
             .filter(DbQuiz.session_token == session_token) \
+            .filter(DbQuiz.user_id == None) \
             .all()
 
     @staticmethod

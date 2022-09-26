@@ -43,11 +43,13 @@ class DbQuiz(DbBase):
 
     @staticmethod
     def create_quiz(session: Session, session_token: str, user_token: Optional[str]) -> DbQuiz:
-        user_id = DbUser.find_by_token(session, user_token).id if user_token else None
+        db_user = DbUser.find_by_token(session, user_token) if user_token else None
         db_quiz = DbQuiz(
             token=Token.generate_quiz_token().value,
             session_token=session_token,
-            user_id=user_id,
+            user_id=db_user.id if db_user else None,
+            # SqlAlchemy won't immediately update the db_user field, so we need to set it manually
+            user=db_user,
         )
         session.add(db_quiz)
         return db_quiz

@@ -5,6 +5,7 @@ from fastapi import Request
 from pydantic import BaseModel
 
 from database.db_user import DbUser
+from database.quiz_queries import QuizQueries
 from database.transaction import transaction
 from quizzes.models import User, UserRole
 from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
@@ -38,6 +39,14 @@ async def google_auth(request: Request):
             user_token = db_user.token
         else:
             raise Exception(f"Multiple users with email address {sanitized_email_address}")
+
+        session_data = session_data_provider.get_current_session()
+        db_quizzes_owned_by_session = QuizQueries.find_all_by_logged_out_session_token(
+            session,
+            session_token=session_data.session_token,
+        )
+        for db_quiz in db_quizzes_owned_by_session:
+            db_quiz.user_id = db_user.id
 
     session_data_provider.update_current_session(user_token)
     return {"email": email_address, "user_token": user_token}

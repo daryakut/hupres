@@ -44,7 +44,7 @@ async def get_quizzes() -> GetQuizzesResponse:
                 user_token=session_data.user_token,
             )
         else:
-            db_quizzes = QuizQueries.find_all_by_session_token(
+            db_quizzes = QuizQueries.find_all_by_logged_out_session_token(
                 session,
                 session_token=session_data.session_token,
             )
