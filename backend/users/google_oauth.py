@@ -8,7 +8,7 @@ from authlib.jose import jwt as authlib_jwt
 from fastapi import Request
 
 from common.env import env
-from tests.users.google_oauth import get_test_google_oauth_service
+from tests.users.fake_google_oauth import get_test_google_oauth_service
 
 GOOGLE_AUTH_CALLBACK_PATH = "/users/google-auth-callback"
 

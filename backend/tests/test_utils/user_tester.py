@@ -5,8 +5,8 @@ from typing import Optional
 from quizzes.models import User
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz
-from tests.users.google_oauth import get_test_google_oauth_service
-from tests.users.sessions import get_test_session_data_provider
+from tests.users.fake_google_oauth import get_test_google_oauth_service
+from tests.users.fake_sessions import get_test_session_data_provider
 from users.session_data import SessionData
 from users.users_api import google_auth, get_current_user_response
 

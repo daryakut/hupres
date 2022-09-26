@@ -1,6 +1,6 @@
 from fastapi import Request
 
-from tests.users.sessions import get_test_session_data_provider
+from tests.users.fake_sessions import get_test_session_data_provider
 
 _test_instance = None
 

@@ -7,7 +7,7 @@ from common.clock import clock
 from common.env import env
 from models.token import generate_session_token
 from quizzes.models import UserRole
-from tests.users.sessions import get_test_session_data_provider
+from tests.users.fake_sessions import get_test_session_data_provider
 from users.session_data import SessionData
 import secrets
 
