@@ -1,4 +1,5 @@
 from contextvars import ContextVar
+from typing import Optional
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -42,7 +43,7 @@ class SessionDataProvider:
             user_token=session.get("user_token")
         )
 
-    def update_current_session(self, user_token: str, user_role: UserRole):
+    def update_current_session(self, user_token: Optional[str], user_role: Optional[UserRole]):
         print(f"Logging in user {user_token}")
         session = session_context_var.get()
         session["user_token"] = user_token

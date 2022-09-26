@@ -8,7 +8,7 @@ from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
-from users.users_api import google_auth, get_current_user_response, ADMIN_USER_EMAIL_ADDRESSES
+from users.users_api import google_auth, get_current_user_response, ADMIN_USER_EMAIL_ADDRESSES, logout
 
 
 # client = TestClient(app)
@@ -46,6 +46,9 @@ class UserTester:
         await google_auth(None)
         response = await get_current_user_response()
         self.user = response.user
+
+    async def logout(self):
+        await logout()
 
     @staticmethod
     async def visit():

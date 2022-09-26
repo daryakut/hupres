@@ -61,6 +61,11 @@ async def google_login(request: Request):
     return await google_oauth_service.authorize_redirect(request, redirect_uri)
 
 
+@router.get("/users/logout")
+async def logout():
+    session_data_provider.update_current_session(user_token=None, user_role=None)
+
+
 # @router.get("/set-session")
 # def set_session(request: Request):
 #     request.session["message"] = "Hello, World!"

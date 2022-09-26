@@ -84,7 +84,7 @@ async def test_when_anonymous_user_logs_in_quiz_ownership_is_transferred():
 
 
 @pytest.mark.asyncio
-async def test_when_anonymous_user_logs_in_quiz_ownership_is_not_transferred_from_owned_quizzes():
+async def test_when_anonymous_user_logs_in_quiz_ownership_is_not_transferred_from_already_owned_quizzes():
     logged_in_user_tester = await UserTester.signup_with_google("user@gmail.com")
     already_owned_quiz = (await logged_in_user_tester.create_quiz()).quiz
     assert already_owned_quiz.user_token == logged_in_user_tester.user.token
@@ -102,6 +102,26 @@ async def test_when_anonymous_user_logs_in_quiz_ownership_is_not_transferred_fro
     assert len(logged_in_quizzes) == 1
     assert logged_in_quizzes[0].user_token == user_tester.user.token
     assert logged_in_quizzes[0].token == quiz.token
+
+
+@pytest.mark.asyncio
+async def test_when_anonymous_user_logs_in_logs_out_their_logged_out_quizzes_are_not_accessible():
+    user_tester = await UserTester.visit()
+    await user_tester.create_quiz()
+
+    quizzes = (await user_tester.get_quizzes()).quizzes
+    assert len(quizzes) == 1
+    assert quizzes[0].user_token is None
+
+    await user_tester.login_with_google()
+    logged_in_quizzes = (await user_tester.get_quizzes()).quizzes
+    assert len(logged_in_quizzes) == 1
+    assert logged_in_quizzes[0].user_token == user_tester.user.token
+    assert logged_in_quizzes[0].token == quizzes[0].token
+
+    await user_tester.logout()
+    quizzes = (await user_tester.get_quizzes()).quizzes
+    assert quizzes == []
 
 
 @pytest.mark.asyncio
@@ -173,6 +193,17 @@ async def test_logged_in_user_cannot_delete_other_logged_in_users_quiz():
 
     with pytest.raises(Unauthorized) as e:
         await user_tester2.delete_quiz(quiz.token)
+        assert "not allowed" in e.value.message
+
+
+@pytest.mark.asyncio
+async def test_user_cannot_delete_their_quiz_after_logging_out():
+    user_tester = await UserTester.signup_with_google("user@gmail.com")
+    quiz = (await user_tester.create_quiz()).quiz
+
+    await user_tester.logout()
+    with pytest.raises(Unauthorized) as e:
+        await user_tester.delete_quiz(quiz.token)
         assert "not allowed" in e.value.message
 
 
