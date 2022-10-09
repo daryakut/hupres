@@ -16,6 +16,7 @@ class DbQuizAnswer(DbBase):
     answer_id = Column(Integer, ForeignKey('answers.id'))
     current_sign_scores = Column(JSON)
     original_sign_scores = Column(JSON)
+    signs_for_next_questions = Column(JSON)
 
     # quiz = relationship('DbQuiz', back_populates='questions', lazy='select')
     # quiz_question = relationship('DbQuizQuestion', back_populates='__quiz_answers', lazy='select')

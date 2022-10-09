@@ -68,11 +68,12 @@ async def delete_quiz(quiz_token: str):
             raise Unauthorized("You are not allowed to delete this quiz")
         db_quiz.deleted_at = clock.now()
 
-# class GetNextQuizQuestionResponse(BaseModel):
-#     quiz_question: QuizQuestion
-#     available_answers: List[Answer]
-#
-#
-# @router.post("/quizzes/{quiz_token}/get-next-question")
-# async def get_next_quiz_question() -> GetNextQuizQuestionResponse:
-#     return GetNextQuizQuestionResponse(quiz=Quiz())
+
+class GetNextQuizQuestionResponse(BaseModel):
+    quiz_question: QuizQuestion
+    available_answers: List[Answer]
+
+
+@router.post("/quizzes/{quiz_token}/get-next-question")
+async def get_next_quiz_question() -> GetNextQuizQuestionResponse:
+    return GetNextQuizQuestionResponse(quiz=Quiz())
