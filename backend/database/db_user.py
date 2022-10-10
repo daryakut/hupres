@@ -9,13 +9,14 @@ from database.common import DbBase, Session
 from database.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.models import UserRole, User
+from sqlalchemy.orm import Mapped
 
 
 class DbUser(DbBase):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    token = Column(TokenDbType, unique=True)
-    email_address = Column(String, nullable=False)
+    id: int = Column(Integer, primary_key=True)
+    token: Token = Column(TokenDbType, unique=True)
+    email_address: str = Column(String, nullable=False)
     role = Column(String(50), nullable=False)
 
     quizzes = relationship('DbQuiz', back_populates='user', lazy='select')

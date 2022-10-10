@@ -6,7 +6,7 @@ from database.common import Session
 from database.db_quiz import DbQuiz
 from database.db_user import DbUser
 from models.token import Token
-from quizzes.models import Quiz
+from quizzes.models import Quiz, User
 
 
 class QuizQueries:
@@ -25,7 +25,8 @@ class QuizQueries:
             .all()
 
     @staticmethod
-    def find_all_by_user_token(session: Session, user_token: str) -> List[DbQuiz]:
+    def find_all_by_user_token(session: Session, user_token: Union[Token[User], str]) -> List[DbQuiz]:
+        user_token = user_token if isinstance(user_token, Token) else Token(value=user_token)
         return session.query(DbQuiz) \
             .join(DbUser) \
             .filter(DbUser.token == user_token) \
