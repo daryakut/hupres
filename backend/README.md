@@ -29,6 +29,10 @@ Install:
 
     python -m pip install -r requirements.txt
 
+Install gettext for localization
+
+    brew install gettext
+
 Run (specifying port is optional):
 
     uvicorn main:main --port=8000
