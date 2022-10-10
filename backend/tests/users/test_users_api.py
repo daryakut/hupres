@@ -22,7 +22,7 @@ async def test_can_create_user():
 
     with transaction() as session:
         db_user = DbUser.find_by_token(session, user_tester.user.token)
-        assert db_user.token.startswith("u_")
+        assert db_user.token.value.startswith("u_")
         assert db_user.email_address == "georgii@hupres.com"
         assert db_user.role == UserRole.RESPONDENT.value
 

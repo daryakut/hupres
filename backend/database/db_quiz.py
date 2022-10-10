@@ -33,7 +33,7 @@ class DbQuiz(DbBase):
     def to_model(self) -> Quiz:
         return Quiz(
             token=self.token,
-            user_token=self.user.token if self.user else None,
+            user_token=self.user.token.value if self.user else None,
             subject_name=self.subject_name,
             pronounce=Pronounce(self.pronounce) if self.pronounce else None,
             dm_after_step_1=Sign(self.dm_after_step_1) if self.dm_after_step_1 else None,

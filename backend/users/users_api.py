@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from database.db_user import DbUser
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
+from models.token import Token
 from quizzes.models import User, UserRole
 from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
 from users.sessions import session_data_provider
@@ -83,6 +84,7 @@ class GetCurrentUserResponse(BaseModel):
 
 @router.get("/users/current")
 async def get_current_user_response() -> GetCurrentUserResponse:
+    # user_token = Token(session_data_provider.get_current_session().user_token)
     user_token = session_data_provider.get_current_session().user_token
     with transaction() as session:
         db_user = session.query(DbUser).filter(DbUser.token == user_token).one()

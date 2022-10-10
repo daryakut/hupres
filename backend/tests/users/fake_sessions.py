@@ -1,8 +1,8 @@
 from typing import Optional
 
 from common.clock import clock
-from models.token import generate_session_token
-from quizzes.models import UserRole
+from models.token import generate_session_token, Token
+from quizzes.models import UserRole, User
 from users.session_data import SessionData
 
 _fake_instance = None
@@ -22,7 +22,7 @@ class FakeSessionDataProvider:
     def get_current_session(self) -> SessionData:
         return self.session_data
 
-    def update_current_session(self, user_token: Optional[str], user_role: Optional[UserRole]):
+    def update_current_session(self, user_token: Optional[Token[User]], user_role: Optional[UserRole]):
         print(f"Logging in user {user_token}, {self.session_data.session_token}")
         self.session_data.user_token = user_token
         self.session_data.user_role = user_role

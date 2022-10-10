@@ -3,13 +3,14 @@ from typing import Optional
 from pydantic import BaseModel
 
 from database.db_quiz import DbQuiz
-from quizzes.models import UserRole
+from models.token import Token
+from quizzes.models import UserRole, User
 
 
 class SessionData(BaseModel):
     created_at: str
     session_token: str
-    user_token: Optional[str]
+    user_token: Optional[Token[User]]
     user_role: Optional[UserRole]
 
     def is_admin(self) -> bool:

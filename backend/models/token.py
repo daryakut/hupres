@@ -2,32 +2,44 @@ from __future__ import annotations
 
 import re
 import secrets
+from dataclasses import dataclass
 from typing import TypeVar, Generic
 
 from quizzes.models import User, Question, Answer, Quiz, QuizQuestion, QuizAnswer
 
-# Define the types for which the Token can be used
-T = TypeVar('T', bound='Base')  # T is bounded to the Base class
+from pydantic import BaseModel
+# from pydantic.generics import GenericModel, TypeVarModel
+
+# T = TypeVarModel("T")
+
+# # Define the types for which the Token can be used
+# T = TypeVar('T', bound='Base')  # T is bounded to the Base class
+T = TypeVar("T", bound=BaseModel)
 
 MAX_TOKEN_LENGTH = 10
 MAX_SESSION_TOKEN_LENGTH = 50
 NON_SMALL_LETTERS_OR_NUMBERS_REGEX = r'[^a-z0-9]'
 
 
-class Token(Generic[T]):
+# @dataclass(frozen=True)
+class Token(BaseModel, Generic[T]):
     value: str
 
-    def __init__(self, value: str):
-        self.value = value
+    # def __init__(self, value: str):
+    #     self.value = value
+
+    # def __eq__(self, other):
+    #     return self.value == other.value
 
     @staticmethod
     def of(value) -> Token[T]:
-        return Token(value)
+        return Token(value=value)
 
     @staticmethod
     def _generate_token(prefix: str) -> Token[T]:
         random_string = secrets.token_urlsafe(MAX_TOKEN_LENGTH)
-        return Token(f"{prefix}_" + re.sub(NON_SMALL_LETTERS_OR_NUMBERS_REGEX, '', random_string))
+        value = f"{prefix}_" + re.sub(NON_SMALL_LETTERS_OR_NUMBERS_REGEX, '', random_string)
+        return Token(value=value)
 
     @staticmethod
     def generate_user_token() -> Token[User]:

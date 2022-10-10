@@ -6,8 +6,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from common.clock import clock
 from common.env import env
-from models.token import generate_session_token
-from quizzes.models import UserRole
+from models.token import generate_session_token, Token
+from quizzes.models import UserRole, User
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
 
@@ -43,7 +43,7 @@ class SessionDataProvider:
             user_token=session.get("user_token")
         )
 
-    def update_current_session(self, user_token: Optional[str], user_role: Optional[UserRole]):
+    def update_current_session(self, user_token: Optional[Token[User]], user_role: Optional[UserRole]):
         print(f"Logging in user {user_token}")
         session = session_context_var.get()
         session["user_token"] = user_token

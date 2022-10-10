@@ -64,7 +64,7 @@ async def test_logged_in_user_can_create_quiz():
         assert len(db_quizzes) == 1
         assert db_quizzes[0].session_token == user_tester.session_token
         assert db_quizzes[0].user_id is not None
-        assert db_quizzes[0].user.token == user_tester.user.token
+        assert db_quizzes[0].user.token.value == user_tester.user.token
 
 
 @pytest.mark.asyncio
