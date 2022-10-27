@@ -15,6 +15,7 @@ class DbQuizQuestion(DbBase):
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     # question_id = Column(Integer, ForeignKey('questions.id'))
     question_name = Column(String(50))
+    : UserRole = Column(IntEnumDbType(QuizStep), nullable=False)
     quiz_step = Column(Integer)
     quiz_substep = Column(Integer)
     followup_question_signs = Column(JSON)

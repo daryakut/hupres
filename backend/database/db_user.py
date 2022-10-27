@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from database.common import DbBase, Session
-from database.enum_db_type import EnumDbType
+from database.string_enum_db_type import StringEnumDbType
 from database.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.models import UserRole, User
@@ -17,7 +17,7 @@ class DbUser(DbBase):
     id: int = Column(Integer, primary_key=True)
     token: Token = Column(TokenDbType, unique=True)
     email_address: str = Column(String, nullable=False)
-    role: UserRole = Column(EnumDbType(UserRole), nullable=False)
+    role: UserRole = Column(StringEnumDbType(UserRole), nullable=False)
 
     quizzes = relationship('DbQuiz', back_populates='user', lazy='select')
 

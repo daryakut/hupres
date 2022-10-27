@@ -4,11 +4,11 @@ from typing import Optional
 from sqlalchemy.types import TypeDecorator, String
 
 
-class EnumDbType(TypeDecorator):
+class StringEnumDbType(TypeDecorator):
     impl = String(50)
 
     def __init__(self, enum_type, *args, **kwargs):
-        super(EnumDbType, self).__init__(*args, **kwargs)
+        super(StringEnumDbType, self).__init__(*args, **kwargs)
         assert issubclass(enum_type, Enum), "enum_type must be a subclass of enum.Enum"
         self.enum_type = enum_type
 

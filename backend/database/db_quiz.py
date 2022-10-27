@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
@@ -27,7 +27,7 @@ class DbQuiz(DbBase):
     dm_after_step_4 = Column(String(10))
 
     user = relationship('DbUser', lazy='select')
-    # quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
+    quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
     # quiz_answers = relationship('DbQuizAnswer', back_populates='quiz', lazy='select')
 
     def to_model(self) -> Quiz:

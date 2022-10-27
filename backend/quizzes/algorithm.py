@@ -6,6 +6,7 @@ import numpy as np
 from pydantic import BaseModel
 
 from database.common import Session
+from database.db_quiz_answer import DbQuizAnswer
 from database.db_quiz_question import DbQuizQuestion
 from database.quiz_queries import QuizQueries
 from database.quiz_question_queries import QuizQuestionQueries
@@ -349,7 +350,7 @@ def get_next_question(
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
         db_quiz_questions = db_quiz.quiz_questions
-        db_last_question = db_quiz_questions[-1] if db_quiz_questions else None
+        db_last_question: DbQuizQuestion = db_quiz_questions[-1] if db_quiz_questions else None
         # last_question
         # last_question = QuizQuestionQueries.find_last_by_quiz_token(session, quiz_token)
 
@@ -358,7 +359,7 @@ def get_next_question(
             return HEIGHT_QUESTION_NAME, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_10
 
         db_quiz_answers = db_quiz.quiz_answers
-        db_last_answer = db_quiz_answers[-1] if db_quiz_answers else None
+        db_last_answer: DbQuizAnswer = db_quiz_answers[-1] if db_quiz_answers else None
         # db_last_answer = get_last_quiz_answer(quiz_token)
         # TODO: should we return last question?
         check_not_none(db_last_answer, "There is no answer for the last question. This indicates a bug")
