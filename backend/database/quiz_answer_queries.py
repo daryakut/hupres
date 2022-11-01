@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List, Union, Optional
 
 from database.common import Session
-from database.db_quiz import DbQuizAnswer, DbQuiz
+from database.db_quiz import DbQuiz
 from database.db_quiz_answer import DbQuizAnswer
 from database.db_quiz_question import DbQuizQuestion
 from models.token import Token

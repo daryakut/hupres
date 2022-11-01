@@ -34,7 +34,7 @@ class Question(BaseModel):
 
 
 # Model for 'answers' table
-class Answer(BaseModel):
+class Answer22(BaseModel):
     token: str
     question_token: str
     answer_name: str
@@ -53,7 +53,7 @@ class Quiz(BaseModel):
     dm_after_step_4: Optional[Sign]
 
 
-class DisplayAnswer(BaseModel):
+class Answer(BaseModel):
     answer_name: str
     display_answer: str
 
@@ -62,11 +62,10 @@ class QuizQuestion(BaseModel):
     token: str
     question_name: str
     display_question: str
-    answers: List[DisplayAnswer]
 
 
 # Model for 'quiz_answers' table
-class QuizAnswer(BaseModel):
+class QuizAnswer2(BaseModel):
     token: str
     quiz_id: int
     quiz_question_id: int

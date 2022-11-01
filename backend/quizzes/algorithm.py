@@ -17,8 +17,7 @@ from database.transaction import transaction
 from models.token import Token
 from quizzes.common import check
 from quizzes.constants import QuizStep, Sign, QuizSubStep
-from quizzes.models import QuizQuestion, QuizToken, DisplayAnswer
-from quizzes.queries import get_first_two_non_zero_tablet_answers
+from quizzes.models import QuizQuestion, Answer
 from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, HEIGHT_QUESTION_NAME, BODY_SCHEMA_QUESTION_NAME, \
     EYE_COLOR_QUESTION_NAME, HAIR_COLOR_QUESTION_NAME, ANSWER_SCORES
 
@@ -145,7 +144,7 @@ def get_next_signs_for_questions_step1(
             return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_50_60
 
         # Step 1.1c
-        first_two_non_zero_tablet_answers = get_first_two_non_zero_tablet_answers(quiz.token)
+        first_two_non_zero_tablet_answers = QuizAnswerQueries.get_first_two_non_zero_tablet_answers(quiz.token)
         if len(first_two_non_zero_tablet_answers) < 2:
             raise Exception("Not enough information to proceed with the quiz")
         # We store the original sign scores for the last answer just in case
@@ -352,7 +351,7 @@ def find_next_non_asked_question_name_for_sign(
     sign_question_names = QUESTION_NAMES_FOR_SIGNS[sign.value]
     already_asked_question_names = set(db_quiz_question.question_name for db_quiz_question in db_quiz_questions)
     question_name_to_ask = next(
-        (question_name for question_name in sign_question_names if lambda qq: qq not in already_asked_question_names),
+        (question_name for question_name in sign_question_names if question_name not in already_asked_question_names),
         None,
     )
     if question_name_to_ask is None:
@@ -467,7 +466,12 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
     )
 
 
-def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
+class GetNextQuizQuestionResponse(BaseModel):
+    quiz_question: QuizQuestion
+    available_answers: List[Answer]
+
+
+def api_get_next_question(quiz_token: QuizToken) -> GetNextQuizQuestionResponse:
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
         question_to_ask = get_next_question_to_ask(session=session, db_quiz=db_quiz)
@@ -492,12 +496,15 @@ def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
             f"Could not find answers for question {question_to_ask.question_name}",
         )
 
-        answers = [DisplayAnswer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
-        return QuizQuestion(
+        available_answers = [Answer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
+        quiz_question = QuizQuestion(
             token=question_token,
             question_name=question_to_ask.question_name,
             display_question=_(question_to_ask.question_name),
-            answers=answers,
+        )
+        return GetNextQuizQuestionResponse(
+            quiz_question=quiz_question,
+            available_answers=available_answers,
         )
 
 

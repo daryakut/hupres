@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter
@@ -9,7 +8,8 @@ from common.exceptions import Unauthorized, BadRequest
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
-from quizzes.models import Quiz, QuizQuestion, Answer
+from quizzes.algorithm import api_get_next_question, GetNextQuizQuestionResponse
+from quizzes.models import Quiz
 from users.sessions import session_data_provider
 
 router = APIRouter()
@@ -69,11 +69,6 @@ async def delete_quiz(quiz_token: str):
         db_quiz.deleted_at = clock.now()
 
 
-class GetNextQuizQuestionResponse(BaseModel):
-    quiz_question: QuizQuestion
-    available_answers: List[Answer]
-
-
 @router.post("/quizzes/{quiz_token}/get-next-question")
-async def get_next_quiz_question() -> GetNextQuizQuestionResponse:
-    return GetNextQuizQuestionResponse(quiz=Quiz())
+async def get_next_quiz_question(quiz_token: str) -> GetNextQuizQuestionResponse:
+    return api_get_next_question(quiz_token)

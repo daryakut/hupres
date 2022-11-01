@@ -5,7 +5,7 @@ import secrets
 from dataclasses import dataclass
 from typing import TypeVar, Generic
 
-from quizzes.models import User, Question, Answer, Quiz, QuizQuestion, QuizAnswer
+from quizzes.models import User, Question, Answer22, Quiz, QuizQuestion, QuizAnswer2
 
 from pydantic import BaseModel
 # from pydantic.generics import GenericModel, TypeVarModel
@@ -50,7 +50,7 @@ class Token(BaseModel, Generic[T]):
         return Token._generate_token("qu")
 
     @staticmethod
-    def generate_answer_token() -> Token[Answer]:
+    def generate_answer_token() -> Token[Answer22]:
         return Token._generate_token("an")
 
     @staticmethod

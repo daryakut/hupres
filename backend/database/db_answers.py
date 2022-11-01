@@ -5,7 +5,7 @@ from sqlalchemy import JSON
 from sqlalchemy.orm import relationship, backref
 
 from database.common import DbBase
-from quizzes.models import Answer
+from quizzes.models import Answer22
 
 
 class DbAnswer(DbBase):
@@ -18,8 +18,8 @@ class DbAnswer(DbBase):
 
     # question = relationship('DbQuestion', backref=backref('answers', lazy=True))
 
-    def to_model(self) -> Answer:
-        return Answer(
+    def to_model(self) -> Answer22:
+        return Answer22(
             token=self.token,
             question_token=self.question.token,
             answer_name=self.answer_name,
