@@ -4,7 +4,7 @@ def check_not_none(nullable_variable, message):
 
 
 def check(predicate, message):
-    if predicate():
+    if not predicate():
         raise ValueError(message)
 
 

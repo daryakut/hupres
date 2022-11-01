@@ -23,7 +23,7 @@ async def test_can_get_first_question():
     response = await user_tester.get_next_quiz_question(quiz.token)
     assert response.quiz_question.question_name == HEIGHT_QUESTION_NAME
     assert response.quiz_question.display_question == HEIGHT_QUESTION_NAME
-    assert response.quiz_question.token.startswith("q_")
+    assert response.quiz_question.token.startswith("qq_")
 
     assert len(response.available_answers) == 3
     assert response.available_answers[0].answer_name == 'Рост низкий'
