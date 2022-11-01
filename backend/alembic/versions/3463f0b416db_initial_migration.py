@@ -1,18 +1,21 @@
 """Initial migration
 
-Revision ID: 5911fc6ee338
+Revision ID: 3463f0b416db
 Revises: 
-Create Date: 2023-09-26 00:06:29.072171
+Create Date: 2023-11-01 15:47:20.463334
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from database.token_db_type import TokenDbType
+from database.string_enum_db_type import StringEnumDbType
+from quizzes.constants import QuizStep, QuizSubStep
+from quizzes.models import UserRole
 
 # revision identifiers, used by Alembic.
-revision: str = '5911fc6ee338'
+revision: str = '3463f0b416db'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,9 +33,9 @@ def upgrade() -> None:
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('token', sa.String(length=32), nullable=True),
+    sa.Column('token', TokenDbType(length=64), nullable=True),
     sa.Column('email_address', sa.String(), nullable=False),
-    sa.Column('role', sa.String(length=50), nullable=False),
+    sa.Column('role', StringEnumDbType(UserRole), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('token')
     )
@@ -66,11 +69,10 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('token', sa.String(length=32), nullable=True),
     sa.Column('quiz_id', sa.Integer(), nullable=True),
-    sa.Column('question_id', sa.Integer(), nullable=True),
-    sa.Column('quiz_step', sa.Integer(), nullable=True),
-    sa.Column('quiz_substep', sa.Integer(), nullable=True),
+    sa.Column('question_name', sa.String(length=50), nullable=True),
+    sa.Column('quiz_step', StringEnumDbType(QuizStep), nullable=True),
+    sa.Column('quiz_substep', StringEnumDbType(QuizSubStep), nullable=True),
     sa.Column('followup_question_signs', sa.JSON(), nullable=True),
-    sa.ForeignKeyConstraint(['question_id'], ['questions.id'], ),
     sa.ForeignKeyConstraint(['quiz_id'], ['quizzes.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('token')
@@ -80,10 +82,11 @@ def upgrade() -> None:
     sa.Column('token', sa.String(length=32), nullable=True),
     sa.Column('quiz_id', sa.Integer(), nullable=True),
     sa.Column('quiz_question_id', sa.Integer(), nullable=True),
-    sa.Column('answer_id', sa.Integer(), nullable=True),
+    sa.Column('answer_name', sa.String(length=50), nullable=True),
+    sa.Column('is_all_zeros', sa.Boolean(), nullable=True),
     sa.Column('current_sign_scores', sa.JSON(), nullable=True),
     sa.Column('original_sign_scores', sa.JSON(), nullable=True),
-    sa.ForeignKeyConstraint(['answer_id'], ['answers.id'], ),
+    sa.Column('signs_for_next_questions', sa.JSON(), nullable=True),
     sa.ForeignKeyConstraint(['quiz_id'], ['quizzes.id'], ),
     sa.ForeignKeyConstraint(['quiz_question_id'], ['quiz_questions.id'], ),
     sa.PrimaryKeyConstraint('id'),
