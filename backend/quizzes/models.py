@@ -53,14 +53,16 @@ class Quiz(BaseModel):
     dm_after_step_4: Optional[Sign]
 
 
-# Model for 'quiz_questions' table
+class DisplayAnswer(BaseModel):
+    answer_name: str
+    display_answer: str
+
+
 class QuizQuestion(BaseModel):
     token: str
-    quiz_id: int
-    question_id: int
-    quiz_step: int
-    quiz_substep: int
-    followup_question_signs: List[Sign]
+    question_name: str
+    display_question: str
+    answers: List[DisplayAnswer]
 
 
 # Model for 'quiz_answers' table

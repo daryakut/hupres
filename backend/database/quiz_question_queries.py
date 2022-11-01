@@ -1,33 +1,16 @@
 from __future__ import annotations
 
-from typing import List, Union
+from typing import Union
 
 from database.common import Session
-from database.db_quiz import DbQuiz
-from database.db_user import DbUser
+from database.db_quiz_question import DbQuizQuestion
 from models.token import Token
-from quizzes.models import Quiz
+from quizzes.models import QuizQuestion
 
 
 class QuizQuestionQueries:
 
     @staticmethod
-    def find_by_token(session: Session, token: Union[Token[Quiz], str]) -> DbQuiz:
+    def find_by_token(session: Session, token: Union[Token[QuizQuestion], str]) -> DbQuizQuestion:
         token = token.value if isinstance(token, Token) else token
-        return session.query(DbQuiz).filter(DbQuiz.token == token).one()
-
-    # @staticmethod
-    # def find_next_non_asked_question_for_sign(session: Session, sign: str) -> List[DbQuiz]:
-    #     return session.query(DbQuiz) \
-    #         .filter(DbQuiz.session_token == session_token) \
-    #         .filter(DbQuiz.user_id == None) \
-    #         .filter(DbQuiz.deleted_at == None) \
-    #         .all()
-
-    @staticmethod
-    def find_all_by_user_token(session: Session, user_token: str) -> List[DbQuiz]:
-        return session.query(DbQuiz) \
-            .join(DbUser) \
-            .filter(DbUser.token == user_token) \
-            .filter(DbQuiz.deleted_at == None) \
-            .all()
+        return session.query(DbQuizQuestion).filter(DbQuizQuestion.token == token).one()

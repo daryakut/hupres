@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from quizzes.algorithm import get_next_question
-from quizzes.constants import AlgorithmStep
+from database.db_quiz_question import DbQuizQuestion
+from database.quiz_queries import QuizQueries
+from database.transaction import transaction
+from quizzes.algorithm import get_next_question_to_ask
+from quizzes.constants import QuizStep
 from quizzes.models import QuizQuestion, QuizToken, QuizAnswer, QuizQuestionToken, \
     AnswerToken
 from quizzes.queries import get_last_quiz_question, get_last_quiz_answer, get_quiz_by_token, \
@@ -11,18 +14,49 @@ from quizzes.queries import get_last_quiz_question, get_last_quiz_answer, get_qu
 
 
 def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
-    last_quiz_question = get_last_quiz_question(quiz_token)
-    last_quiz_answer = get_last_quiz_answer(quiz_token)
-    quiz = get_quiz_by_token(quiz_token)
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, quiz_token)
+        # db_quiz_questions = db_quiz.quiz_questions
+        # db_last_question: DbQuizQuestion = db_quiz_questions[-1] if db_quiz_questions else None
 
-    if last_quiz_answer is None:
-        if last_quiz_question is not None:
-            # the user did not respond to the last question, ask again
-            return last_quiz_question
+        last_quiz_question = get_last_quiz_question(quiz_token)
+        last_quiz_answer = get_last_quiz_answer(quiz_token)
+        quiz = get_quiz_by_token(quiz_token)
 
-        next_question_token, next_step, next_substep = get_next_question(
-            last_question=None,
-            last_answer=None,
+        if last_quiz_answer is None:
+            if last_quiz_question is not None:
+                # the user did not respond to the last question, ask again
+                return last_quiz_question
+
+            next_question_token, next_step, next_substep = get_next_question_to_ask(
+                last_question=None,
+                last_answer=None,
+            )
+            new_question = get_question_by_token(next_question_token)
+            return QuizQuestion(
+                token="new",
+                quiz_id=quiz.id,
+                question_id=new_question.id,
+                quiz_step=next_step,
+                quiz_substep=next_substep,
+            )
+
+        last_step = QuizStep(last_quiz_question.quiz_step)
+        last_substep_class = last_step.get_substep_class()
+        # last_substep_class is a class, so last_substep_class(...) is instantiation of the corresponding enum value
+        last_substep = last_substep_class(last_quiz_question.quiz_substep)
+
+        next_question_token, next_step, next_substep = get_next_question_to_ask(
+            last_step=last_step,
+            last_substep=last_substep,
+            current_dm=last_quiz_answer.current_dominant_sign,
+            scores=np.ndarray([
+                last_quiz_answer.current_fire_sign_score,
+                last_quiz_answer.current_earth_sign_score,
+                last_quiz_answer.current_metal_sign_score,
+                last_quiz_answer.current_water_sign_score,
+                last_quiz_answer.current_wood_sign_score,
+            ]),
         )
         new_question = get_question_by_token(next_question_token)
         return QuizQuestion(
@@ -32,32 +66,6 @@ def api_get_next_question(quiz_token: QuizToken) -> QuizQuestion:
             quiz_step=next_step,
             quiz_substep=next_substep,
         )
-
-    last_step = AlgorithmStep(last_quiz_question.quiz_step)
-    last_substep_class = last_step.get_substep_class()
-    # last_substep_class is a class, so last_substep_class(...) is instantiation of the corresponding enum value
-    last_substep = last_substep_class(last_quiz_question.quiz_substep)
-
-    next_question_token, next_step, next_substep = get_next_question(
-        last_step=last_step,
-        last_substep=last_substep,
-        current_dm=last_quiz_answer.current_dominant_sign,
-        scores=np.ndarray([
-            last_quiz_answer.current_fire_sign_score,
-            last_quiz_answer.current_earth_sign_score,
-            last_quiz_answer.current_metal_sign_score,
-            last_quiz_answer.current_water_sign_score,
-            last_quiz_answer.current_wood_sign_score,
-        ]),
-    )
-    new_question = get_question_by_token(next_question_token)
-    return QuizQuestion(
-        token="new",
-        quiz_id=quiz.id,
-        question_id=new_question.id,
-        quiz_step=next_step,
-        quiz_substep=next_substep,
-    )
 
 
 def api_post_answer(quiz_question_token: QuizQuestionToken, answer_token: AnswerToken):
