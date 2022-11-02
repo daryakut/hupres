@@ -19,3 +19,4 @@ pytest-asyncio
 Authlib
 itsdangerous
 PyJWT
+requests
