@@ -1,12 +1,6 @@
 import pytest
 
-from common.clock import clock
-from common.exceptions import BadRequest, Unauthorized
-from database.db_quiz import DbQuiz
-from database.quiz_answer_queries import QuizAnswerQueries
-from database.quiz_queries import QuizQueries
-from database.quiz_question_queries import QuizQuestionQueries
-from database.transaction import transaction
+from common.exceptions import Unauthorized
 from quizzes.constants import QuizStep, QuizSubStep
 from quizzes.question_database import QuestionName
 from tests.test_utils.user_tester import UserTester
@@ -113,75 +107,105 @@ async def test_can_get_first_four_tablet_questions():
     assert question1.quiz_step == QuizStep.STEP_1
     assert question1.quiz_substep == QuizSubStep.STEP1_SUBSTEP_10
     assert question1.followup_question_signs == []
-    assert question1.answer is None
+    assert question1.answer_token is None
+    assert set(a.answer_name for a in question1.available_answers) == {
+        'Рост низкий',
+        'Рост средний',
+        'Рост высокий',
+    }
+
     answer1 = await user_tester.submit_quiz_answer(question1.quiz_question.token, 'Рост низкий')
     assert answer1.answer_name == 'Рост низкий'
     assert answer1.is_all_zeros is False
     assert answer1.current_sign_scores == [15, 6, -5, -3, -3]
     assert answer1.original_sign_scores == []
     assert answer1.signs_for_next_questions == []
+    question1.refresh_from_db()
+    assert question1.answer_token == answer1.quiz_answer_token
 
     question2 = await user_tester.get_next_quiz_question(quiz.token)
     assert question2.quiz_question.question_name == QuestionName.BODY_SCHEME
     assert question2.quiz_step == QuizStep.STEP_1
     assert question2.quiz_substep == QuizSubStep.STEP1_SUBSTEP_20
     assert question2.followup_question_signs == []
-    assert question2.answer is None
-    answer2 = await user_tester.submit_quiz_answer(question1.quiz_question.token, 'Малый прямоугольник')
+    assert question2.answer_token is None
+    assert set(a.answer_name for a in question2.available_answers) == {
+        'Малый прямоугольник',
+        'Узкий прямоугольник',
+        'Больш шир прямоугольник',
+        'Шире в плечах',
+        'Шире в бедрах',
+        'Затрудняюсь ответить',
+    }
+    # Re-fetching the same question does not re-created it
+    question2_refetched = await user_tester.get_next_quiz_question(quiz.token)
+    assert question2_refetched.quiz_question.question_name == QuestionName.BODY_SCHEME
+    assert question2_refetched.quiz_question.token == question2.quiz_question.token
+    answer2 = await user_tester.submit_quiz_answer(question2.quiz_question.token, 'Малый прямоугольник')
     assert answer2.answer_name == 'Малый прямоугольник'
     assert answer2.is_all_zeros is False
-    assert answer2.current_sign_scores == [15, 6, -5, -3, -3]
+    assert answer2.current_sign_scores == [30, 6, -5, -8, -8]  # added [15, 0, 0, -5, -5]
     assert answer2.original_sign_scores == []
     assert answer2.signs_for_next_questions == []
+    question2.refresh_from_db()
+    assert question2.answer_token == answer2.quiz_answer_token
 
-    response2 = await user_tester.get_next_quiz_question(quiz.token)
-    assert response2.quiz_question.question_name == QuestionName.BODY_SCHEME
-    answer2_token = await user_tester.submit_quiz_answer(question1.quiz_question.token, 'Малый прямоугольник')
-    with transaction() as session:
-        db_answer = QuizAnswerQueries.find_by_token(session, answer2_token)
-        assert db_answer.answer_name == 'Рост низкий'
-        assert db_answer.is_all_zeros is False
-        assert db_answer.current_sign_scores == [15, 6, -5, -3, -3]
-        assert db_answer.signs_for_next_questions == []
-
-    assert len(question1.available_answers) == 3
-    assert question1.available_answers[0].answer_name == 'Рост низкий'
-    assert question1.available_answers[0].display_answer == 'Рост низкий'
-    assert question1.available_answers[1].answer_name == 'Рост средний'
-    assert question1.available_answers[1].display_answer == 'Рост средний'
-    assert question1.available_answers[2].answer_name == 'Рост высокий'
-    assert question1.available_answers[2].display_answer == 'Рост высокий'
-
-    with transaction() as session:
-        db_question = QuizQuestionQueries.find_by_token(session, response.quiz_question.token)
-        assert db_question.quiz.token.value == quiz.token
-        assert db_question.token.value == response.quiz_question.token
-        assert db_question.question_name == response.quiz_question.question_name
-        assert db_question.quiz_step == QuizStep.STEP_1
-        assert db_question.quiz_substep == QuizSubStep.STEP1_SUBSTEP_10
-        assert db_question.followup_question_signs == []
-        assert db_question.answer is None
-
+    question3 = await user_tester.get_next_quiz_question(quiz.token)
+    assert question3.quiz_question.question_name == QuestionName.EYE_COLOR
+    assert question3.quiz_step == QuizStep.STEP_1
+    assert question3.quiz_substep == QuizSubStep.STEP1_SUBSTEP_30
+    assert question3.followup_question_signs == []
+    assert question3.answer_token is None
+    assert set(a.answer_name for a in question3.available_answers) == {
+        'Голубые глаза',
+        'Серые (стальные) глаза',
+        'Серо-голуб гл с темн вкрапл',
+        'Серо-голуб гл с жел-зел зонами',
+        'Черные глаза',
+        'Карие глаза',
+        'Зеленые глаза',
+        'Желто-зеленые глаза',
+        'Рябые глаза',
+        'Затрудняюсь ответить',
+    }
     # Re-fetching the same question does not re-created it
-    response2 = await user_tester.get_next_quiz_question(quiz.token)
-    assert response2.quiz_question.question_name == QuestionName.HEIGHT
-    assert response2.quiz_question.token == response.quiz_question.token
+    question3_refetched = await user_tester.get_next_quiz_question(quiz.token)
+    assert question3_refetched.quiz_question.question_name == QuestionName.EYE_COLOR
+    assert question3_refetched.quiz_question.token == question3.quiz_question.token
+    answer3 = await user_tester.submit_quiz_answer(question3.quiz_question.token, 'Затрудняюсь ответить')
+    assert answer3.answer_name == 'Затрудняюсь ответить'
+    assert answer3.is_all_zeros is True
+    assert answer3.current_sign_scores == [30, 6, -5, -8, -8]  # same as before as all were 0
+    assert answer3.original_sign_scores == []
+    assert answer3.signs_for_next_questions == []
+    question3.refresh_from_db()
+    assert question3.answer_token == answer3.quiz_answer_token
 
+    question4 = await user_tester.get_next_quiz_question(quiz.token)
+    assert question4.quiz_question.question_name == QuestionName.HAIR_COLOR
+    assert question4.quiz_step == QuizStep.STEP_1
+    assert question4.quiz_substep == QuizSubStep.STEP1_SUBSTEP_40
+    assert question4.followup_question_signs == []
+    assert question4.answer_token is None
+    assert set(a.answer_name for a in question4.available_answers) == {
+        'Рыжие волосы',
+        'Каштановые волосы',
+        'Черные волосы',
+        'Темно русые волосы',
+        'Русые волосы',
+        'Светлые волосы',
+        'Затрудняюсь ответить',
+    }
+    # Re-fetching the same question does not re-created it
+    question4_refetched = await user_tester.get_next_quiz_question(quiz.token)
+    assert question4_refetched.quiz_question.question_name == QuestionName.HAIR_COLOR
+    assert question4_refetched.quiz_question.token == question4.quiz_question.token
+    answer4 = await user_tester.submit_quiz_answer(question4.quiz_question.token, 'Русые волосы')
+    assert answer4.answer_name == 'Русые волосы'
+    assert answer4.is_all_zeros is False
+    assert answer4.current_sign_scores == [30, 6, -5, 2, -3]  # added [0, 0, 0, 10, 5]
+    assert answer4.original_sign_scores == []
+    assert answer4.signs_for_next_questions == []
+    question4.refresh_from_db()
+    assert question4.answer_token == answer4.quiz_answer_token
 
-
-# @pytest.mark.asyncio
-# async def test_first_four_tablet_questions():
-#     user_tester = await UserTester.signup_with_google()
-#     quiz = (await user_tester.create_quiz()).quiz
-#
-#     quizzes = (await user_tester.get_quizzes()).quizzes
-#     assert len(quizzes) == 1
-#
-#     await user_tester.delete_quiz(quiz.token)
-#
-#     quizzes_after_delete = (await user_tester.get_quizzes()).quizzes
-#     assert quizzes_after_delete == []
-#
-#     with transaction() as session:
-#         db_quiz = QuizQueries.find_by_token(session, quiz.token)
-#         assert db_quiz.deleted_at == clock.now()

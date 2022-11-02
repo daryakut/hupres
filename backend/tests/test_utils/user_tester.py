@@ -56,7 +56,7 @@ class QuizQuestionTester:
             self.quiz_step = db_question.quiz_step
             self.quiz_substep = db_question.quiz_substep
             self.followup_question_signs = db_question.followup_question_signs
-            self.answer_token = db_question.answer.token if db_question.answer is not None else None
+            self.answer_token = db_question.answer.token.value if db_question.answer is not None else None
 
 
 class QuizAnswerTester:
