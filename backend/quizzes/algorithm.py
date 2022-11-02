@@ -506,7 +506,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
         quiz_question = QuizQuestion(
             token=question_token.value,
             question_name=question_to_ask.question_name,
-            display_question=_(question_to_ask.question_name.value),
+            question_display_name=_(question_to_ask.question_name.value),
         )
         return GetNextQuizQuestionResponse(
             quiz_question=quiz_question,

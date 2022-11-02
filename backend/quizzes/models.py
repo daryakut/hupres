@@ -63,7 +63,7 @@ class Answer(BaseModel):
 class QuizQuestion(BaseModel):
     token: str
     question_name: QuestionName
-    display_question: str
+    question_display_name: str
 
 
 # Model for 'quiz_answers' table
