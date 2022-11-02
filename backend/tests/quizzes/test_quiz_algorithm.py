@@ -74,6 +74,46 @@ async def test_can_respond_to_first_question():
         assert db_answer.signs_for_next_questions == []
 
 
+@pytest.mark.asyncio
+async def test_cannot_get_other_users_question():
+    user_tester = await UserTester.signup_with_google("user@gmail.com")
+    quiz = (await user_tester.create_quiz()).quiz
+
+    user_tester2 = await UserTester.signup_with_google("other.user@gmail.com")
+
+    with pytest.raises(Unauthorized) as e:
+        await user_tester2.get_next_quiz_question(quiz.token)
+    assert "not allowed" in str(e.value)
+
+
+@pytest.mark.asyncio
+async def test_cannot_respond_to_same_question_twice():
+    user_tester = await UserTester.signup_with_google()
+    quiz = (await user_tester.create_quiz()).quiz
+
+    response = await user_tester.get_next_quiz_question(quiz.token)
+    assert response.quiz_question.question_name == QuestionName.HEIGHT
+
+    await user_tester.submit_quiz_answer(response.quiz_question.token, 'Рост низкий')
+    with pytest.raises(ValueError) as e:
+        await user_tester.submit_quiz_answer(response.quiz_question.token, 'Рост низкий')
+    assert "You have already responded to question" in str(e.value)
+
+
+@pytest.mark.asyncio
+async def test_cannot_respond_to_other_users_question():
+    user_tester = await UserTester.signup_with_google("user@gmail.com")
+    quiz = (await user_tester.create_quiz()).quiz
+    response = await user_tester.get_next_quiz_question(quiz.token)
+    assert response.quiz_question.question_name == QuestionName.HEIGHT
+
+    user_tester2 = await UserTester.signup_with_google("other.user@gmail.com")
+
+    with pytest.raises(Unauthorized) as e:
+        await user_tester2.submit_quiz_answer(response.quiz_question.token, 'Рост низкий')
+    assert "not allowed" in str(e.value)
+
+
 # @pytest.mark.asyncio
 # async def test_first_four_tablet_questions():
 #     user_tester = await UserTester.signup_with_google()

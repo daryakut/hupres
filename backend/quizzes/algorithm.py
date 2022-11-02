@@ -6,6 +6,7 @@ from typing import Tuple, List, Optional
 import numpy as np
 from pydantic import BaseModel
 
+from common.exceptions import Unauthorized
 from database.common import Session
 from database.db_quiz import DbQuiz
 from database.db_quiz_answer import DbQuizAnswer
@@ -19,6 +20,7 @@ from quizzes.common import check
 from quizzes.constants import QuizStep, Sign, QuizSubStep
 from quizzes.models import QuizQuestion, Answer, Quiz
 from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName
+from users.sessions import session_data_provider
 
 
 class SignWithScore(BaseModel):
@@ -473,6 +475,11 @@ class GetNextQuizQuestionResponse(BaseModel):
 def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionResponse:
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
+
+        session_data = session_data_provider.get_current_session()
+        if not session_data.is_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to get questions of this quiz")
+
         question_to_ask = get_next_question_to_ask(session=session, db_quiz=db_quiz)
 
         if question_to_ask.quiz_question_token is not None:
@@ -515,6 +522,15 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
     with transaction() as session:
         db_quiz_question = QuizQuestionQueries.find_by_token(session, quiz_question_token)
         db_quiz: DbQuiz = db_quiz_question.quiz
+
+        session_data = session_data_provider.get_current_session()
+        if not session_data.is_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to submit answers to this quiz")
+
+        check(
+            lambda: db_quiz_question.answer is None,
+            f"You have already responded to question {db_quiz_question.question_name}",
+        )
 
         answer_option_scores = ANSWER_SCORES.get(db_quiz_question.question_name)
         check(

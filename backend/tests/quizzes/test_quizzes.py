@@ -181,7 +181,7 @@ async def test_cannot_delete_quiz_twice():
 
     with pytest.raises(BadRequest) as e:
         await user_tester.delete_quiz(quiz.token)
-        assert "Cannot find quiz" in e.value.message
+    assert "Cannot find quiz" in str(e.value)
 
 
 @pytest.mark.asyncio
@@ -193,7 +193,7 @@ async def test_logged_in_user_cannot_delete_other_logged_in_users_quiz():
 
     with pytest.raises(Unauthorized) as e:
         await user_tester2.delete_quiz(quiz.token)
-        assert "not allowed" in e.value.message
+    assert "not allowed" in str(e.value)
 
 
 @pytest.mark.asyncio
@@ -204,7 +204,7 @@ async def test_user_cannot_delete_their_quiz_after_logging_out():
     await user_tester.logout()
     with pytest.raises(Unauthorized) as e:
         await user_tester.delete_quiz(quiz.token)
-        assert "not allowed" in e.value.message
+    assert "not allowed" in str(e.value)
 
 
 @pytest.mark.asyncio
@@ -216,7 +216,7 @@ async def test_anonymous_user_cannot_delete_other_anonymous_users_quiz():
 
     with pytest.raises(Unauthorized) as e:
         await user_tester2.delete_quiz(quiz.token)
-        assert "not allowed" in e.value.message
+    assert "not allowed" in str(e.value)
 
 
 @pytest.mark.asyncio
@@ -228,4 +228,4 @@ async def test_anonymous_user_cannot_delete_other_anonymous_users_quiz():
 
     with pytest.raises(Unauthorized) as e:
         await user_tester2.delete_quiz(quiz.token)
-        assert "not allowed" in e.value.message
+    assert "not allowed" in str(e.value)
