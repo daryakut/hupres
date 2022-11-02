@@ -2,8 +2,9 @@ from typing import Optional
 
 from common.clock import clock
 from models.token import generate_session_token, Token
-from models.quiz_models import UserRole, User
+from models.user import User
 from users.session_data import SessionData
+from models.user_role import UserRole
 
 _fake_instance = None
 

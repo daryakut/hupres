@@ -10,7 +10,8 @@ from database.db_entities.db_user import DbUser
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from models.sign import Sign
-from models.quiz_models import Pronounce, Quiz
+from models.quiz_models import Quiz
+from models.pronounce import Pronounce
 
 
 class DbQuiz(DbBase):

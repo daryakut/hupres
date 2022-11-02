@@ -4,7 +4,8 @@ from pydantic import BaseModel
 
 from database.db_entities.db_quiz import DbQuiz
 from models.token import Token
-from models.quiz_models import UserRole, User
+from models.user import User
+from models.user_role import UserRole
 
 
 class SessionData(BaseModel):

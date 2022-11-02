@@ -8,7 +8,8 @@ from database.transaction import transaction
 from models.token import Token
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 from models.sign import Sign
-from models.quiz_models import User, QuizQuestion, AvailableAnswer
+from models.quiz_models import QuizQuestion, AvailableAnswer
+from models.user import User
 from quizzes.question_database import QuestionName
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest

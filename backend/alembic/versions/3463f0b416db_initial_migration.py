@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from database.db_types.token_db_type import TokenDbType
 from database.db_types.string_enum_db_type import StringEnumDbType
 from quizzes.quiz_steps import QuizStep, QuizSubStep
-from models.quiz_models import UserRole
+from models.user_role import UserRole
 
 # revision identifiers, used by Alembic.
 revision: str = '3463f0b416db'

@@ -9,7 +9,8 @@ from database.connection import DbBase, Session
 from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
-from models.quiz_models import UserRole, User
+from models.user import User
+from models.user_role import UserRole
 
 
 class DbUser(DbBase):

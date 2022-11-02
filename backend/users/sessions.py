@@ -7,9 +7,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from common.clock import clock
 from common.env import env
 from models.token import generate_session_token, Token
-from models.quiz_models import UserRole, User
+from models.user import User
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
+from models.user_role import UserRole
 
 session_context_var: ContextVar[dict] = ContextVar("session", default={})
 
