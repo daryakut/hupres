@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Union
 
-from database.common import Session
-from database.db_quiz_question import DbQuizQuestion
+from database.connection import Session
+from database.db_entities.db_quiz_question import DbQuizQuestion
 from models.token import Token
 from quizzes.models import QuizQuestion
 

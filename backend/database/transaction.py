@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from database.common import Session
+from database.connection import Session
 
 
 @contextmanager

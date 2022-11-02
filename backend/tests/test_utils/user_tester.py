@@ -2,13 +2,10 @@ from __future__ import annotations
 
 from typing import Optional, List
 
-from pydantic import BaseModel
-
-from database.quiz_answer_queries import QuizAnswerQueries
-from database.quiz_question_queries import QuizQuestionQueries
+from database.queries.quiz_answer_queries import QuizAnswerQueries
+from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
 from models.token import Token
-from quizzes.algorithm import GetNextQuizQuestionResponse, SubmitAnswerResponse
 from quizzes.constants import QuizStep, QuizSubStep, Sign
 from quizzes.models import User, QuizQuestion, Answer
 from quizzes.question_database import QuestionName
@@ -16,7 +13,6 @@ from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 from tests.users.fake_sessions import get_fake_session_data_provider
-from users.session_data import SessionData
 from users.users_api import google_auth, get_current_user_response, ADMIN_USER_EMAIL_ADDRESSES, logout
 
 

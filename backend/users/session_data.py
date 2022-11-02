@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from database.db_quiz import DbQuiz
+from database.db_entities.db_quiz import DbQuiz
 from models.token import Token
 from quizzes.models import UserRole, User
 

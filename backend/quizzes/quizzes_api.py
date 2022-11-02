@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 from common.clock import clock
 from common.exceptions import Unauthorized, BadRequest
-from database.db_quiz import DbQuiz
-from database.quiz_queries import QuizQueries
+from database.db_entities.db_quiz import DbQuiz
+from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from models.token import Token
 from quizzes.algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \

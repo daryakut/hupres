@@ -1,6 +1,6 @@
 import pytest
 
-from database.db_user import DbUser
+from database.db_entities.db_user import DbUser
 from database.transaction import transaction
 from quizzes.models import UserRole
 from tests.test_utils.user_tester import UserTester

@@ -2,8 +2,8 @@ import pytest
 
 from common.clock import clock
 from common.exceptions import BadRequest, Unauthorized
-from database.db_quiz import DbQuiz
-from database.quiz_queries import QuizQueries
+from database.db_entities.db_quiz import DbQuiz
+from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from tests.test_utils.user_tester import UserTester
 

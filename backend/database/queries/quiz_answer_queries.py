@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import List, Union, Optional
 
-from database.common import Session
-from database.db_quiz import DbQuiz
-from database.db_quiz_answer import DbQuizAnswer
-from database.db_quiz_question import DbQuizQuestion
+from database.connection import Session
+from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_quiz_answer import DbQuizAnswer
+from database.db_entities.db_quiz_question import DbQuizQuestion
 from models.token import Token
-from quizzes.common import first_or_none
+from common.utils import first_or_none
 from quizzes.constants import QuizStep
 from quizzes.models import Quiz
 

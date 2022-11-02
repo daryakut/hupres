@@ -5,9 +5,9 @@ from typing import Optional
 from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
-from database.common import DbBase, Session
-from database.db_user import DbUser
-from database.token_db_type import TokenDbType
+from database.connection import DbBase, Session
+from database.db_entities.db_user import DbUser
+from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.constants import Sign
 from quizzes.models import Pronounce, Quiz

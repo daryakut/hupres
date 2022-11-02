@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy import Column, DateTime
 
-from database.common import DbBase
+from database.connection import DbBase
 
 
 class DbTimestampedEntity(DbBase):

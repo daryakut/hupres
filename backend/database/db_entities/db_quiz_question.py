@@ -6,12 +6,12 @@ from sqlalchemy import ForeignKey, Column, Integer
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
-from database.common import DbBase, Session
-from database.db_quiz import DbQuiz
-from database.string_enum_db_type import StringEnumDbType
-from database.token_db_type import TokenDbType
+from database.connection import DbBase, Session
+from database.db_entities.db_quiz import DbQuiz
+from database.db_types.string_enum_db_type import StringEnumDbType
+from database.db_types.token_db_type import TokenDbType
 from models.token import Token
-from quizzes.common import first_or_none
+from common.utils import first_or_none
 from quizzes.constants import QuizStep, QuizSubStep, Sign
 from quizzes.question_database import QuestionName
 

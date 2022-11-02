@@ -4,10 +4,9 @@ from fastapi import APIRouter
 from fastapi import Request
 from pydantic import BaseModel
 
-from database.db_user import DbUser
-from database.quiz_queries import QuizQueries
+from database.db_entities.db_user import DbUser
+from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
-from models.token import Token
 from quizzes.models import User, UserRole
 from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
 from users.sessions import session_data_provider

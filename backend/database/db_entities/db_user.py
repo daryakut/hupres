@@ -5,9 +5,9 @@ from typing import List, Union
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from database.common import DbBase, Session
-from database.string_enum_db_type import StringEnumDbType
-from database.token_db_type import TokenDbType
+from database.connection import DbBase, Session
+from database.db_types.string_enum_db_type import StringEnumDbType
+from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.models import UserRole, User
 

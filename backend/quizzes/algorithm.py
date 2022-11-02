@@ -7,16 +7,16 @@ import numpy as np
 from pydantic import BaseModel
 
 from common.exceptions import Unauthorized
-from database.common import Session
-from database.db_quiz import DbQuiz
-from database.db_quiz_answer import DbQuizAnswer
-from database.db_quiz_question import DbQuizQuestion
-from database.quiz_answer_queries import QuizAnswerQueries
-from database.quiz_queries import QuizQueries
-from database.quiz_question_queries import QuizQuestionQueries
+from database.connection import Session
+from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_quiz_answer import DbQuizAnswer
+from database.db_entities.db_quiz_question import DbQuizQuestion
+from database.queries.quiz_answer_queries import QuizAnswerQueries
+from database.queries.quiz_queries import QuizQueries
+from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
 from models.token import Token
-from quizzes.common import check
+from common.utils import check
 from quizzes.constants import QuizStep, Sign, QuizSubStep
 from quizzes.models import QuizQuestion, Answer, Quiz
 from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName

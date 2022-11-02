@@ -9,8 +9,8 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from database.token_db_type import TokenDbType
-from database.string_enum_db_type import StringEnumDbType
+from database.db_types.token_db_type import TokenDbType
+from database.db_types.string_enum_db_type import StringEnumDbType
 from quizzes.constants import QuizStep, QuizSubStep
 from quizzes.models import UserRole
 

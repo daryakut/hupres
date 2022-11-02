@@ -8,10 +8,10 @@ from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
-from database.common import DbBase, Session
-from database.db_quiz import DbQuiz
-from database.db_quiz_question import DbQuizQuestion
-from database.token_db_type import TokenDbType
+from database.connection import DbBase, Session
+from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_quiz_question import DbQuizQuestion
+from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.constants import Sign
 
