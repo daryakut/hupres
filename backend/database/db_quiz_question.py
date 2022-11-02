@@ -12,6 +12,7 @@ from database.string_enum_db_type import StringEnumDbType
 from models.token import Token
 from quizzes.common import first_or_none
 from quizzes.constants import QuizStep, QuizSubStep, Sign
+from quizzes.question_database import QuestionName
 
 
 class DbQuizQuestion(DbBase):
@@ -20,7 +21,7 @@ class DbQuizQuestion(DbBase):
     token = Column(String(32), unique=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     # question_id = Column(Integer, ForeignKey('questions.id'))
-    question_name = Column(String(50))
+    question_name = Column(StringEnumDbType(QuestionName))
     quiz_step = Column(StringEnumDbType(QuizStep))
     quiz_substep = Column(StringEnumDbType(QuizSubStep))
     followup_question_signs = Column(JSON)

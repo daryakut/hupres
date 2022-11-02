@@ -5,6 +5,8 @@ import numpy as np
 from pydantic import BaseModel
 
 from quizzes.constants import Sign
+from quizzes.question_database import QuestionName
+
 
 class UserRole(Enum):
     ADMIN = 'ADMIN'
@@ -60,7 +62,7 @@ class Answer(BaseModel):
 
 class QuizQuestion(BaseModel):
     token: str
-    question_name: str
+    question_name: QuestionName
     display_question: str
 
 

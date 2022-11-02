@@ -1,127 +1,163 @@
+from enum import Enum
+
 from quizzes.constants import Sign
 
-HEIGHT_QUESTION_NAME = 'Рост'
-BODY_SCHEMA_QUESTION_NAME = 'Схема тела'
-EYE_COLOR_QUESTION_NAME = 'Цвет глаз'
-HAIR_COLOR_QUESTION_NAME = 'Цвет волос'
+
+class QuestionName(Enum):
+    # First four tablet questions
+    HEIGHT = 'Рост'
+    BODY_SCHEME = 'Схема тела'
+    EYE_COLOR = 'Цвет глаз'
+    HAIR_COLOR = 'Цвет волос'
+
+    # Rest of the questions
+    STRUCTURE_OF_HAIR = 'Структура волос'
+    FEATURES_OF_SKIN = 'Особенности кожи'
+    BACK_OF_NOSE = 'Спинка носа'
+    SIZE_OF_NOSE = 'Размер носа'
+    FACE_SHAPE = 'Форма лица'
+    NOSE_SHAPE = 'Форма носа'
+    CONVEXITY_OF_NAILS = 'Выпуклость ногтей'
+    SIZE_OF_PALMS = 'Размер ладони'
+    BODY_FEATURES = 'Тело особенности'
+    FINGER_SHAPE = 'Форма пальцев'
+    NAIL_SHAPE = 'Ногти форма'
+    WAIST = 'Талия'
+    NOSE_TIP = 'Кончик носа'
+    NOSTRILS = 'Ноздри'
+    PALM_SHAPE = 'Форма ладони'
+    WIDTH_OF_BACK_OF_NOSE = 'Ширина спинки носа'
+    MUSCLE_VOLUME = 'Объем мышц'
+    FAT_TISSUE = 'Жировая клетчатка'
+    THICKNESS_OF_HAIR = 'Толщина волос'
+    HAIR_DENSITY = 'Густота волос'
+    FINGER_LENGTH = 'Длина пальцев'
+    FEATURES_OF_BRUSHES = 'Особенности кистей'
+    MUSCLE_DENSITY = 'Мышцы плотность'
+    LENGTH_OF_NECK = 'Длина шеи'
+    THICKNESS_OF_NECK = 'Толщина шеи'
+    HAIR_FEATURES = 'Особенности волос'
+    FEATURES_OF_FINGERS = 'Особенности пальцев'
+
 
 QUESTION_NAMES_FOR_SIGNS = {
     Sign.FIRE.value: [
-        'Структура волос',
-        'Особенности кожи',
-        'Спинка носа',
-        'Размер носа',
-        'Форма лица',
-        'Форма носа',
-        'Выпуклость ногтей',
-        'Размер ладоней',
-        'Тело особенности',
-        'Форма пальцев',
-        'Ногти форма',
-        'Талия',
-        'Кончик носа',
-        'Ноздри',
-        'Форма ладони',
-        'Ширина спинки носа',
-        'Объем мышц',
-        'Жировая клетчатка',
+        QuestionName.STRUCTURE_OF_HAIR,
+        QuestionName.FEATURES_OF_SKIN,
+        QuestionName.BACK_OF_NOSE,
+        QuestionName.SIZE_OF_NOSE,
+        QuestionName.FACE_SHAPE,
+        QuestionName.NOSE_SHAPE,
+        QuestionName.CONVEXITY_OF_NAILS,
+        QuestionName.SIZE_OF_PALMS,
+        QuestionName.BODY_FEATURES,
+        QuestionName.FINGER_SHAPE,
+        QuestionName.NAIL_SHAPE,
+        QuestionName.WAIST,
+        QuestionName.NOSE_TIP,
+        QuestionName.NOSTRILS,
+        QuestionName.PALM_SHAPE,
+        QuestionName.WIDTH_OF_BACK_OF_NOSE,
+        QuestionName.MUSCLE_VOLUME,
+        QuestionName.FAT_TISSUE,
     ],
     Sign.EARTH.value: [
-        'Тело особенности',
-        'Толщина волос',
-        'Ноздри',
-        'Структура волос',
-        'Густота волос',
-        'Форма лица',
-        'Кончик носа',
-        'Ширина спинки носа',
-        'Жировая клетчатка',
-        'Длина пальцев',
-        'Особенности кожи',
-        'Мышцы плотность',
-        'Форма пальцев',
-        'Ногти форма',
-        'Форма ладони',
-        'Объем мышц',
-        'Спинка носа',
-        'Талия',
-        'Особенности кистей',
-        'Особенности пальцев',
-        'Размер ладони',
+        QuestionName.BODY_FEATURES,
+        QuestionName.THICKNESS_OF_HAIR,
+        QuestionName.NOSTRILS,
+        QuestionName.STRUCTURE_OF_HAIR,
+        QuestionName.HAIR_DENSITY,
+        QuestionName.FACE_SHAPE,
+        QuestionName.NOSE_TIP,
+        QuestionName.WIDTH_OF_BACK_OF_NOSE,
+        QuestionName.FAT_TISSUE,
+        QuestionName.FINGER_LENGTH,
+        QuestionName.FEATURES_OF_SKIN,
+        QuestionName.MUSCLE_DENSITY,
+        QuestionName.FINGER_SHAPE,
+        QuestionName.NAIL_SHAPE,
+        QuestionName.PALM_SHAPE,
+        QuestionName.MUSCLE_VOLUME,
+        QuestionName.BACK_OF_NOSE,
+        QuestionName.WAIST,
+        QuestionName.FEATURES_OF_BRUSHES,
+        QuestionName.FEATURES_OF_FINGERS,
+        QuestionName.SIZE_OF_PALMS,
     ],
     Sign.METAL.value: [
-        'Тело особенности',
-        'Спинка носа',
-        'Форма носа',
-        'Форма лица',
-        'Толщина волос',
-        'Густота волос',
-        'Структура волос',
-        'Длина шеи',
-        'Ширина спинки носа',
-        'Длина пальцев',
-        'Форма пальцев',
-        'Ногти форма',
-        'Форма ладони',
-        'Жировая клетчатка',
-        'Ноздри',
-        'Форма ладони',
-        'Особенности кистей',
-        'Размер ладони',
-        'Размер носа',
-        'Толщина шеи',
-        'Особенности пальцев',
-        'Выпуклость ногтей',
-        'Объем мышц',
+        QuestionName.BODY_FEATURES,
+        QuestionName.BACK_OF_NOSE,
+        QuestionName.NOSE_SHAPE,
+        QuestionName.FACE_SHAPE,
+        QuestionName.THICKNESS_OF_HAIR,
+        QuestionName.HAIR_DENSITY,
+        QuestionName.STRUCTURE_OF_HAIR,
+        QuestionName.LENGTH_OF_NECK,
+        QuestionName.WIDTH_OF_BACK_OF_NOSE,
+        QuestionName.FINGER_LENGTH,
+        QuestionName.FINGER_SHAPE,
+        QuestionName.NAIL_SHAPE,
+        QuestionName.PALM_SHAPE,
+        QuestionName.FAT_TISSUE,
+        QuestionName.NOSTRILS,
+        QuestionName.PALM_SHAPE,
+        QuestionName.FEATURES_OF_BRUSHES,
+        QuestionName.SIZE_OF_PALMS,
+        QuestionName.SIZE_OF_NOSE,
+        QuestionName.THICKNESS_OF_NECK,
+        QuestionName.FEATURES_OF_FINGERS,
+        QuestionName.CONVEXITY_OF_NAILS,
+        QuestionName.MUSCLE_VOLUME,
     ],
     Sign.WATER.value: [
-        'Тело особенности',
-        'Толщина волос',
-        'Густота волос',
-        'Кончик носа',
-        'Особенности волос 5 -',
-        'Ноздри',
-        'Ширина спинки носа',
-        'Форма лица',
-        'Жировая клетчатка',
-        'Размер носа',
-        'Мышцы плотность',
-        'Объем мышц',
-        'Размер ладоней',
-        'Форма ладоней',
-        'Длина шеи',
-        'Толщина шеи',
-        'Форма пальцев',
-        'Длина пальцев',
-        'Талия',
-        'Особенность кистей',
+        QuestionName.BODY_FEATURES,
+        QuestionName.THICKNESS_OF_HAIR,
+        QuestionName.HAIR_DENSITY,
+        QuestionName.NOSE_TIP,
+        QuestionName.HAIR_FEATURES,
+        QuestionName.NOSTRILS,
+        QuestionName.WIDTH_OF_BACK_OF_NOSE,
+        QuestionName.FACE_SHAPE,
+        QuestionName.FAT_TISSUE,
+        QuestionName.SIZE_OF_NOSE,
+        QuestionName.MUSCLE_DENSITY,
+        QuestionName.MUSCLE_VOLUME,
+        QuestionName.SIZE_OF_PALMS,
+        QuestionName.PALM_SHAPE,
+        QuestionName.LENGTH_OF_NECK,
+        QuestionName.THICKNESS_OF_NECK,
+        QuestionName.FINGER_SHAPE,
+        QuestionName.FINGER_LENGTH,
+        QuestionName.WAIST,
+        QuestionName.FEATURES_OF_BRUSHES,
     ],
     Sign.WOOD.value: [
-        'Форма носа',
-        'Структура волос',
-        'Тело особенности',
-        'Особенности пальцев',
-        'Форма пальцев',
-        'Ногти форма',
-        'Форма ладони',
-        'Размер ладони',
-        'Густота волос',
-        'Размер носа',
-        'Форма лица',
-        'Объем мышц',
-        'Спинка носа',
-        'Длина пальцев',
-        'Мышцы плотность',
+        QuestionName.NOSE_SHAPE,
+        QuestionName.STRUCTURE_OF_HAIR,
+        QuestionName.BODY_FEATURES,
+        QuestionName.FEATURES_OF_FINGERS,
+        QuestionName.FINGER_SHAPE,
+        QuestionName.NAIL_SHAPE,
+        QuestionName.PALM_SHAPE,
+        QuestionName.SIZE_OF_PALMS,
+        QuestionName.HAIR_DENSITY,
+        QuestionName.SIZE_OF_NOSE,
+        QuestionName.FACE_SHAPE,
+        QuestionName.MUSCLE_VOLUME,
+        QuestionName.BACK_OF_NOSE,
+        QuestionName.FINGER_LENGTH,
+        QuestionName.MUSCLE_DENSITY,
     ],
 }
 
+
 ANSWER_SCORES = {
-    'Рост': {
+    QuestionName.HEIGHT: {
         'Рост низкий': [15, 6, -5, -3, -3],
         'Рост средний': [0, 0, 0, 0, 0],
         'Рост высокий': [-5, -3, 15, 8, 10],
     },
-    'Схема тела': {
+    QuestionName.BODY_SCHEME: {
         'Малый прямоугольник': [15, 0, 0, -5, -5],
         'Узкий прямоугольник': [0, -7, 15, 3, 0],
         'Больш шир прямоугольник': [-5, 0, 2, 15, 7],
@@ -129,22 +165,22 @@ ANSWER_SCORES = {
         'Шире в бедрах': [0, 15, -7, 5, -5],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Тело особенности': {
+    QuestionName.BODY_FEATURES: {
         'Тело сухое': [5, -7, 15, -5, 7],
         'Тело объемное': [0, 15, -5, 10, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Талия': {
+    QuestionName.WAIST: {
         'Талия выражена': [5, 5, 3, -2, 3],
         'Талия сглажена': [0, 0, 0, 5, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Жировая клетчатка': {
+    QuestionName.FAT_TISSUE: {
         'Жир клетч слабая': [3, -4, 7, 0, 3],
         'Жир клетч выражена': [-2, 7, -4, 7, -2],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Цвет глаз': {
+    QuestionName.EYE_COLOR: {
         'Голубые глаза': [-5, 12, 5, -2, -5],
         'Серые (стальные) глаза': [-2, 7, 12, -5, -3],
         'Серо-голуб гл с темн вкрапл': [2, 7, 7, 0, 3],
@@ -156,24 +192,24 @@ ANSWER_SCORES = {
         'Рябые глаза': [0, -2, -3, 0, 10],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Толщина волос': {
+    QuestionName.THICKNESS_OF_HAIR: {
         'Тонкие волосы': [3, 10, 10, 0, 0],
         'Волосы средней толщины': [0, 0, 0, 0, 0],
         'Толстые волосы': [0, -5, -5, 10, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Густота волос': {
+    QuestionName.HAIR_DENSITY: {
         'Редкие волосы': [0, -3, 10, 0, 0],
         'Густые волосы': [0, 8, -5, 10, 7],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Структура волос': {
+    QuestionName.STRUCTURE_OF_HAIR: {
         'Прямые волосы': [-5, 8, 8, 0, -3],
         'Волнистые волосы': [8, 0, 0, 0, 10],
         'Кучерявые волосы': [10, -3, -5, 0, 5],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Цвет волос': {
+    QuestionName.HAIR_COLOR: {
         'Рыжие волосы': [15, 0, 0, 3, 0],
         'Каштановые волосы': [8, 0, 0, 3, 5],
         'Черные волосы': [10, -5, -5, 0, 5],
@@ -182,13 +218,13 @@ ANSWER_SCORES = {
         'Светлые волосы': [-5, 10, 10, -3, -5],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Особенности волос': {
+    QuestionName.HAIR_FEATURES: {
         'Жесткие волосы': [0, -3, -3, 5, 3],
         'Ранняя седина': [0, 0, 0, 5, 0],
         'Ранние залысины': [0, 0, 3, 5, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Форма лица': {
+    QuestionName.FACE_SHAPE: {
         'Круглое лицо': [0, 7, -2, 0, 0],
         'Вытянутый прямоугольник': [0, 0, 10, 0, 2],
         'Большой треугольник': [0, 0, 0, 0, 5],
@@ -196,57 +232,57 @@ ANSWER_SCORES = {
         'Широк прямоугольн "Квадрат"': [-2, 0, 0, 7, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Размер носа': {
+    QuestionName.SIZE_OF_NOSE: {
         'Малый нос': [8, 2, -2, -3, -3],
         'Крупный нос': [0, 5, 5, 7, 7],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Форма носа': {
+    QuestionName.NOSE_SHAPE: {
         'Горбинка на носу': [0, 0, 0, 0, 7],
         'Крючковидный нос': [0, 0, 0, 0, 10],
         'Прямой нос': [7, 3, 10, 3, -5],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Ноздри': {
+    QuestionName.NOSTRILS: {
         'Широкие ноздри': [-5, 8, 0, 8, 0],
         'Узкие ноздри': [5, -5, 7, -5, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Кончик носа': {
+    QuestionName.NOSE_TIP: {
         'Острый кончик носа': [5, -3, 3, -5, 0],
         'Круглый кончик носа': [-3, 5, -3, 5, 0],
         'Курносый кончик носа': [0, 5, 0, 2, 0],
         'Нос "уточкой"': [0, 0, 0, 10, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Спинка носа': {
+    QuestionName.BACK_OF_NOSE: {
         'Длинная спинка носа': [-5, -3, 15, 0, 5],
         'Короткая спинка носа': [10, 5, -5, -2, -3],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Шир спинки носа': {
+    QuestionName.WIDTH_OF_BACK_OF_NOSE: {
         'Широкая спинка носа': [-2, 7, -5, 7, 2],
         'Тонкая спинка носа': [4, -2, 8, -3, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Длина шеи': {
+    QuestionName.LENGTH_OF_NECK: {
         'Шея короткая': [0, 0, -5, 7, 0],
         'Средняя длина шеи': [0, 0, 0, 0, 0],
         'Длинная шея': [0, 0, 8, -2, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Толщина шеи': {
+    QuestionName.THICKNESS_OF_NECK: {
         'Толстая шея': [0, 0, -3, 5, 0],
         'Средняя толщина шеи': [0, 0, 0, 0, 0],
         'Тонкая шея': [0, 0, 5, -3, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Размер ладоней': {
+    QuestionName.SIZE_OF_PALMS: {
         'Крупные ладони': [-4, -3, 5, 7, 7],
         'Малые ладони': [7, 4, 0, -4, -3],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Форма ладони': {
+    QuestionName.PALM_SHAPE: {
         'Квадрат': [0, 5, -2, 7, 0],
         'Прямоугольник': [2, 0, 3, 2, 7],
         'Малый прямоугольник': [5, 0, 1, -3, 0],
@@ -254,31 +290,31 @@ ANSWER_SCORES = {
         '"Весло"': [-4, -3, 7, 0, 3],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Особености кистей': {
+    QuestionName.FEATURES_OF_BRUSHES: {
         'Мягкие рыхлые ладони': [0, 5, -3, -2, -3],
         'Налитые плотные ладони': [0, -2, -3, 5, 0],
         '"Сухие" кисти': [2, -3, 7, -3, 3],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Длина пальцев': {
+    QuestionName.FINGER_LENGTH: {
         'Длинные пальцы': [0, -3, 7, 0, 5],
         'Средняя длина пальцев': [0, 0, 0, 0, 0],
         'Короткие пальцы': [0, 7, 0, 5, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Форма пальцев': {
+    QuestionName.FINGER_SHAPE: {
         'Ровные пальцы': [3, 5, 7, 5, -1],
         'Конусообразные пальцы': [5, 0, 0, 0, 0],
         'Искривленные пальцы': [0, 0, 0, 0, 7],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Особенн пальцев': {
+    QuestionName.FEATURES_OF_FINGERS: {
         'Узловатые пальцы': [0, 0, 0, 0, 8],
         '"Сухие" пальцы': [2, -4, 5, -2, 2],
         'Мясистые пальцы': [0, 5, -3, 2, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Ногти форма': {
+    QuestionName.NAIL_SHAPE: {
         'Длинный прямоугольник': [0, 0, 7, 0, 2],
         'Трапеция короткая': [0, 5, 0, 4, 0],
         'Трапеция длинная': [0, 0, 2, 0, 5],
@@ -286,24 +322,24 @@ ANSWER_SCORES = {
         'Овальные': [5, 0, 0, 0, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Выпуклость ногтей': {
-        'Попер и прод выпукл (линза': [7, 0, 0, 0, 3],
+    QuestionName.CONVEXITY_OF_NAILS: {
+        'Попер и прод выпукл (линза)': [7, 0, 0, 0, 3],
         'Поперечно-выпуклые': [2, 2, 5, 3, 1],
         'Плоские': [0, 3, 0, 1, 4],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Объем мышц': {
+    QuestionName.MUSCLE_VOLUME: {
         'Мышцы тонкие': [4, 0, 5, 0, 0],
         'Мышцы объемные': [0, 5, -5, 7, 5],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Мышцы плотность': {
+    QuestionName.MUSCLE_DENSITY: {
         'Мягкие рыхлые мышцы': [0, 7, 0, -3, 0],
         'Плотные "резиновые" мышцы': [0, -3, 0, 7, 4],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],
     },
-    'Особенности кожи': {
-        'Крупные поры (лицо': [0, 5, -2, 3, 0],
+    QuestionName.FEATURES_OF_SKIN: {
+        'Крупные поры (лицо)': [0, 5, -2, 3, 0],
         'Кожа легко краснеет': [2, 1, 1, 0, 0],
         'Веснушки': [10, 0, 0, 0, 0],
         'Затрудняюсь ответить': [0, 0, 0, 0, 0],

@@ -17,9 +17,8 @@ from database.transaction import transaction
 from models.token import Token
 from quizzes.common import check
 from quizzes.constants import QuizStep, Sign, QuizSubStep
-from quizzes.models import QuizQuestion, Answer
-from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, HEIGHT_QUESTION_NAME, BODY_SCHEMA_QUESTION_NAME, \
-    EYE_COLOR_QUESTION_NAME, HAIR_COLOR_QUESTION_NAME, ANSWER_SCORES
+from quizzes.models import QuizQuestion, Answer, Quiz
+from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName
 
 
 class SignWithScore(BaseModel):
@@ -360,7 +359,7 @@ def find_next_non_asked_question_name_for_sign(
 
 
 class QuestionToAsk(BaseModel):
-    question_name: str
+    question_name: QuestionName
     quiz_step: QuizStep
     quiz_substep: QuizSubStep
     followup_question_signs: List[Sign] = []
@@ -376,7 +375,7 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
     if db_last_question is None:
         # First question of the quiz is always the same
         return QuestionToAsk(
-            question_name=HEIGHT_QUESTION_NAME,
+            question_name=QuestionName.HEIGHT,
             quiz_step=QuizStep.STEP_1,
             quiz_substep=QuizSubStep.STEP1_SUBSTEP_10,
         )
@@ -419,21 +418,21 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
     if last_step == QuizStep.STEP_1:
         if last_substep == QuizSubStep.STEP1_SUBSTEP_10:
             return QuestionToAsk(
-                question_name=BODY_SCHEMA_QUESTION_NAME,
+                question_name=QuestionName.BODY_SCHEME,
                 quiz_step=QuizStep.STEP_1,
                 quiz_substep=QuizSubStep.STEP1_SUBSTEP_20,
             )
 
         if last_substep == QuizSubStep.STEP1_SUBSTEP_20:
             return QuestionToAsk(
-                question_name=EYE_COLOR_QUESTION_NAME,
+                question_name=QuestionName.EYE_COLOR,
                 quiz_step=QuizStep.STEP_1,
                 quiz_substep=QuizSubStep.STEP1_SUBSTEP_30,
             )
 
         if last_substep == QuizSubStep.STEP1_SUBSTEP_30:
             return QuestionToAsk(
-                question_name=HAIR_COLOR_QUESTION_NAME,
+                question_name=QuestionName.HAIR_COLOR,
                 quiz_step=QuizStep.STEP_1,
                 quiz_substep=QuizSubStep.STEP1_SUBSTEP_40,
             )
@@ -471,7 +470,7 @@ class GetNextQuizQuestionResponse(BaseModel):
     available_answers: List[Answer]
 
 
-def api_get_next_question(quiz_token: QuizToken) -> GetNextQuizQuestionResponse:
+def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionResponse:
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
         question_to_ask = get_next_question_to_ask(session=session, db_quiz=db_quiz)
@@ -500,7 +499,7 @@ def api_get_next_question(quiz_token: QuizToken) -> GetNextQuizQuestionResponse:
         quiz_question = QuizQuestion(
             token=question_token,
             question_name=question_to_ask.question_name,
-            display_question=_(question_to_ask.question_name),
+            display_question=_(question_to_ask.question_name.value),
         )
         return GetNextQuizQuestionResponse(
             quiz_question=quiz_question,
