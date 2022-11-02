@@ -113,7 +113,7 @@ class UserTester:
 
     async def submit_quiz_answer(self, quiz_question_token: str, answer_name: str) -> QuizAnswerTester:
         response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_name=answer_name))
-        return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer_token)
+        return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer.token)
 
     def is_logged_in(self) -> bool:
         return self.user is not None

@@ -6,7 +6,7 @@ from typing import TypeVar, Generic
 
 from pydantic import BaseModel
 
-from models.quiz_models import User, Quiz, QuizQuestion
+from models.quiz_models import User, Quiz, QuizQuestion, QuizAnswer
 
 # from pydantic.generics import GenericModel, TypeVarModel
 

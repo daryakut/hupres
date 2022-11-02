@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
+from models.quiz_models import QuizAnswer
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
 from database.db_entities.db_quiz_question import DbQuizQuestion
@@ -30,6 +31,11 @@ class DbQuizAnswer(DbBase):
 
     quiz = relationship('DbQuiz', back_populates='quiz_answers', lazy='select')
     quiz_question = relationship('DbQuizQuestion', back_populates='_quiz_answers', lazy='select')
+
+    def to_model(self) -> QuizAnswer:
+        return QuizAnswer(
+            token=self.token.value,
+        )
 
     @staticmethod
     def create_quiz_answer(

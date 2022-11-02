@@ -10,11 +10,13 @@ from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
 from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
+from models.quiz_models import QuizQuestion
 from models.token import Token
 from common.utils import first_or_none
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 from models.sign import Sign
 from quizzes.question_database import QuestionName
+from gettext import gettext as _
 
 
 class DbQuizQuestion(DbBase):
@@ -38,6 +40,13 @@ class DbQuizQuestion(DbBase):
         if len(quiz_answers) > 1:
             raise ValueError('QuizQuestion has more than one answer')
         return first_or_none(quiz_answers)
+
+    def to_model(self) -> QuizQuestion:
+        return QuizQuestion(
+            token=self.token.value,
+            question_name=self.question_name,
+            question_display_name=_(self.question_name.value),
+        )
 
     @staticmethod
     def create_quiz_question(

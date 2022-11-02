@@ -40,11 +40,18 @@ class Quiz(BaseModel):
 
 
 class AvailableAnswer(BaseModel):
+    """Representation of the available answer from questions database"""
     answer_name: str
     display_answer: str
 
 
+class QuizAnswer(BaseModel):
+    """Representation of the DB object, whatever the Frontend might need to know about it"""
+    token: str
+
+
 class QuizQuestion(BaseModel):
+    """Representation of the DB object, whatever the Frontend might need to know about it"""
     token: str
     question_name: QuestionName
     question_display_name: str

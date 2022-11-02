@@ -16,7 +16,7 @@ from database.queries.quiz_answer_queries import QuizAnswerQueries
 from database.queries.quiz_queries import QuizQueries
 from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
-from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz
+from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz, QuizAnswer
 from models.sign import Sign
 from models.token import Token
 from quizzes.quiz_steps import QuizStep, QuizSubStep
@@ -484,7 +484,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
         question_to_ask = get_next_question_to_ask(session=session, db_quiz=db_quiz)
 
         if question_to_ask.quiz_question_token is not None:
-            question_token = question_to_ask.quiz_question_token
+            db_quiz_question = QuizQuestionQueries.find_by_token(session, question_to_ask.quiz_question_token)
         else:
             # we need to create a new question
             db_quiz_question = DbQuizQuestion.create_quiz_question(
@@ -495,7 +495,6 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
                 quiz_substep=question_to_ask.quiz_substep,
                 followup_question_signs=question_to_ask.followup_question_signs,
             )
-            question_token = db_quiz_question.token
 
         answer_option_scores = ANSWER_SCORES.get(question_to_ask.question_name)
         check(
@@ -504,19 +503,14 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
         )
 
         available_answers = [AvailableAnswer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
-        quiz_question = QuizQuestion(
-            token=question_token.value,
-            question_name=question_to_ask.question_name,
-            question_display_name=_(question_to_ask.question_name.value),
-        )
         return GetNextQuizQuestionResponse(
-            quiz_question=quiz_question,
+            quiz_question=db_quiz_question.to_model(),
             available_answers=available_answers,
         )
 
 
 class SubmitAnswerResponse(BaseModel):
-    quiz_answer_token: str
+    quiz_answer: QuizAnswer
 
 
 def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str) -> SubmitAnswerResponse:
@@ -558,4 +552,6 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
             current_sign_scores=current_sign_scores,
             signs_for_next_questions=db_quiz_question.followup_question_signs,
         )
-        return SubmitAnswerResponse(quiz_answer_token=db_quiz_answer.token.value)
+        return SubmitAnswerResponse(
+            quiz_answer=db_quiz_answer.to_model(),
+        )
