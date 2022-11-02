@@ -1,15 +1,4 @@
-from enum import Enum, IntEnum
-
-from typing_extensions import Type
-
-
-class Sign(Enum):
-    # It's important to start with 0 because we want indexes in the array to match the enum values
-    FIRE = 'FIRE'
-    EARTH = 'EARTH'
-    METAL = 'METAL'
-    WATER = 'WATER'
-    WOOD = 'WOOD'
+from enum import Enum
 
 
 class QuizSubStep(Enum):
@@ -50,19 +39,3 @@ class QuizStep(Enum):
     STEP_4 = '4'
     STEP_5 = '5'
     STEP_6 = '6'
-
-    # def get_substep_class(self) -> Type[AlgorithmSubStep]:
-    #     if self == AlgorithmStep.STEP_1:
-    #         return AlgorithmSubStep
-    #     if self == AlgorithmStep.STEP_2:
-    #         return AlgorithmSubStep
-    #     if self == AlgorithmStep.STEP_3:
-    #         return AlgorithmSubStep
-    #     if self == AlgorithmStep.STEP_4:
-    #         return AlgorithmSubStep
-    #     if self == AlgorithmStep.STEP_5:
-    #         return AlgorithmSubStep
-    #     if self == AlgorithmStep.STEP_6:
-    #         return Step6SubSteps
-    #     else:
-    #         raise ValueError(f'Unknown step: {self}')

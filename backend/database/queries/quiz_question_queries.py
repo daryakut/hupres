@@ -5,7 +5,7 @@ from typing import Union
 from database.connection import Session
 from database.db_entities.db_quiz_question import DbQuizQuestion
 from models.token import Token
-from quizzes.models import QuizQuestion
+from models.quiz_models import QuizQuestion
 
 
 class QuizQuestionQueries:

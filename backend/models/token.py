@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import re
 import secrets
-from dataclasses import dataclass
 from typing import TypeVar, Generic
 
-from quizzes.models import User, Question, Answer22, Quiz, QuizQuestion, QuizAnswer2
-
 from pydantic import BaseModel
+
+from models.quiz_models import User, Quiz, QuizQuestion
+
 # from pydantic.generics import GenericModel, TypeVarModel
 
 # T = TypeVarModel("T")
@@ -44,14 +44,6 @@ class Token(BaseModel, Generic[T]):
     @staticmethod
     def generate_user_token() -> Token[User]:
         return Token._generate_token("u")
-
-    @staticmethod
-    def generate_question_token() -> Token[Question]:
-        return Token._generate_token("qu")
-
-    @staticmethod
-    def generate_answer_token() -> Token[Answer22]:
-        return Token._generate_token("an")
 
     @staticmethod
     def generate_quiz_token() -> Token[Quiz]:

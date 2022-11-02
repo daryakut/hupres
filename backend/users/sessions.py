@@ -7,7 +7,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from common.clock import clock
 from common.env import env
 from models.token import generate_session_token, Token
-from quizzes.models import UserRole, User
+from models.quiz_models import UserRole, User
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
 

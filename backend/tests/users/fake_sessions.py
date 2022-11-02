@@ -2,7 +2,7 @@ from typing import Optional
 
 from common.clock import clock
 from models.token import generate_session_token, Token
-from quizzes.models import UserRole, User
+from models.quiz_models import UserRole, User
 from users.session_data import SessionData
 
 _fake_instance = None

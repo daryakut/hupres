@@ -13,7 +13,7 @@ from database.db_entities.db_quiz import DbQuiz
 from database.db_entities.db_quiz_question import DbQuizQuestion
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
-from quizzes.constants import Sign
+from models.sign import Sign
 
 
 class DbQuizAnswer(DbBase):

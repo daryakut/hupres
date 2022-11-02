@@ -9,9 +9,9 @@ from database.db_entities.db_quiz import DbQuiz
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from models.token import Token
-from quizzes.algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
+from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
-from quizzes.models import Quiz
+from models.quiz_models import Quiz
 from users.sessions import session_data_provider
 
 router = APIRouter()

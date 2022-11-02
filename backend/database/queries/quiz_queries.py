@@ -6,7 +6,7 @@ from database.connection import Session
 from database.db_entities.db_quiz import DbQuiz
 from database.db_entities.db_user import DbUser
 from models.token import Token
-from quizzes.models import Quiz, User
+from models.quiz_models import Quiz, User
 
 
 class QuizQueries:

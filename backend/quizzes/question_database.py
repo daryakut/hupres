@@ -1,6 +1,6 @@
 from enum import Enum
 
-from quizzes.constants import Sign
+from models.sign import Sign
 
 
 class QuestionName(Enum):

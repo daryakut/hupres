@@ -6,8 +6,9 @@ from database.queries.quiz_answer_queries import QuizAnswerQueries
 from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
 from models.token import Token
-from quizzes.constants import QuizStep, QuizSubStep, Sign
-from quizzes.models import User, QuizQuestion, Answer
+from quizzes.quiz_steps import QuizStep, QuizSubStep
+from models.sign import Sign
+from models.quiz_models import User, QuizQuestion, AvailableAnswer
 from quizzes.question_database import QuestionName
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest
@@ -29,14 +30,14 @@ from users.users_api import google_auth, get_current_user_response, ADMIN_USER_E
 class QuizQuestionTester:
     quiz_token: str
     quiz_question: QuizQuestion
-    available_answers: List[Answer]
+    available_answers: List[AvailableAnswer]
     question_name: QuestionName
     quiz_step: QuizStep
     quiz_substep: QuizSubStep
     followup_question_signs: List[Sign]
-    answer_token: Optional[Token[Answer]]
+    answer_token: Optional[Token[AvailableAnswer]]
 
-    def __init__(self, quiz_token: str, quiz_question: QuizQuestion, available_answers: List[Answer]):
+    def __init__(self, quiz_token: str, quiz_question: QuizQuestion, available_answers: List[AvailableAnswer]):
         assert quiz_question.token.startswith("qq_")
         self.quiz_token = quiz_token
         self.quiz_question = quiz_question

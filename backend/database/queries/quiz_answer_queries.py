@@ -8,8 +8,8 @@ from database.db_entities.db_quiz_answer import DbQuizAnswer
 from database.db_entities.db_quiz_question import DbQuizQuestion
 from models.token import Token
 from common.utils import first_or_none
-from quizzes.constants import QuizStep
-from quizzes.models import Quiz
+from quizzes.quiz_steps import QuizStep
+from models.quiz_models import Quiz
 
 
 class QuizAnswerQueries:

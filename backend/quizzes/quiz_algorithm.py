@@ -7,6 +7,7 @@ import numpy as np
 from pydantic import BaseModel
 
 from common.exceptions import Unauthorized
+from common.utils import check
 from database.connection import Session
 from database.db_entities.db_quiz import DbQuiz
 from database.db_entities.db_quiz_answer import DbQuizAnswer
@@ -15,10 +16,10 @@ from database.queries.quiz_answer_queries import QuizAnswerQueries
 from database.queries.quiz_queries import QuizQueries
 from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
+from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz
+from models.sign import Sign
 from models.token import Token
-from common.utils import check
-from quizzes.constants import QuizStep, Sign, QuizSubStep
-from quizzes.models import QuizQuestion, Answer, Quiz
+from quizzes.quiz_steps import QuizStep, QuizSubStep
 from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName
 from users.sessions import session_data_provider
 
@@ -469,7 +470,7 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
 
 class GetNextQuizQuestionResponse(BaseModel):
     quiz_question: QuizQuestion
-    available_answers: List[Answer]
+    available_answers: List[AvailableAnswer]
 
 
 def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionResponse:
@@ -502,7 +503,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             f"Could not find answers for question {question_to_ask.question_name}",
         )
 
-        available_answers = [Answer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
+        available_answers = [AvailableAnswer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
         quiz_question = QuizQuestion(
             token=question_token.value,
             question_name=question_to_ask.question_name,

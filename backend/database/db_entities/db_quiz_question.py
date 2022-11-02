@@ -12,7 +12,8 @@ from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from common.utils import first_or_none
-from quizzes.constants import QuizStep, QuizSubStep, Sign
+from quizzes.quiz_steps import QuizStep, QuizSubStep
+from models.sign import Sign
 from quizzes.question_database import QuestionName
 
 

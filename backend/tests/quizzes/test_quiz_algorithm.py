@@ -1,7 +1,7 @@
 import pytest
 
 from common.exceptions import Unauthorized
-from quizzes.constants import QuizStep, QuizSubStep
+from quizzes.quiz_steps import QuizStep, QuizSubStep
 from quizzes.question_database import QuestionName
 from tests.test_utils.user_tester import UserTester
 

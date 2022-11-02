@@ -9,8 +9,8 @@ from database.connection import DbBase, Session
 from database.db_entities.db_user import DbUser
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
-from quizzes.constants import Sign
-from quizzes.models import Pronounce, Quiz
+from models.sign import Sign
+from models.quiz_models import Pronounce, Quiz
 
 
 class DbQuiz(DbBase):
