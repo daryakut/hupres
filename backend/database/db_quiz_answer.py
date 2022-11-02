@@ -11,14 +11,15 @@ from sqlalchemy.orm import relationship
 from database.common import DbBase, Session
 from database.db_quiz import DbQuiz
 from database.db_quiz_question import DbQuizQuestion
+from database.token_db_type import TokenDbType
 from models.token import Token
-from quizzes.constants import QuizStep, QuizSubStep, Sign
+from quizzes.constants import Sign
 
 
 class DbQuizAnswer(DbBase):
     __tablename__ = 'quiz_answers'
     id = Column(Integer, primary_key=True)
-    token = Column(String(32), unique=True)
+    token = Column(TokenDbType, unique=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     quiz_question_id = Column(Integer, ForeignKey('quiz_questions.id'))
     answer_name = Column(String(50))
@@ -41,7 +42,7 @@ class DbQuizAnswer(DbBase):
             signs_for_next_questions: List[Sign],
     ) -> DbQuizAnswer:
         db_quiz_answer = DbQuizAnswer(
-            token=Token.generate_quiz_answer_token().value,
+            token=Token.generate_quiz_answer_token(),
             # SqlAlchemy won't immediately update the relationship fields, so we need to set it manually
             quiz_id=db_quiz.id,
             quiz=db_quiz,

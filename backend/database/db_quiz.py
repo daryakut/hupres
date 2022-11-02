@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import Optional
 
 from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from database.common import DbBase, Session
 from database.db_user import DbUser
+from database.token_db_type import TokenDbType
 from models.token import Token
 from quizzes.constants import Sign
 from quizzes.models import Pronounce, Quiz
@@ -15,7 +16,7 @@ from quizzes.models import Pronounce, Quiz
 class DbQuiz(DbBase):
     __tablename__ = 'quizzes'
     id = Column(Integer, primary_key=True)
-    token = Column(String(32), unique=True)
+    token = Column(TokenDbType, unique=True)
     session_token = Column(String(100))
     user_id = Column(Integer, ForeignKey('users.id'))
     deleted_at = Column(DateTime)
@@ -32,7 +33,7 @@ class DbQuiz(DbBase):
 
     def to_model(self) -> Quiz:
         return Quiz(
-            token=self.token,
+            token=self.token.value,
             user_token=self.user.token.value if self.user else None,
             subject_name=self.subject_name,
             pronounce=Pronounce(self.pronounce) if self.pronounce else None,
@@ -46,7 +47,7 @@ class DbQuiz(DbBase):
     def create_quiz(session: Session, session_token: str, user_token: Optional[str]) -> DbQuiz:
         db_user = DbUser.find_by_token(session, user_token) if user_token else None
         db_quiz = DbQuiz(
-            token=Token.generate_quiz_token().value,
+            token=Token.generate_quiz_token(),
             session_token=session_token,
             user_id=db_user.id if db_user else None,
             # SqlAlchemy won't immediately update the db_user field, so we need to set it manually

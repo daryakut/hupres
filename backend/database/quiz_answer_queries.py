@@ -16,7 +16,7 @@ class QuizAnswerQueries:
 
     @staticmethod
     def find_by_token(session: Session, token: Union[Token[Quiz], str]) -> DbQuizAnswer:
-        token = token.value if isinstance(token, Token) else token
+        token = token if isinstance(token, Token) else Token(value=token)
         return session.query(DbQuizAnswer).filter(DbQuizAnswer.token == token).one()
 
     @staticmethod

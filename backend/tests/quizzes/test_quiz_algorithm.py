@@ -36,8 +36,8 @@ async def test_can_get_first_question():
 
     with transaction() as session:
         db_question = QuizQuestionQueries.find_by_token(session, response.quiz_question.token)
-        assert db_question.quiz.token == quiz.token
-        assert db_question.token == response.quiz_question.token
+        assert db_question.quiz.token.value == quiz.token
+        assert db_question.token.value == response.quiz_question.token
         assert db_question.question_name == response.quiz_question.question_name
         assert db_question.quiz_step == QuizStep.STEP_1
         assert db_question.quiz_substep == QuizSubStep.STEP1_SUBSTEP_10
@@ -64,9 +64,9 @@ async def test_can_respond_to_first_question():
 
     with transaction() as session:
         db_answer = QuizAnswerQueries.find_by_token(session, answer_token)
-        assert db_answer.quiz.token == quiz.token
-        assert db_answer.quiz_question.token == response.quiz_question.token
-        assert db_answer.token == answer_token
+        assert db_answer.quiz.token.value == quiz.token
+        assert db_answer.quiz_question.token.value == response.quiz_question.token
+        assert db_answer.token.value == answer_token
         assert db_answer.answer_name == 'Рост низкий'
         assert db_answer.is_all_zeros is False
         assert db_answer.current_sign_scores == [15, 6, -5, -3, -3]

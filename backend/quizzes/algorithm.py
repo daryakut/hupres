@@ -497,7 +497,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
 
         available_answers = [Answer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
         quiz_question = QuizQuestion(
-            token=question_token,
+            token=question_token.value,
             question_name=question_to_ask.question_name,
             display_question=_(question_to_ask.question_name.value),
         )
@@ -525,10 +525,7 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
         answer_scores = answer_option_scores.get(answer_name)
         check(lambda: answer_scores is not None, f"Invalid answer name {answer_scores}")
 
-        # db_quiz_answers = db_quiz.quiz_answers
-        # TODO: fix token type
         db_last_answer = QuizAnswerQueries.find_last_for_quiz(session, db_quiz.token)
-
         last_sign_scores = db_last_answer.current_sign_scores if db_last_answer else [0, 0, 0, 0, 0]
 
         # Add new scores to already accumulated scores
@@ -544,4 +541,4 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
             current_sign_scores=current_sign_scores,
             signs_for_next_questions=db_quiz_question.followup_question_signs,
         )
-        return SubmitAnswerResponse(quiz_answer_token=db_quiz_answer.token)
+        return SubmitAnswerResponse(quiz_answer_token=db_quiz_answer.token.value)
