@@ -21,7 +21,6 @@ class DbQuizAnswer(DbBase):
     token = Column(String(32), unique=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     quiz_question_id = Column(Integer, ForeignKey('quiz_questions.id'))
-    # answer_id = Column(Integer, ForeignKey('answers.id'))
     answer_name = Column(String(50))
     is_all_zeros = Column(Boolean)
     current_sign_scores = Column(JSON)
@@ -30,7 +29,6 @@ class DbQuizAnswer(DbBase):
 
     quiz = relationship('DbQuiz', back_populates='quiz_answers', lazy='select')
     quiz_question = relationship('DbQuizQuestion', back_populates='_quiz_answers', lazy='select')
-    # answer = relationship('DbAnswer', lazy='select')
 
     @staticmethod
     def create_quiz_answer(

@@ -507,7 +507,11 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
         )
 
 
-def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str):
+class SubmitAnswerResponse(BaseModel):
+    quiz_answer_token: str
+
+
+def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str) -> SubmitAnswerResponse:
     with transaction() as session:
         db_quiz_question = QuizQuestionQueries.find_by_token(session, quiz_question_token)
         db_quiz: DbQuiz = db_quiz_question.quiz
@@ -525,11 +529,13 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
         # TODO: fix token type
         db_last_answer = QuizAnswerQueries.find_last_for_quiz(session, db_quiz.token)
 
+        last_sign_scores = db_last_answer.current_sign_scores if db_last_answer else [0, 0, 0, 0, 0]
+
         # Add new scores to already accumulated scores
-        current_sign_scores = [sum(x) for x in zip(db_last_answer.current_sign_scores, answer_scores)]
+        current_sign_scores = [sum(x) for x in zip(last_sign_scores, answer_scores)]
 
         is_all_zeros = all(score == 0 for score in answer_scores)
-        DbQuizAnswer.create_quiz_answer(
+        db_quiz_answer = DbQuizAnswer.create_quiz_answer(
             session=session,
             db_quiz=db_quiz,
             db_quiz_question=db_quiz_question,
@@ -538,3 +544,4 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
             current_sign_scores=current_sign_scores,
             signs_for_next_questions=db_quiz_question.followup_question_signs,
         )
+        return SubmitAnswerResponse(quiz_answer_token=db_quiz_answer.token)

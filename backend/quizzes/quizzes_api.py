@@ -8,7 +8,9 @@ from common.exceptions import Unauthorized, BadRequest
 from database.db_quiz import DbQuiz
 from database.quiz_queries import QuizQueries
 from database.transaction import transaction
-from quizzes.algorithm import api_get_next_question, GetNextQuizQuestionResponse
+from models.token import Token
+from quizzes.algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
+    SubmitAnswerResponse
 from quizzes.models import Quiz
 from users.sessions import session_data_provider
 
@@ -69,6 +71,19 @@ async def delete_quiz(quiz_token: str):
         db_quiz.deleted_at = clock.now()
 
 
-@router.post("/quizzes/{quiz_token}/get-next-question")
+@router.post("/quizzes/{quiz_token}/questions/generate-next")
 async def get_next_quiz_question(quiz_token: str) -> GetNextQuizQuestionResponse:
-    return api_get_next_question(quiz_token)
+    return api_get_next_question(Token.of(quiz_token))
+
+
+class SubmitQuizAnswerRequest(BaseModel):
+    answer_name: str
+
+
+@router.post("/quizzes/questions/{quiz_question_token}/submit-answer")
+async def submit_quiz_answer(
+        quiz_question_token: str,
+        request: SubmitQuizAnswerRequest,
+) -> SubmitAnswerResponse:
+    # TODO: check access rights
+    return api_submit_answer(Token.of(quiz_question_token), request.answer_name)

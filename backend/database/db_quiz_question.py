@@ -43,7 +43,7 @@ class DbQuizQuestion(DbBase):
     def create_quiz_question(
             session: Session,
             db_quiz: DbQuiz,
-            question_name: str,
+            question_name: QuestionName,
             quiz_step: QuizStep,
             quiz_substep: QuizSubStep,
             followup_question_signs: List[Sign],

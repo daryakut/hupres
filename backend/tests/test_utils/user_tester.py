@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from quizzes.algorithm import GetNextQuizQuestionResponse
+from quizzes.algorithm import GetNextQuizQuestionResponse, SubmitAnswerResponse
 from quizzes.models import User
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
-    GetQuizzesResponse, delete_quiz, get_next_quiz_question
+    GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
@@ -41,6 +41,10 @@ class UserTester:
 
     async def get_next_quiz_question(self, quiz_token: str) -> GetNextQuizQuestionResponse:
         return await get_next_quiz_question(quiz_token)
+
+    async def submit_quiz_answer(self, quiz_question_token: str, answer_name: str) -> str:
+        response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_name=answer_name))
+        return response.quiz_answer_token
 
     def is_logged_in(self) -> bool:
         return self.user is not None
