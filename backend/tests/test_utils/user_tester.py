@@ -51,12 +51,13 @@ class QuizQuestionTester:
     followup_question_signs: List[Sign]
     answer_token: Optional[Token[AvailableAnswer]]
 
-    def __init__(self, quiz_token: str, quiz_question: QuizQuestion, available_answers: List[AvailableAnswer]):
-        assert quiz_question.token.startswith("qq_")
+    def __init__(self, quiz_token: str, quiz_question: Optional[QuizQuestion], available_answers: List[AvailableAnswer]):
         self.quiz_token = quiz_token
         self.quiz_question = quiz_question
         self.available_answers = available_answers
-        self.refresh_from_db()
+        if quiz_question:
+            assert quiz_question.token.startswith("qq_")
+            self.refresh_from_db()
 
     def refresh_from_db(self):
         with transaction() as session:

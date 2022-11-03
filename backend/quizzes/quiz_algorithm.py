@@ -369,7 +369,7 @@ class QuestionToAsk(BaseModel):
     quiz_question_token: Optional[Token[QuizQuestion]] = None  # Not None if existing question needs to be asked again
 
 
-def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk:
+def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[QuestionToAsk]:
     db_quiz_questions = db_quiz.quiz_questions
     db_last_question: DbQuizQuestion = db_quiz_questions[-1] if db_quiz_questions else None
     # last_question
@@ -440,8 +440,9 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
                 quiz_substep=QuizSubStep.STEP1_SUBSTEP_40,
             )
 
-        # if last_substep == Step1SubSteps.STEP1_SUBSTEP_40:
-        #     return HAIR_COLOR_QUESTION_NAME, AlgorithmStep.STEP_1, Step1SubSteps.STEP1_SUBSTEP_40
+    if last_step == QuizStep.STEP_6:
+        # None means we've reached the end of the quiz
+        return None
 
     # (next_signs, next_step, next_substep) = get_next_signs_for_questions(
     next_signs, quiz_step, quiz_substep = get_next_signs_for_questions(
@@ -469,7 +470,7 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> QuestionToAsk
 
 
 class GetNextQuizQuestionResponse(BaseModel):
-    quiz_question: QuizQuestion
+    quiz_question: Optional[QuizQuestion]
     available_answers: List[AvailableAnswer]
 
 
@@ -482,6 +483,11 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             raise Unauthorized("You are not allowed to get questions of this quiz")
 
         question_to_ask = get_next_question_to_ask(session=session, db_quiz=db_quiz)
+        if question_to_ask is None:
+            return GetNextQuizQuestionResponse(
+                quiz_question=None,
+                available_answers=[],
+            )
 
         if question_to_ask.quiz_question_token is not None:
             db_quiz_question = QuizQuestionQueries.find_by_token(session, question_to_ask.quiz_question_token)

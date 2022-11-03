@@ -182,3 +182,7 @@ async def test_snizhana():
     answer16 = await user_tester.submit_quiz_answer(question16.quiz_question.token, 'Затрудняюсь ответить')
     assert answer16.current_sign_scores == [-12, 39, 53, 35, 14]  # added [0, 0, 0, 0, 0] so stays the same
     assert answer16.signs_for_next_questions == []
+
+    question17 = await user_tester.get_next_quiz_question(quiz_tester.quiz.token)
+    assert question17.quiz_question is None
+    assert question17.available_answers == []
