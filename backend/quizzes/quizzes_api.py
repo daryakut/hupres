@@ -12,6 +12,7 @@ from models.token import Token
 from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
 from models.quiz_models import Quiz
+from quizzes.quiz_summary import api_generate_quiz_summary, GenerateQuizSummaryResponse
 from users.sessions import session_data_provider
 
 router = APIRouter()
@@ -71,7 +72,7 @@ async def delete_quiz(quiz_token: str):
         db_quiz.deleted_at = clock.now()
 
 
-@router.post("/quizzes/{quiz_token}/questions/generate-next")
+@router.post("/quizzes/{quiz_token}/generate-next-question")
 async def get_next_quiz_question(quiz_token: str) -> GetNextQuizQuestionResponse:
     return api_get_next_question(Token.of(quiz_token))
 
@@ -80,10 +81,15 @@ class SubmitQuizAnswerRequest(BaseModel):
     answer_name: str
 
 
-@router.post("/quizzes/questions/{quiz_question_token}/submit-answer")
+@router.post("/quiz-questions/{quiz_question_token}/submit-answer")
 async def submit_quiz_answer(
         quiz_question_token: str,
         request: SubmitQuizAnswerRequest,
 ) -> SubmitAnswerResponse:
     # TODO: check access rights
     return api_submit_answer(Token.of(quiz_question_token), request.answer_name)
+
+
+@router.post("/quizzes/{quiz_token}/generate-summary")
+async def generate_quiz_summary(quiz_token: str) -> GenerateQuizSummaryResponse:
+    return api_generate_quiz_summary(Token.of(quiz_token))

@@ -12,8 +12,10 @@ from models.token import Token
 from models.user import User
 from quizzes.question_database import QuestionName
 from quizzes.quiz_steps import QuizStep, QuizSubStep
+from quizzes.quiz_summary import GenerateQuizSummaryResponse
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
-    GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest
+    GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest, \
+    generate_quiz_summary
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.users_api import google_auth, get_current_user_response, ADMIN_USER_EMAIL_ADDRESSES, logout
@@ -130,6 +132,9 @@ class UserTester:
     async def submit_quiz_answer(self, quiz_question_token: str, answer_name: str) -> QuizAnswerTester:
         response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_name=answer_name))
         return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer.token)
+
+    async def generate_quiz_summary(self, quiz_token: str) -> GenerateQuizSummaryResponse:
+        return await generate_quiz_summary(quiz_token)
 
     def is_logged_in(self) -> bool:
         return self.user is not None

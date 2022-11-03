@@ -17,3 +17,4 @@ async def test_real_charts_client():
 
     # dumping the response
     print(json.dumps(export_chart_info(info)))
+    # print(json.dumps(info))

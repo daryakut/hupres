@@ -186,3 +186,5 @@ async def test_snizhana():
     question17 = await user_tester.get_next_quiz_question(quiz_tester.quiz.token)
     assert question17.quiz_question is None
     assert question17.available_answers == []
+
+    summary = await user_tester.generate_quiz_summary(quiz_tester.quiz.token)
