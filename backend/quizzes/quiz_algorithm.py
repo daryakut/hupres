@@ -227,7 +227,7 @@ def get_next_signs_for_questions_step3(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_2, "Step 2 is not active")
+    check(lambda: last_step == QuizStep.STEP_2, "Step 2 is not active")
 
     # It means that we have answers for both questions for Step 2
     dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
@@ -273,7 +273,7 @@ def get_next_signs_for_questions_step4(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_3, "Step 3 is not active")
+    check(lambda: last_step == QuizStep.STEP_3, "Step 3 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
@@ -304,7 +304,7 @@ def get_next_signs_for_questions_step5(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_4, "Step 4 is not active")
+    check(lambda: last_step == QuizStep.STEP_4, "Step 4 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
@@ -330,7 +330,7 @@ def get_next_signs_for_questions_step6(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_5, "Step 5 is not active")
+    check(lambda: last_step == QuizStep.STEP_5, "Step 5 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
