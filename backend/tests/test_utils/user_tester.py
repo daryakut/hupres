@@ -3,14 +3,15 @@ from __future__ import annotations
 from typing import Optional, List
 
 from database.queries.quiz_answer_queries import QuizAnswerQueries
+from database.queries.quiz_queries import QuizQueries
 from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
-from models.token import Token
-from quizzes.quiz_steps import QuizStep, QuizSubStep
+from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz
 from models.sign import Sign
-from models.quiz_models import QuizQuestion, AvailableAnswer
+from models.token import Token
 from models.user import User
 from quizzes.question_database import QuestionName
+from quizzes.quiz_steps import QuizStep, QuizSubStep
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
@@ -26,6 +27,18 @@ from users.users_api import google_auth, get_current_user_response, ADMIN_USER_E
 #
 #     assert response.status_code == 200
 #     assert response.json() == {"item_id": 1, "name": "Item Name"}
+
+
+class QuizTester:
+    quiz: Quiz
+
+    def __init__(self, quiz: Quiz):
+        self.quiz = quiz
+
+    def refresh_from_db(self):
+        with transaction() as session:
+            db_quiz = QuizQueries.find_by_token(session, self.quiz.token)
+            self.quiz = db_quiz.to_model()
 
 
 class QuizQuestionTester:
@@ -95,8 +108,9 @@ class UserTester:
         self.session_token = session_token
         self.user = user
 
-    async def create_quiz(self) -> CreateQuizResponse:
-        return await create_quiz()
+    async def create_quiz(self) -> QuizTester:
+        response = await create_quiz()
+        return QuizTester(quiz=response.quiz)
 
     async def get_quizzes(self) -> GetQuizzesResponse:
         return await get_quizzes()

@@ -1,22 +1,22 @@
 from __future__ import annotations
 
+from gettext import gettext as _
 from typing import List
 
 from sqlalchemy import ForeignKey, Column, Integer
-from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
+from common.utils import first_or_none
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
+from database.db_types.json_enum_list_db_type import JsonEnumListDbType
 from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
 from models.quiz_models import QuizQuestion
-from models.token import Token
-from common.utils import first_or_none
-from quizzes.quiz_steps import QuizStep, QuizSubStep
 from models.sign import Sign
+from models.token import Token
 from quizzes.question_database import QuestionName
-from gettext import gettext as _
+from quizzes.quiz_steps import QuizStep, QuizSubStep
 
 
 class DbQuizQuestion(DbBase):
@@ -27,7 +27,7 @@ class DbQuizQuestion(DbBase):
     question_name = Column(StringEnumDbType(QuestionName))
     quiz_step = Column(StringEnumDbType(QuizStep))
     quiz_substep = Column(StringEnumDbType(QuizSubStep))
-    followup_question_signs = Column(JSON)
+    followup_question_signs = Column(JsonEnumListDbType(Sign))
 
     quiz = relationship('DbQuiz', back_populates='quiz_questions', lazy='select')
 

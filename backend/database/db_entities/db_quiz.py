@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
 from database.db_entities.db_user import DbUser
+from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
 from models.token import Token
 from models.sign import Sign
@@ -22,11 +23,11 @@ class DbQuiz(DbBase):
     user_id = Column(Integer, ForeignKey('users.id'))
     deleted_at = Column(DateTime)
     subject_name = Column(String(100))
-    pronounce = Column(String(50))
-    dm_after_step_1 = Column(String(10))
-    dm_after_step_2 = Column(String(10))
-    dm_after_step_3 = Column(String(10))
-    dm_after_step_4 = Column(String(10))
+    pronounce = Column(StringEnumDbType(Pronounce))
+    dm_after_step_1 = Column(StringEnumDbType(Sign))
+    dm_after_step_2 = Column(StringEnumDbType(Sign))
+    dm_after_step_3 = Column(StringEnumDbType(Sign))
+    dm_after_step_4 = Column(StringEnumDbType(Sign))
 
     user = relationship('DbUser', lazy='select')
     quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
@@ -37,11 +38,11 @@ class DbQuiz(DbBase):
             token=self.token.value,
             user_token=self.user.token.value if self.user else None,
             subject_name=self.subject_name,
-            pronounce=Pronounce(self.pronounce) if self.pronounce else None,
-            dm_after_step_1=Sign(self.dm_after_step_1) if self.dm_after_step_1 else None,
-            dm_after_step_2=Sign(self.dm_after_step_2) if self.dm_after_step_2 else None,
-            dm_after_step_3=Sign(self.dm_after_step_3) if self.dm_after_step_3 else None,
-            dm_after_step_4=Sign(self.dm_after_step_4) if self.dm_after_step_4 else None,
+            pronounce=self.pronounce,
+            dm_after_step_1=self.dm_after_step_1,
+            dm_after_step_2=self.dm_after_step_2,
+            dm_after_step_3=self.dm_after_step_3,
+            dm_after_step_4=self.dm_after_step_4,
         )
 
     @staticmethod

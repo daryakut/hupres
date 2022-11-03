@@ -8,7 +8,7 @@ from database.db_entities.db_quiz_answer import DbQuizAnswer
 from database.db_entities.db_quiz_question import DbQuizQuestion
 from models.token import Token
 from common.utils import first_or_none
-from quizzes.quiz_steps import QuizStep
+from quizzes.quiz_steps import QuizStep, TABLET_SUB_STEPS
 from models.quiz_models import Quiz
 
 
@@ -25,8 +25,12 @@ class QuizAnswerQueries:
             .join(DbQuiz) \
             .join(DbQuizQuestion) \
             .filter(DbQuiz.token == quiz_token) \
-            .filter(DbQuizQuestion.quiz_step <= QuizStep.STEP_4.value) \
-            .filter(DbQuizAnswer.is_all_zeros == True) \
+            .filter(DbQuizQuestion.quiz_step == QuizStep.STEP_1) \
+            .filter(DbQuizQuestion.quiz_substep.in_(TABLET_SUB_STEPS)) \
+            .filter(DbQuizAnswer.is_all_zeros == False) \
+            .distinct(DbQuizAnswer.id) \
+            .order_by(DbQuizAnswer.id.asc()) \
+            .limit(2) \
             .all()
 
     @staticmethod

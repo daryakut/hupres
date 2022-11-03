@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
+from database.db_types.json_enum_list_db_type import JsonEnumListDbType
 from models.quiz_models import QuizAnswer
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
@@ -27,7 +28,7 @@ class DbQuizAnswer(DbBase):
     is_all_zeros = Column(Boolean)
     current_sign_scores = Column(JSON)
     original_sign_scores = Column(JSON)
-    signs_for_next_questions = Column(JSON)
+    signs_for_next_questions = Column(JsonEnumListDbType(Sign))
 
     quiz = relationship('DbQuiz', back_populates='quiz_answers', lazy='select')
     quiz_question = relationship('DbQuizQuestion', back_populates='_quiz_answers', lazy='select')

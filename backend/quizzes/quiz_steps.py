@@ -39,3 +39,11 @@ class QuizStep(Enum):
     STEP_4 = '4'
     STEP_5 = '5'
     STEP_6 = '6'
+
+
+TABLET_SUB_STEPS = [
+    QuizSubStep.STEP1_SUBSTEP_10,
+    QuizSubStep.STEP1_SUBSTEP_20,
+    QuizSubStep.STEP1_SUBSTEP_30,
+    QuizSubStep.STEP1_SUBSTEP_40,
+]

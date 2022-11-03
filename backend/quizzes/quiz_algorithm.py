@@ -30,7 +30,7 @@ class SignWithScore(BaseModel):
 
     @staticmethod
     def from_sign_and_score(sign_value_and_score: Tuple[int, int]) -> SignWithScore:
-        return SignWithScore(sign=Sign(sign_value_and_score[0]), score=sign_value_and_score[1])
+        return SignWithScore(sign=Sign.from_index(sign_value_and_score[0]), score=sign_value_and_score[1])
 
 
 def get_dominant(scores: List[int]) -> Tuple[SignWithScore, SignWithScore, SignWithScore]:
@@ -43,9 +43,9 @@ def get_dominant(scores: List[int]) -> Tuple[SignWithScore, SignWithScore, SignW
         reverse=True,
     )
     return (
-        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-1]),
-        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-2]),
-        SignWithScore.from_sign_and_score(sorted_index_score_pairs[-3]),
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[0]),
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[1]),
+        SignWithScore.from_sign_and_score(sorted_index_score_pairs[2]),
     )
 
 
@@ -115,7 +115,7 @@ def get_next_signs_for_questions_step1(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_1, "Step 1 is not active")
+    check(lambda: last_step == QuizStep.STEP_1, "Step 1 is not active")
 
     last_substep = last_question.quiz_substep
     # check(lambda: int(last_substep) > int(QuizSubStep.STEP1_SUBSTEP_40), "First 4 questions are asked elsewhere")
@@ -146,7 +146,7 @@ def get_next_signs_for_questions_step1(
             return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_50_60
 
         # Step 1.1c
-        first_two_non_zero_tablet_answers = QuizAnswerQueries.get_first_two_non_zero_tablet_answers(quiz.token)
+        first_two_non_zero_tablet_answers = QuizAnswerQueries.get_first_two_non_zero_tablet_answers(session, quiz.token)
         if len(first_two_non_zero_tablet_answers) < 2:
             raise Exception("Not enough information to proceed with the quiz")
         # We store the original sign scores for the last answer just in case
@@ -213,7 +213,7 @@ def get_next_signs_for_questions_step2(
         last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
     last_step = last_question.quiz_step
-    check(last_step == QuizStep.STEP_1, "Step 1 is not active")
+    check(lambda: last_step == QuizStep.STEP_1, "Step 1 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
