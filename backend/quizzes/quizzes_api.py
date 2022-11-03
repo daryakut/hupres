@@ -8,10 +8,11 @@ from common.exceptions import Unauthorized, BadRequest
 from database.db_entities.db_quiz import DbQuiz
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
+from models.pronounce import Pronounce
+from models.quiz_models import Quiz
 from models.token import Token
 from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
-from models.quiz_models import Quiz
 from quizzes.quiz_summary import api_generate_quiz_summary, GenerateQuizSummaryResponse
 from users.sessions import session_data_provider
 
@@ -70,6 +71,26 @@ async def delete_quiz(quiz_token: str):
         if not session_data.is_owner_of(db_quiz):
             raise Unauthorized("You are not allowed to delete this quiz")
         db_quiz.deleted_at = clock.now()
+
+
+class UpdateQuizRequest(BaseModel):
+    subject_name: str
+    pronounce: Pronounce
+
+
+@router.post("/quizzes/{quiz_token}")
+async def update_quiz(quiz_token: str, request: UpdateQuizRequest):
+    session_data = session_data_provider.get_current_session()
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, token=quiz_token)
+        if db_quiz.deleted_at is not None:
+            raise BadRequest(f"Cannot find quiz {quiz_token}")
+
+        if not session_data.is_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to delete this quiz")
+
+        db_quiz.subject_name = request.subject_name
+        db_quiz.pronounce = request.pronounce
 
 
 @router.post("/quizzes/{quiz_token}/generate-next-question")

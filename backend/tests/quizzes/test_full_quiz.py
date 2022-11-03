@@ -1,5 +1,6 @@
 import pytest
 
+from models.pronounce import Pronounce
 from models.sign import Sign
 from quizzes.question_database import QuestionName
 from quizzes.quiz_steps import QuizStep, QuizSubStep
@@ -187,4 +188,6 @@ async def test_snizhana():
     assert question17.quiz_question is None
     assert question17.available_answers == []
 
-    summary = await user_tester.generate_quiz_summary(quiz_tester.quiz.token)
+    await user_tester.update_quiz(quiz_tester.quiz.token, subject_name='Снежана', pronounce=Pronounce.SHE_HER)
+    # response = await user_tester.generate_quiz_summary(quiz_tester.quiz.token)
+    # assert response.summaries is not None
