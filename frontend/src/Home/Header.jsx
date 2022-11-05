@@ -95,7 +95,7 @@ export default class Header extends React.Component {
             {menuMode === 'horizontal' ? menu : null}
           </Col>
           <Col lg={2} md={2} sm={2} xs={2}>
-            <UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 20, cursor: "pointer" }}/>
+            <UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 25, cursor: "pointer" }}/>
           </Col>
         </Row>
       </header>

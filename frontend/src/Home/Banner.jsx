@@ -27,7 +27,7 @@ export default function Banner({ onEnterChange }) {
         <QueueAnim className="banner-text-wrapper" type={typeFunc} delay={300} key="banner">
           <h2 key="h2">РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ</h2>
           {/*<hr />*/}
-          <hr key="hr" />
+          <hr key="hr" className="landing-hr"/>
           <h5 key="h5">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
           <Button key="button" className="cta-button" size={20}>ПРОЙТИ ТЕСТ <RightOutlined /></Button>
         </QueueAnim>
