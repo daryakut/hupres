@@ -4,14 +4,15 @@ import ScrollElement from 'rc-scroll-anim/lib/ScrollElement';
 import GitHubButton from 'react-github-button';
 import {Button, Icon} from 'antd';
 import QueueAnim from 'rc-queue-anim';
+import {RightOutlined} from "@ant-design/icons";
 
 function typeFunc(a) {
-  if (a.key === 'line') {
-    return 'right';
+  if (a.key === 'h2' || a.key === 'h5') {
+    return 'left';
   } else if (a.key === 'button') {
     return 'bottom';
   }
-  return 'left';
+  return 'right';
 }
 
 export default function Banner({ onEnterChange }) {
@@ -25,8 +26,10 @@ export default function Banner({ onEnterChange }) {
       >
         <QueueAnim className="banner-text-wrapper" type={typeFunc} delay={300} key="banner">
           <h2 key="h2">РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ</h2>
+          {/*<hr />*/}
+          <hr key="hr" />
           <h5 key="h5">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
-          <Button key="start-test" size={20}>Пройти тест</Button>
+          <Button key="button" className="cta-button" size={20}>ПРОЙТИ ТЕСТ <RightOutlined /></Button>
         </QueueAnim>
         <Icon type="down" className="down" />
       </ScrollElement>

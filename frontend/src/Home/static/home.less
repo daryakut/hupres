@@ -6,78 +6,107 @@
   background: url("https://hupres.com/image/catalog/top_image1.jpg") no-repeat center / cover;
 }
 .banner-text-wrapper {
+  display: flex;
+  top: 30%;
   position: absolute;
-  left: 13%;
-  top: 53%;
-  color: #fff;
-  text-align: right;
-  font-family: Lato, @font-family;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.banner-text-wrapper hr {
+  width: 100px;
+  height: 5px;
+  background: #ff8f3c;
+  font-size: 36px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 .banner-text-wrapper h2 {
-  font-size: 40px;
+  font-family: Lato, @font-family;
+  text-align: center;
+  font-size: 46px;
   font-weight: normal;
-  font-family: 'Raleway', 'Hiragino Sans GB';
-  white-space: nowrap;
+  width: 50%;
   color: #fff;
   margin-bottom: 8px;
 }
-.banner-text-wrapper h2 p {
-  color: #ff3171;
-  display: inline-block;
-  margin: 0;
+.banner-text-wrapper h5 {
+  font-family: Lato, @font-family;
+  text-align: center;
+  font-size: 26px;
+  font-weight: normal;
+  width: 40%;
+  color: #fff;
+  margin-bottom: 30px;
 }
-.banner-text-wrapper .line {
-  width: 0.8px;
-  height: 76px;
-  position: absolute;
-  background: rgba(255, 255, 255, .44);
-  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-  background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-  top: 16px;
-  right: -25px;
+.cta-button {
+  font-size: 20px;
+  height: 50px;
+  width: 200px;
+  font-family: Lato, @font-family;
+  background: #ff8f3c;
+  color: #eee;
 }
-.banner-text-wrapper > p {
-  margin: 10px auto 24px;
-  font-size: 16px;
+.cta-button:hover {
+  background: #007bff;
 }
-
-.banner-text-wrapper .start-button {
-  @start-button-color: tint(@primary-color, 20%);
-  margin-bottom: 24px;
-  text-align: right;
-  > a {
-    display: inline-block;
-    height: 40px;
-    padding: 0 16px;
-    font-weight: 500;
-    border-radius: @border-radius-base;
-    border: 1px solid @start-button-color;
-    text-decoration: none;
-    color: #0ae;
-    font-size: 15px;
-    background: transparent;
-    transition: all .45s;
-    text-align: center;
-    line-height: 36px;
-    margin-left: 8px;
-    &:hover {
-      color: #fff;
-      background: @start-button-color;
-    }
-  }
-}
-
-.banner-text-wrapper .github-btn {
-  float: right;
-  line-height: 14px;
-  text-align: left;
-
-  a:hover {
-    color: #333;
-  }
-}
+//.banner-text-wrapper h2 p {
+//  color: #ff3171;
+//  display: inline-block;
+//  margin: 0;
+//}
+//.banner-text-wrapper .line {
+//  width: 0.8px;
+//  height: 76px;
+//  position: absolute;
+//  background: rgba(255, 255, 255, .44);
+//  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
+//  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
+//  background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
+//  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
+//  top: 16px;
+//  right: -25px;
+//}
+//.banner-text-wrapper > p {
+//  margin: 10px auto 24px;
+//  font-size: 16px;
+//}
+//
+//.banner-text-wrapper .start-button {
+//  @start-button-color: tint(@primary-color, 20%);
+//  margin-bottom: 24px;
+//  text-align: right;
+//  > a {
+//    display: inline-block;
+//    height: 40px;
+//    padding: 0 16px;
+//    font-weight: 500;
+//    border-radius: @border-radius-base;
+//    border: 1px solid @start-button-color;
+//    text-decoration: none;
+//    color: #0ae;
+//    font-size: 15px;
+//    background: transparent;
+//    transition: all .45s;
+//    text-align: center;
+//    line-height: 36px;
+//    margin-left: 8px;
+//    &:hover {
+//      color: #fff;
+//      background: @start-button-color;
+//    }
+//  }
+//}
+//
+//.banner-text-wrapper .github-btn {
+//  float: right;
+//  line-height: 14px;
+//  text-align: left;
+//
+//  a:hover {
+//    color: #333;
+//  }
+//}
 
 .down {
   text-align: center;
