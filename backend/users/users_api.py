@@ -54,7 +54,7 @@ async def google_auth(request: Request):
     return {"email": email_address, "user_token": user_token}
 
 
-@router.get("/users/google-login")
+@router.get("/api/users/google-login")
 async def google_login(request: Request):
     # This is http://localhost:8000/users/google-auth-callback
     redirect_uri = request.url_for(google_auth.__name__)
@@ -62,18 +62,18 @@ async def google_login(request: Request):
     return await google_oauth_service.authorize_redirect(request, redirect_uri)
 
 
-@router.get("/users/logout")
+@router.get("/api/users/logout")
 async def logout():
     session_data_provider.update_current_session(user_token=None, user_role=None)
 
 
-# @router.get("/set-session")
+# @router.get("/s/apiet-session")
 # def set_session(request: Request):
 #     request.session["message"] = "Hello, World!"
 #     return {"status": "session set"}
 #
 #
-# @router.get("/get-session")
+# @router.get("/g/apiet-session")
 # def get_session(request: Request):
 #     return {"session_value": request.session.get("message")}
 
@@ -82,7 +82,7 @@ class GetCurrentUserResponse(BaseModel):
     user: User
 
 
-@router.get("/users/current")
+@router.get("/api/users/current")
 async def get_current_user_response() -> GetCurrentUserResponse:
     # user_token = Token(session_data_provider.get_current_session().user_token)
     user_token = session_data_provider.get_current_session().user_token
@@ -99,14 +99,14 @@ class UserSignupResponse(BaseModel):
     user: User
 
 
-@router.get("/users/current")
+@router.get("/api/users/current")
 async def get_current_user() -> UserSignupResponse:
     with transaction() as session:
         db_user = DbUser.create_user(session, email_address=request.email_address, role=UserRole.RESPONDENT)
         return UserSignupResponse(user=db_user.to_model())
 
 
-@router.post("/users/signup")
+@router.post("/api/users/signup")
 async def user_signup(request: UserSignupRequest) -> UserSignupResponse:
     with transaction() as session:
         db_user = DbUser.create_user(session, email_address=request.email_address, role=UserRole.RESPONDENT)

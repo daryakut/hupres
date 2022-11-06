@@ -23,7 +23,7 @@ class CreateQuizResponse(BaseModel):
     quiz: Quiz
 
 
-@router.post("/quizzes")
+@router.post("/api/quizzes")
 async def create_quiz() -> CreateQuizResponse:
     session_data = session_data_provider.get_current_session()
     with transaction() as session:
@@ -41,7 +41,7 @@ class GetQuizzesResponse(BaseModel):
     quizzes: List[Quiz]
 
 
-@router.get("/quizzes")
+@router.get("/api/quizzes")
 async def get_quizzes() -> GetQuizzesResponse:
     session_data = session_data_provider.get_current_session()
     with transaction() as session:
@@ -60,7 +60,7 @@ async def get_quizzes() -> GetQuizzesResponse:
     return GetQuizzesResponse(quizzes=quizzes)
 
 
-@router.delete("/quizzes/{quiz_token}")
+@router.delete("/api/quizzes/{quiz_token}")
 async def delete_quiz(quiz_token: str):
     session_data = session_data_provider.get_current_session()
     with transaction() as session:
@@ -78,7 +78,7 @@ class UpdateQuizRequest(BaseModel):
     pronounce: Pronounce
 
 
-@router.post("/quizzes/{quiz_token}")
+@router.post("/api/quizzes/{quiz_token}")
 async def update_quiz(quiz_token: str, request: UpdateQuizRequest):
     session_data = session_data_provider.get_current_session()
     with transaction() as session:
@@ -93,7 +93,7 @@ async def update_quiz(quiz_token: str, request: UpdateQuizRequest):
         db_quiz.pronounce = request.pronounce
 
 
-@router.post("/quizzes/{quiz_token}/generate-next-question")
+@router.post("/api/quizzes/{quiz_token}/generate-next-question")
 async def get_next_quiz_question(quiz_token: str) -> GetNextQuizQuestionResponse:
     return api_get_next_question(Token.of(quiz_token))
 
@@ -102,7 +102,7 @@ class SubmitQuizAnswerRequest(BaseModel):
     answer_name: str
 
 
-@router.post("/quiz-questions/{quiz_question_token}/submit-answer")
+@router.post("/api/quiz-questions/{quiz_question_token}/submit-answer")
 async def submit_quiz_answer(
         quiz_question_token: str,
         request: SubmitQuizAnswerRequest,
@@ -111,6 +111,6 @@ async def submit_quiz_answer(
     return api_submit_answer(Token.of(quiz_question_token), request.answer_name)
 
 
-@router.post("/quizzes/{quiz_token}/generate-summary")
+@router.post("/api/quizzes/{quiz_token}/generate-summary")
 async def generate_quiz_summary(quiz_token: str) -> GenerateQuizSummaryResponse:
     return api_generate_quiz_summary(Token.of(quiz_token))

@@ -12,6 +12,7 @@ function App() {
           <Route exact path="/">
             <Home/>
           </Route>
+          <Route path="/quiz/:quizToken" component={Quiz} />
           <Route path="/quiz">
             <Quiz/>
           </Route>

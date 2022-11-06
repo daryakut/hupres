@@ -6,6 +6,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "antd": "^3.0.0",
+    "axios": "^1.6.0",
     "classnames": "^2.2.5",
     "enquire-js": "^0.1.0",
     "html-webpack-plugin": "^5.5.3",
