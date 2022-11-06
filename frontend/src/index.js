@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './src/Home';
+import Home from './Home';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Quiz from "./src/Quiz";
+import Quiz from "./Quiz";
 
 function App() {
   return (
