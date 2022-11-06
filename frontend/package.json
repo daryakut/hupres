@@ -8,6 +8,9 @@
     "antd": "^3.0.0",
     "classnames": "^2.2.5",
     "enquire-js": "^0.1.0",
+    "html-webpack-plugin": "^5.5.3",
+    "html-webpack-skip-assets-plugin": "^1.0.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "prop-types": "^15.6.0",
     "rc-queue-anim": "^1.4.0",
     "rc-scroll-anim": "^2.1.0",
@@ -15,7 +18,8 @@
     "react": "^16.1.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.1.1",
-    "react-github-button": "^0.1.11"
+    "react-github-button": "^0.1.11",
+    "react-router-dom": "5"
   },
   "devDependencies": {
     "atool-build": "^1.0.2",

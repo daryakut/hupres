@@ -5,6 +5,7 @@ import GitHubButton from 'react-github-button';
 import {Button, Icon} from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import {RightOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
 
 function typeFunc(a) {
   if (a.key === 'h2' || a.key === 'h5') {
@@ -29,7 +30,7 @@ export default function Banner({ onEnterChange }) {
           {/*<hr />*/}
           <hr key="hr" className="landing-hr"/>
           <h5 key="h5">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
-          <Button key="button" className="cta-button" size={20}>ПРОЙТИ ТЕСТ <RightOutlined /></Button>
+          <Link key="button" to="/quiz"><Button className="cta-button" size={20}>ПРОЙТИ ТЕСТ<RightOutlined /></Button></Link>
         </QueueAnim>
         <Icon type="down" className="down" />
       </ScrollElement>
