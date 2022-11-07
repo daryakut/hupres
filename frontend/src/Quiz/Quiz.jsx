@@ -12,13 +12,15 @@ const Quiz = ({match}) => {
   let history = useHistory();
   const [quiz, setQuiz] = useState(null);
   const [question, setQuestion] = useState(null);
+  const [answers, setAnswers] = useState(null);
+  const [isQuizComplete, setQuizComplete] = useState(false);
   const [pronounce, setPronounce] = useState(null);
   const [respondentName, setRespondentName] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const quizToken = match?.params?.quizToken;
-  const quizQuestionToken = question?.quiz_question?.token
+  const quizQuestionToken = question?.token
 
   // const quizQuestionToken = match?.params?.quizQuestionToken;
   console.log('quizToken', quizToken)
@@ -57,24 +59,14 @@ const Quiz = ({match}) => {
       setIsLoading(true);
       const response = await getNextQuizQuestion(quizToken);
       console.log('response', response)
-      setQuestion(response);
+      setQuestion(response.quiz_question);
+      setAnswers(response.available_answers);
+      // Quiz is complete if there is no question
+      setQuizComplete(!response.quiz_question);
     } catch (error) {
       setError(error);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const fetchQuizResults = async () => {
-    try {
-      // setIsLoading(true);
-      await updateQuiz(quizToken, respondentName, pronounce);
-      // console.log('response', response)
-      // setQuestion(response);
-    } catch (error) {
-      setError(error);
-    } finally {
-      // setIsLoading(false);
     }
   };
 
@@ -93,6 +85,11 @@ const Quiz = ({match}) => {
   };
 
   const onAnswerClick = async (answerName) => {
+    // const answerIndex = answers.findIndex(answer => answer.answer_name === answerName);
+    // const answersCopy = answers.slice(0);
+    // answersCopy.splice(answerIndex, 1)
+    // setAnswers([]);
+
     await submitQuizAnswer(quizQuestionToken, answerName);
     await fetchNextQuestion();
   }
@@ -110,7 +107,7 @@ const Quiz = ({match}) => {
     );
   }
 
-  if (question && !question.quiz_question) {
+  if (isQuizComplete) {
     if (quiz.subject_name && quiz.pronounce) {
       // Quiz already completed, let's show the results
       history.replace(`/quiz/${quiz.token}/summary`);
@@ -159,8 +156,7 @@ const Quiz = ({match}) => {
     )
   }
 
-  const displayQuestion = question?.quiz_question?.question_display_name;
-  const displayAnswers = question?.available_answers;
+  const displayQuestion = question?.question_display_name;
 
   return (
     <div className="fullscreen-div">
@@ -174,13 +170,24 @@ const Quiz = ({match}) => {
               {/*  <p>Card content</p>*/}
               {/*</Card>*/}
               <div className="quiz-container">
-                <QueueAnim type="left" delay={300}>
+                <QueueAnim
+                  type="left"
+                  delay={300}
+                  // enterAnim={[
+                  //   { opacity: [1, 0], translateY: [0, 50] },
+                  //   { height: [200, 0], duration: [500, 0] }
+                  // ]}
+                  // leaveAnim={[
+                  //   { opacity: [0, 1], translateY: [50, 0] },
+                  //   { height: 0 }
+                  // ]}
+                >
                   <div key="question">
                     <h2 className="quiz-question">{displayQuestion}</h2>
                     <hr className="quiz-hr"/>
                   </div>
                   {
-                    displayAnswers.map((answer, index) => (
+                    answers.map((answer, index) => (
                       <Checkbox
                         key={`answer-${index}`}
                         className="quiz-answer"
