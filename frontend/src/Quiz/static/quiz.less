@@ -23,7 +23,7 @@
   padding: 40px;
   margin-top: 320px;
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px solid #eee;
   width: 100%;
   //display: grid;
@@ -142,7 +142,7 @@
 
 .quiz-container-summary {
   margin-top: 20px;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }
 
 .quiz-summary-title {
@@ -233,7 +233,18 @@
   padding: 20px;
   //margin-top: 320px;
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  border-bottom-right-radius: 0px;
+}
+
+.free-form-answer-content {
+  font-family: Lato, @font-family;
+  padding: 20px;
+  //margin-top: 320px;
+  background-color: #fff;
+  border-radius: 8px;
+  border-bottom-left-radius: 0px;
   border: 1px solid #eee;
 }
 
@@ -245,4 +256,13 @@
 .free-form-answer-container {
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.free-form-hr-divider {
+  border: none; /* Remove the default border */
+  height: 1px; /* Make it thin */
+  color: #666; /* Color it black */
+  background-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.5), transparent); /* Gradient: from transparent to semi-visible to transparent */
+  margin: 10px 0; /* Add some margin to avoid content touching the HR directly */
 }

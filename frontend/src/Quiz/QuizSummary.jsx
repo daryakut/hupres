@@ -78,21 +78,23 @@ const QuizSummary = ({match}) => {
             {
               questions.map((question, index) => (
                 <div key={`question-${index}`}>
-                  <Row key={`question-${index}`} justify="end">
-                    <Col key={`summary-${index}`} span={16} offset={8}>
-                      <h5 className="free-form-question-content" style={{textAlign: 'right'}}>{question.question}</h5>
-                    </Col>
-                  </Row>
-                  <Row key={`answer-${index}`} justify="start">
-                    <Col key={`summary-${index}`} span={16} offset={0}>
-                      <h5 className="free-form-question-content">{question.answer}</h5>
-                    </Col>
-                  </Row>
+                  <hr className="free-form-hr-divider"/>
+                  <div key={`question-${index}`} className="free-form-question-container">
+                    {/*<Col key={`summary-${index}`} span={16} offset={8}>*/}
+                    <h5 className="free-form-question-content" style={{textAlign: 'right'}}>{question.question}</h5>
+                    {/*</Col>*/}
+                  </div>
+                  <div key={`answer-${index}`} className="free-form-answer-container">
+                    {/*<Col key={`summary-${index}`} span={16} offset={0}>*/}
+                    <h5 className="free-form-answer-content">{question.answer}</h5>
+                    {/*</Col>*/}
+                  </div>
                 </div>
               ))
             }
           </div>
 
+          <div style={{height: 100}}/>
         </Col>
       </Row>
 
