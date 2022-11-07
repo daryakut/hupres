@@ -118,7 +118,7 @@ const Quiz = ({match}) => {
       <div className="fullscreen-div">
         <Row justify="center">
           <Col span={12} offset={6}>
-            <div className="quiz-container quiz-container-name-pronounce">
+            <div className="quiz-container quiz-container-summary">
               <div className="quiz-input-container">
                 <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
                 <Input
