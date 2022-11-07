@@ -1,7 +1,6 @@
 from __future__ import annotations
 from __future__ import annotations
 
-import json
 from typing import Dict, List
 
 from sqlalchemy import ForeignKey, Column, Integer
@@ -10,8 +9,7 @@ from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
-from models.quiz_models import QuizAnswer, QuizProfileSummary, QuizSummary
-from models.token import Token
+from models.quiz_models import QuizProfileSummary, QuizSummary
 
 EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 
@@ -25,7 +23,8 @@ class DbQuizSummary(DbBase):
     quiz = relationship('DbQuiz', back_populates='quiz_summaries', lazy='select')
 
     def to_model(self) -> QuizSummary:
-        print(json.dumps(self.chart_summary))
+        # print('summaries', self.chart_summary)
+
         summaries = []
         for profile in self.chart_summary:
             if profile['id'] in EXCLUDE_PROFILES:
@@ -57,7 +56,6 @@ class DbQuizSummary(DbBase):
             chart_summary: List[Dict],
     ) -> DbQuizSummary:
         db_quiz_summary = DbQuizSummary(
-            token=Token.generate_quiz_answer_token(),
             # SqlAlchemy won't immediately update the relationship fields, so we need to set it manually
             quiz_id=db_quiz.id,
             quiz=db_quiz,

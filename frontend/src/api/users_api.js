@@ -16,7 +16,7 @@ export async function getCurrentUser() {
   } catch (error) {
     console.error('There was an error fetching the current user:', error);
     // Handle error appropriately
-    throw error;
+    // throw error;
   }
 }
 
@@ -28,6 +28,6 @@ export async function logout() {
   } catch (error) {
     console.error('There was an error logging out:', error);
     // Handle error appropriately
-    throw error;
+    // throw error;
   }
 }

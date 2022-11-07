@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -14,7 +14,7 @@ class QuizProfileSummary(BaseModel):
 
 class QuizSummary(BaseModel):
     """Textual representation of the DB object"""
-    summaries: QuizProfileSummary
+    summaries: List[QuizProfileSummary]
 
 
 class Quiz(BaseModel):
