@@ -106,9 +106,6 @@ const Quiz = ({match}) => {
   if (!quizToken || isLoading) {
     return (
       <Row justify="center" className="fullscreen-div">
-        <Col span={12} offset={6}>
-          Loading...
-        </Col>
       </Row>
     );
   }
