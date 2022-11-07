@@ -16,6 +16,7 @@ for router in routers:
 
 # Set up CORS middleware options
 origins = [
+    "https://hupres-web.onrender.com",  # The origin of the frontend application
     "http://localhost:3000",  # The origin of the frontend application
     "http://127.0.0.1:3000",  # Also include this if we're using 127.0.0.1 to access the frontend
 ]
