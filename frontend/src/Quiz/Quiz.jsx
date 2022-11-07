@@ -113,11 +113,11 @@ const Quiz = ({match}) => {
   }
 
   if (question && !question.quiz_question) {
-    // if (quiz.subject_name && quiz.pronounce) {
-    //   // Quiz already completed, let's show the results
-    //   history.push(`/quiz/${quiz.token}/summary`);
-    //   return null;
-    // }
+    if (quiz.subject_name && quiz.pronounce) {
+      // Quiz already completed, let's show the results
+      history.push(`/quiz/${quiz.token}/summary`);
+      return null;
+    }
     // End of quiz, let's ask for their name and gender
     return (
       <Row justify="center" className="fullscreen-div">

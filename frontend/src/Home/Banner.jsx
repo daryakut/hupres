@@ -30,7 +30,7 @@ export default function Banner({ onEnterChange }) {
           {/*<hr />*/}
           <hr key="hr" className="landing-hr"/>
           <h5 key="h5">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
-          <Link key="button" to="/quiz"><Button className="cta-button" size={20}>ПРОЙТИ ТЕСТ<RightOutlined /></Button></Link>
+          <Link key="button" to="/quiz"><Button className="cta-button">ПРОЙТИ ТЕСТ<RightOutlined /></Button></Link>
         </QueueAnim>
         <Icon type="down" className="down" />
       </ScrollElement>
