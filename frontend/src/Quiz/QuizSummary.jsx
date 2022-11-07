@@ -72,23 +72,27 @@ const QuizSummary = ({match}) => {
                 </Row>
               ))
             }
+          </div>
+
+          <div className="free-form-chat-container">
             {
               questions.map((question, index) => (
                 <div key={`question-${index}`}>
                   <Row key={`question-${index}`} justify="end">
-                    <Col key={`summary-${index}`} span={8} offset={10}>
-                      <h5 className="quiz-summary-content" style={{textAlign: 'right'}}>{question.question}</h5>
+                    <Col key={`summary-${index}`} span={16} offset={8}>
+                      <h5 className="free-form-question-content" style={{textAlign: 'right'}}>{question.question}</h5>
                     </Col>
                   </Row>
                   <Row key={`answer-${index}`} justify="start">
-                    <Col key={`summary-${index}`} span={12} offset={6}>
-                      <h5 className="quiz-summary-content">{question.answer}</h5>
+                    <Col key={`summary-${index}`} span={16} offset={0}>
+                      <h5 className="free-form-question-content">{question.answer}</h5>
                     </Col>
                   </Row>
                 </div>
               ))
             }
           </div>
+
         </Col>
       </Row>
 
