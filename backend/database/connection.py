@@ -19,6 +19,8 @@ hostname = os.environ.get('HUPRES_POSTGRES_HOSTNAME')
 port = os.environ.get('HUPRES_POSTGRES_PORT')
 database_name = os.environ.get('HUPRES_POSTGRES_DATABASE_NAME')
 
+print("DB", hostname)
+
 DATABASE_URL = f"postgresql+psycopg2://{username}:{password}@{hostname}:{port}/{database_name}"
 # _DATABASE_URL = "postgresql+psycopg2://georgii@localhost:5432/georgii"
 
