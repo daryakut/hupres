@@ -1,7 +1,9 @@
+import {getBaseUrl} from "./server";
+
 const axios = require('axios');
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: `${getBaseUrl()}/api`,
   withCredentials: true,
 });
 

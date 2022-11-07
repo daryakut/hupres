@@ -38,17 +38,20 @@ class SessionDataProvider:
 
     def get_current_session(self) -> SessionData:
         session = session_context_var.get()
+        user_token = session.get("user_token")
+        user_role = session.get("user_role")
         return SessionData(
             created_at=session.get("created_at"),
             session_token=session.get("session_token"),
-            user_token=session.get("user_token")
+            user_token=Token.of(session.get("user_token")) if user_token else None,
+            user_role=UserRole(user_role) if user_role else None,
         )
 
     def update_current_session(self, user_token: Optional[Token[User]], user_role: Optional[UserRole]):
         print(f"Logging in user {user_token}")
         session = session_context_var.get()
-        session["user_token"] = user_token
-        session["user_role"] = user_role
+        session["user_token"] = user_token.value
+        session["user_role"] = user_role.value
 
 
 session_data_provider = SessionDataProvider() if env.is_not_test() else get_fake_session_data_provider()

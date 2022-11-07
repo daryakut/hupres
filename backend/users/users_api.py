@@ -48,13 +48,14 @@ async def google_auth(request: Request):
             session_token=session_data.session_token,
         )
         for db_quiz in db_quizzes_owned_by_session:
+            print(f"Updating quiz ${db_quiz.token} owner to ${db_user.token}")
             db_quiz.user_id = db_user.id
 
     session_data_provider.update_current_session(user_token=user_token, user_role=role)
-    return {"email": email_address, "user_token": user_token}
+    return {"email": email_address, "user_token": user_token.value}
 
 
-@router.get("/api/users/google-login")
+@router.get("/users/google-login")
 async def google_login(request: Request):
     # This is http://localhost:8000/users/google-auth-callback
     redirect_uri = request.url_for(google_auth.__name__)

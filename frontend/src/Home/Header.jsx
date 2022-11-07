@@ -4,16 +4,17 @@ import classNames from 'classnames';
 import {Col, Dropdown, Icon, Menu, Popover, Row} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {Link} from "react-router-dom";
+import {getBaseUrl} from "../api/server";
 
 const searchEngine = 'Google';
 
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to="/login">РЕЄСТРАЦІЯ</Link>
+      <a href={`${getBaseUrl()}/users/google-login`}>РЕЄСТРАЦІЯ</a>
     </Menu.Item>
     <Menu.Item>
-      <Link to="/login">АВТОРИЗАЦІЯ</Link>
+    <a href={`${getBaseUrl()}/users/google-login`}>АВТОРИЗАЦІЯ</a>
     </Menu.Item>
   </Menu>
 );
