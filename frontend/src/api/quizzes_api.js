@@ -1,7 +1,8 @@
 const axios = require('axios');
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: 'http://localhost:8000/api',
+  withCredentials: true,
 });
 
 export async function createQuiz() {
@@ -49,7 +50,11 @@ export async function updateQuiz(quizToken, subjectName, pronounce) {
 
 export async function getNextQuizQuestion(quizToken) {
   try {
-    const response = await axiosInstance.post(`/quizzes/${quizToken}/generate-next-question`);
+    const response = await axiosInstance.post(
+      `/quizzes/${quizToken}/generate-next-question`, {}, {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(`There was an error getting the next question for quiz token ${quizToken}:`, error);
