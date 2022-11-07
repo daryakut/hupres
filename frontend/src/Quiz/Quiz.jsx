@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
 import {enquireScreen} from 'enquire-js';
-import {Button, Col, Input, Row, Select} from "antd";
+import {Button, Card, Checkbox, Col, Input, Row, Select} from "antd";
 import QueueAnim from "rc-queue-anim";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {createQuiz, getNextQuizQuestion, getQuiz, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
 import {RightOutlined} from "@ant-design/icons";
@@ -152,7 +152,7 @@ const Quiz = ({match}) => {
             disabled={!respondentName || !pronounce}
             onClick={onGetResultsClick}
           >
-            Отримати Результат<RightOutlined />
+            Отримати Результат<RightOutlined/>
           </Button>
         </Col>
       </Row>
@@ -163,24 +163,45 @@ const Quiz = ({match}) => {
   const displayAnswers = question?.available_answers;
 
   return (
-    <Row justify="center" className="fullscreen-div">
-      <Col span={12} offset={6}>
-        <QueueAnim className="quiz-container" type="left" delay={300}>
-          <div key="question">
-            <h2 className="quiz-question">{displayQuestion}</h2>
-            <hr className="landing-hr"/>
-          </div>
-          {
-            displayAnswers.map((answer, index) => (
-              <div key={`answer-${index}`} className="quiz-answer" onClick={() => onAnswerClick(answer.answer_name)}>
-                {answer.answer_display_name}
+    <div className="fullscreen-div">
+      <Row justify="center">
+        <Col span={12} offset={6}>
+          <Row justify="center">
+            <Col span={24}>
+              {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
+              {/*  <p>Card content</p>*/}
+              {/*  <p>Card content</p>*/}
+              {/*  <p>Card content</p>*/}
+              {/*</Card>*/}
+              <div className="quiz-container">
+                <QueueAnim type="left" delay={300}>
+                  <div key="question">
+                    <h2 className="quiz-question">{displayQuestion}</h2>
+                    <hr className="quiz-hr"/>
+                  </div>
+                  {
+                    displayAnswers.map((answer, index) => (
+                      <Checkbox
+                        key={`answer-${index}`}
+                        className="quiz-answer"
+                        onChange={() => onAnswerClick(answer.answer_name)}>
+                        {answer.answer_display_name}
+                      </Checkbox>
+                      // <div key={`answer-${index}`} className="quiz-answer"
+                      //      onClick={() => onAnswerClick(answer.answer_name)}>
+                      //   {answer.answer_display_name}
+                      // </div>
+                    ))
+                  }
+                </QueueAnim>
               </div>
-            ))
-          }
-        </QueueAnim>
-      </Col>
-    </Row>
-  );
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </div>
+  )
+    ;
 };
 
 export default Quiz;
