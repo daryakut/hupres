@@ -37,7 +37,7 @@ const Quiz = ({match}) => {
   const createQuizAndNavigate = async function () {
     const quiz = (await createQuiz()).quiz;
     console.log('quiz', quiz)
-    history.push(`/quiz/${quiz.token}`);
+    history.replace(`/quiz/${quiz.token}`);
   }
 
   const fetchQuiz = async () => {
@@ -115,7 +115,7 @@ const Quiz = ({match}) => {
   if (question && !question.quiz_question) {
     if (quiz.subject_name && quiz.pronounce) {
       // Quiz already completed, let's show the results
-      history.push(`/quiz/${quiz.token}/summary`);
+      history.replace(`/quiz/${quiz.token}/summary`);
       return null;
     }
     // End of quiz, let's ask for their name and gender
