@@ -115,44 +115,42 @@ const Quiz = ({match}) => {
     }
     // End of quiz, let's ask for their name and gender
     return (
-      <Row justify="center" className="fullscreen-div">
-        <Col span={12} offset={6}>
-          <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
-        </Col>
-        <Col span={12} offset={6}>
-          <Input
-            className="quiz-input"
-            placeholder="Імʼя респондента"
-            onChange={(e) => setRespondentName(e.target.value)}
-            value={respondentName}
-          />
-        </Col>
-        <Col span={12} offset={6}>
-          <Text className="quiz-input-label">Стать чи гендер респондента</Text>
-        </Col>
-        <Col span={12} offset={6}>
-          <Select
-            placeholder="Стать респондента"
-            className="quiz-input"
-            onChange={setPronounce}
-          >
-            <Select.Option value="HE_HIM">Чоловічий</Select.Option>
-            <Select.Option value="SHE_HER">Жінойчий</Select.Option>
-            <Select.Option value="THEY_THEM">Інше</Select.Option>
-            <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
-          </Select>
-        </Col>
-        <Col span={12} offset={6}>
-          <Button
-            className="quiz-get-summary-button"
-            size='large'
-            disabled={!respondentName || !pronounce}
-            onClick={onGetResultsClick}
-          >
-            Отримати Результат<RightOutlined/>
-          </Button>
-        </Col>
-      </Row>
+      <div className="fullscreen-div">
+        <Row justify="center">
+          <Col span={12} offset={6}>
+            <div className="quiz-container quiz-container-name-pronounce">
+              <div className="quiz-input-container">
+                <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
+                <Input
+                  className="quiz-input"
+                  placeholder="Імʼя респондента"
+                  onChange={(e) => setRespondentName(e.target.value)}
+                  value={respondentName}
+                />
+                <Text className="quiz-input-label">Стать чи гендер респондента</Text>
+                <Select
+                  placeholder="Стать респондента"
+                  className="quiz-input"
+                  onChange={setPronounce}
+                >
+                  <Select.Option value="HE_HIM">Чоловічий</Select.Option>
+                  <Select.Option value="SHE_HER">Жінойчий</Select.Option>
+                  <Select.Option value="THEY_THEM">Інше</Select.Option>
+                  <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
+                </Select>
+                <Button
+                  className="quiz-get-summary-button"
+                  size='large'
+                  disabled={!respondentName || !pronounce}
+                  onClick={onGetResultsClick}
+                >
+                  Отримати Результат<RightOutlined/>
+                </Button>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </div>
     )
   }
 
