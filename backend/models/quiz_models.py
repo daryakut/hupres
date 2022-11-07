@@ -22,7 +22,7 @@ class Quiz(BaseModel):
 class AvailableAnswer(BaseModel):
     """Representation of the available answer from questions database"""
     answer_name: str
-    display_answer: str
+    answer_display_name: str
 
 
 class QuizAnswer(BaseModel):

@@ -508,7 +508,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             f"Could not find answers for question {question_to_ask.question_name}",
         )
 
-        available_answers = [AvailableAnswer(answer_name=a, display_answer=_(a)) for a in answer_option_scores.keys()]
+        available_answers = [AvailableAnswer(answer_name=a, answer_display_name=_(a)) for a in answer_option_scores.keys()]
         return GetNextQuizQuestionResponse(
             quiz_question=db_quiz_question.to_model(),
             available_answers=available_answers,

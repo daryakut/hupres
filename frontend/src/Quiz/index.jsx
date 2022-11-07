@@ -12,18 +12,32 @@ const Quiz = ({match}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const quizQuestionToken = question?.question?.quiz_question?.token
-
   const quizToken = match?.params?.quizToken;
+  const quizQuestionToken = question?.quiz_question?.token
+
   // const quizQuestionToken = match?.params?.quizQuestionToken;
   console.log('quizToken', quizToken)
   console.log('quizQuestionToken', quizQuestionToken)
   console.log('question', question)
 
+  useEffect(() => {
+    console.log("!!!! USE EFFECT")
+    if (!quizToken) {
+      async function createQuizAndLoad() {
+        const quiz = (await createQuiz()).quiz;
+        console.log('quiz', quiz)
+        history.push(`/quiz/${quiz.token}`);
+      }
+      createQuizAndLoad();
+    } else {
+      fetchNextQuestion();
+    }
+  }, [quizToken]);
+
   const fetchNextQuestion = async () => {
     try {
       setIsLoading(true);
-      const response = (await getNextQuizQuestion(quizToken)).quiz;
+      const response = await getNextQuizQuestion(quizToken);
       console.log('response', response)
       setQuestion(response);
     } catch (error) {
@@ -38,19 +52,6 @@ const Quiz = ({match}) => {
     await fetchNextQuestion();
     // history.push('/some/path');
   }
-
-  useEffect(() => {
-    if (!quizToken) {
-      async function createQuizAndLoad() {
-        const quiz = (await createQuiz()).quiz;
-        console.log('quiz', quiz)
-        history.push(`/quiz/${quiz.token}`);
-      }
-      createQuizAndLoad();
-    } else {
-      fetchNextQuestion();
-    }
-  }, []);
 
   if (!quizToken || isLoading) {
     return (

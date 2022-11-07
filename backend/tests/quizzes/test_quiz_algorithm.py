@@ -21,11 +21,11 @@ async def test_can_get_first_question():
 
     assert len(question_tester.available_answers) == 3
     assert question_tester.available_answers[0].answer_name == 'Рост низкий'
-    assert question_tester.available_answers[0].display_answer == 'Рост низкий'
+    assert question_tester.available_answers[0].answer_display_name == 'Рост низкий'
     assert question_tester.available_answers[1].answer_name == 'Рост средний'
-    assert question_tester.available_answers[1].display_answer == 'Рост средний'
+    assert question_tester.available_answers[1].answer_display_name == 'Рост средний'
     assert question_tester.available_answers[2].answer_name == 'Рост высокий'
-    assert question_tester.available_answers[2].display_answer == 'Рост высокий'
+    assert question_tester.available_answers[2].answer_display_name == 'Рост высокий'
 
     assert question_tester.question_name == question_tester.quiz_question.question_name
     assert question_tester.quiz_step == QuizStep.STEP_1
