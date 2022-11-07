@@ -3,7 +3,6 @@ from __future__ import annotations
 from gettext import gettext as _
 from typing import Tuple, List, Optional
 
-import numpy as np
 from pydantic import BaseModel
 
 from common.exceptions import Unauthorized
@@ -34,7 +33,6 @@ class SignWithScore(BaseModel):
 
 
 def get_dominant(scores: List[int]) -> Tuple[SignWithScore, SignWithScore, SignWithScore]:
-    # sorted_scores = np.sort(scores)
     indexed_scores = list(enumerate(scores))
     sorted_index_score_pairs = sorted(
         indexed_scores,
@@ -47,10 +45,6 @@ def get_dominant(scores: List[int]) -> Tuple[SignWithScore, SignWithScore, SignW
         SignWithScore.from_sign_and_score(sorted_index_score_pairs[1]),
         SignWithScore.from_sign_and_score(sorted_index_score_pairs[2]),
     )
-
-
-def get_dominant_four(scores: np.ndarray) -> Tuple[SignWithScore, SignWithScore, SignWithScore, SignWithScore]:
-    pass
 
 
 def get_next_signs_for_questions(
