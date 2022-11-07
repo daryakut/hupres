@@ -6,6 +6,7 @@ from fastapi import Request
 from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
+from common.env import FRONTEND_URL
 from database.db_entities.db_user import DbUser
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
@@ -55,7 +56,7 @@ async def google_auth(request: Request):
 
     session_data_provider.update_current_session(user_token=user_token, user_role=role)
     # return {"email": email_address, "user_token": user_token.value}
-    return RedirectResponse(url="http://localhost:3000")
+    return RedirectResponse(url=FRONTEND_URL)
 
 
 @router.get("/users/google-login")

@@ -1,5 +1,5 @@
 from enum import Enum
-
+import os
 from pydantic import BaseModel
 
 
@@ -15,4 +15,10 @@ class Env(BaseModel):
         return self.stage != EnvStage.TEST
 
 
-env = Env(stage=EnvStage.PROD)
+_is_development = os.getenv('ENV') == 'development'
+_stage = EnvStage.TEST if _is_development else EnvStage.PROD
+FRONTEND_URL = "http://localhost:3000" if _is_development else "https://hupres-web.onrender.com"
+
+print("ENVIRONMENT:", _stage, FRONTEND_URL)
+
+env = Env(stage=_stage)
