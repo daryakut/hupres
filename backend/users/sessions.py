@@ -1,4 +1,5 @@
 from contextvars import ContextVar
+from http.cookies import SimpleCookie
 from typing import Optional
 
 from fastapi import Request
@@ -13,7 +14,6 @@ from users.session_data import SessionData
 from models.user_role import UserRole
 
 session_context_var: ContextVar[dict] = ContextVar("session", default={})
-
 
 
 class SessionDataMiddleware(BaseHTTPMiddleware):
@@ -31,8 +31,46 @@ class SessionDataMiddleware(BaseHTTPMiddleware):
 
         # Set the session data in context var so that it can be accessed without request object reference
         session_context_var.set(session_data)
-        return await call_next(request)
+        # return await call_next(request)
 
+        response = await call_next(request)
+
+        # # Create the cookie
+        # cookie = SimpleCookie()
+        # cookie['session_id'] = session_data['session_token']
+        # cookie['session_id']['httponly'] = True
+        # cookie['session_id']['samesite'] = 'None'
+        # cookie['session_id']['secure'] = True  # Secure flag, required if SameSite=None
+        # cookie['session_id']['path'] = '/'
+        # # if 'DOMAIN' in os.environ:
+        # #     cookie['session_id']['domain'] = os.environ['DOMAIN']
+        #
+        # # Set the 'Set-Cookie' header
+        # response.headers.append(
+        #     'Set-Cookie',
+        #     cookie['session_id'].OutputString(),
+        # )
+
+        return response
+
+
+class SetCookieMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+
+        # Here we're setting a cookie named 'session_id' as an example
+        # You should set your actual session token and handle its generation accordingly
+        session_token = "example-session-token"
+
+        response.set_cookie(
+            key="session",
+            value=session_token,
+            httponly=True,  # Helps mitigate XSS attacks by not exposing the cookie to JS
+            samesite='none',  # Set SameSite attribute to None
+            secure=True,  # Set Secure, mandatory for SameSite=None
+        )
+
+        return response
 
 class SessionDataProvider:
 

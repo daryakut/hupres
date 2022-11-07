@@ -10,6 +10,13 @@ All middlewares must be added here in the order of execution of the "before" pha
 Format: (middleware_class, {options})
 """
 middlewares: List[Tuple[Any, dict]] = [
-    (SessionMiddleware, {'secret_key': os.environ['HUPRES_SECRET_SESSION_KEY']}),
+    (
+        SessionMiddleware,
+        {
+            'secret_key': os.environ['HUPRES_SECRET_SESSION_KEY'],
+            'session_cookie': 'hupres_session',
+            'same_site': 'none',
+        }
+    ),
     (SessionDataMiddleware,)
 ]
