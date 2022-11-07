@@ -13,7 +13,7 @@ from models.quiz_models import Quiz
 from models.token import Token
 from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
-from quizzes.quiz_summary import api_generate_quiz_summary, GenerateQuizSummaryResponse
+from quizzes.quiz_summary import api_generate_quiz_summary, QuizSummary
 from users.sessions import session_data_provider
 
 router = APIRouter()
@@ -129,7 +129,7 @@ async def submit_quiz_answer(
 
 
 @router.post("/api/quizzes/{quiz_token}/generate-summary")
-async def generate_quiz_summary(quiz_token: str) -> GenerateQuizSummaryResponse:
+async def generate_quiz_summary(quiz_token: str) -> QuizSummary:
     return api_generate_quiz_summary(Token.of(quiz_token))
 
 
@@ -141,6 +141,6 @@ class AskFreeFormQuestionResponse(BaseModel):
     free_form_answer: str
 
 
-@router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
-async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
-    return api_generate_quiz_summary(Token.of(quiz_token))
+# @router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
+# async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
+#     return api_generate_quiz_summary(Token.of(quiz_token))

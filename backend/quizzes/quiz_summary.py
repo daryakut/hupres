@@ -7,30 +7,24 @@ from pydantic import BaseModel
 
 from common.utils import check, check_not_none
 from database.db_entities.db_quiz_question import DbQuizQuestion
+from database.db_entities.db_quiz_summary import DbQuizSummary
 from database.queries.quiz_answer_queries import QuizAnswerQueries
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from models.pronounce import Pronounce
-from models.quiz_models import Quiz
+from models.quiz_models import Quiz, QuizSummary
 from models.token import Token
 from quizzes.charts import get_chart_info, Gender, export_chart_info
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 
 
-class ProfileSummary(BaseModel):
-    title: str
-    summary: str
-
-
-class GenerateQuizSummaryResponse(BaseModel):
-    summaries: List[ProfileSummary]
 
 
 PRODUCT_ID = 11
 EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 
 
-def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> GenerateQuizSummaryResponse:
+def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> QuizSummary:
     with transaction() as session:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
 
@@ -61,27 +55,14 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> GenerateQuizSummaryRes
         respondent_name=respondent_name,
         gender=gender,
     )
-    profiles = export_chart_info(chart_info)
-    # print(json.dumps(profiles))
+    chart_summary = export_chart_info(chart_info)
 
-    summaries = []
-    for profile in profiles:
-        if profile['id'] in EXCLUDE_PROFILES:
-            continue
-
-        profile_summaries = []
-        for profile_item_summary in profile.get('properties', []):
-            name = profile_item_summary.get('name')
-            text = profile_item_summary.get('text')
-            if not name or not text or text == 'Коридор нормы':
-                continue
-            # profile_summaries.append(f"{name}: {text}")
-            profile_summaries.append(f"{text} ")
-
-        summaries.append(
-            ProfileSummary(
-                title=profile.get('name', ''),
-                summary='\n'.join(profile_summaries),
-            )
+    # Doing this in a separate transaction to keep them short
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, quiz_token)
+        db_quiz_summary = DbQuizSummary.create_quiz_summary(
+            session=session,
+            db_quiz=db_quiz,
+            chart_summary=chart_summary,
         )
-    return GenerateQuizSummaryResponse(summaries=summaries)
+        return db_quiz_summary.to_model()

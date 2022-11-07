@@ -7,6 +7,16 @@ from models.sign import Sign
 from quizzes.question_database import QuestionName
 
 
+class QuizProfileSummary(BaseModel):
+    title: str
+    summary: str
+
+
+class QuizSummary(BaseModel):
+    """Textual representation of the DB object"""
+    summaries: QuizProfileSummary
+
+
 class Quiz(BaseModel):
     """Representation of the DB object, whatever the Frontend might need to know about it"""
     token: str

@@ -7,13 +7,12 @@ from database.queries.quiz_queries import QuizQueries
 from database.queries.quiz_question_queries import QuizQuestionQueries
 from database.transaction import transaction
 from models.pronounce import Pronounce
-from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz
+from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz, QuizSummary
 from models.sign import Sign
 from models.token import Token
 from models.user import User
 from quizzes.question_database import QuestionName
 from quizzes.quiz_steps import QuizStep, QuizSubStep
-from quizzes.quiz_summary import GenerateQuizSummaryResponse
 from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     GetQuizzesResponse, delete_quiz, get_next_quiz_question, submit_quiz_answer, SubmitQuizAnswerRequest, \
     generate_quiz_summary, UpdateQuizRequest, update_quiz
@@ -138,7 +137,7 @@ class UserTester:
         response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_name=answer_name))
         return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer.token)
 
-    async def generate_quiz_summary(self, quiz_token: str) -> GenerateQuizSummaryResponse:
+    async def generate_quiz_summary(self, quiz_token: str) -> QuizSummary:
         return await generate_quiz_summary(quiz_token)
 
     def is_logged_in(self) -> bool:
