@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
 import {enquireScreen} from 'enquire-js';
-import {Col, Row} from "antd";
+import {Button, Col, Input, Row, Select} from "antd";
 import QueueAnim from "rc-queue-anim";
 import { useHistory } from 'react-router-dom';
-import {createQuiz, getNextQuizQuestion, submitQuizAnswer} from "../api/quizzes_api";
+import {createQuiz, getNextQuizQuestion, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
+import Text from "antd/es/typography/Text";
+import {RightOutlined} from "@ant-design/icons";
 
 const Quiz = ({match}) => {
   let history = useHistory();
   const [question, setQuestion] = useState(null);
+  const [pronounce, setPronounce] = useState(null);
+  const [respondentName, setRespondentName] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,21 +51,95 @@ const Quiz = ({match}) => {
     }
   };
 
+  const fetchQuizResults = async () => {
+    try {
+      // setIsLoading(true);
+      await updateQuiz(quizToken, respondentName, pronounce);
+      // console.log('response', response)
+      // setQuestion(response);
+    } catch (error) {
+      setError(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
+  const onGetResultsClick = async () => {
+    try {
+      // setIsLoading(true);
+      await updateQuiz(quizToken, respondentName, pronounce);
+      // console.log('response', response)
+      // setQuestion(response);
+    } catch (error) {
+      setError(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
   const onAnswerClick = async (answerName) => {
     await submitQuizAnswer(quizQuestionToken, answerName);
     await fetchNextQuestion();
     // history.push('/some/path');
   }
 
-  if (!quizToken || isLoading) {
-    return (
-      <div>Loading...</div>
-    )
-  }
-
   if (error) {
     return (
       <div>Error: {error}</div>
+    )
+  }
+
+  if (!quizToken || isLoading) {
+    return (
+      <Row justify="center" className="fullscreen-div">
+        <Col span={12} offset={6}>
+          Loading...
+        </Col>
+      </Row>
+    );
+  }
+
+  if (question && !question.quiz_question) {
+    // End of quiz, let's ask for their name and gender
+    return (
+      <Row justify="center" className="fullscreen-div">
+        <Col span={12} offset={6}>
+          <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
+        </Col>
+        <Col span={12} offset={6}>
+          <Input
+            className="quiz-input"
+            placeholder="Імʼя респондента"
+            onChange={(e) => setRespondentName(e.target.value)}
+            value={respondentName}
+          />
+        </Col>
+        <Col span={12} offset={6}>
+          <Text className="quiz-input-label">Стать чи гендер респондента</Text>
+        </Col>
+        <Col span={12} offset={6}>
+          <Select
+            placeholder="Стать респондента"
+            className="quiz-input"
+            onChange={setPronounce}
+          >
+            <Select.Option value="HE_HIM">Чоловічий</Select.Option>
+            <Select.Option value="SHE_HER">Жінойчий</Select.Option>
+            <Select.Option value="THEY_THEM">Інше</Select.Option>
+            <Select.Option value="PREFER_NOT_TO_SAY">Волію не вказувати</Select.Option>
+          </Select>
+        </Col>
+        <Col span={12} offset={6}>
+          <Button
+            className="quiz-get-summary-button"
+            size='large'
+            disabled={!respondentName || !pronounce}
+            onClick={onGetResultsClick}
+          >
+            Отримати Результат<RightOutlined />
+          </Button>
+        </Col>
+      </Row>
     )
   }
 
@@ -89,12 +167,6 @@ const Quiz = ({match}) => {
               </div>
             ))
           }
-          {/*<div key="1" className="quiz-answer">Круглое лицо</div>*/}
-          {/*<div key="2" className="quiz-answer">Вытянутый прямоугольник</div>*/}
-          {/*<div key="3" className="quiz-answer">Большой треугольник</div>*/}
-          {/*<div key="4" className="quiz-answer">Малый треугольник</div>*/}
-          {/*<div key="5" className="quiz-answer">Широк прямоугольн "Квадрат"</div>*/}
-          {/*<div key="6" className="quiz-answer">Затрудняюсь ответить</div>*/}
         </QueueAnim>
       </Col>
     </Row>
