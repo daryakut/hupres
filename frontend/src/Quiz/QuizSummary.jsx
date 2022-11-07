@@ -4,7 +4,7 @@ import {Button, Col, Input, Row, Select} from "antd";
 import {useHistory} from 'react-router-dom';
 import {askFreeFormQuestion, generateQuizSummary, getFreeFormQuestions} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
-import {RightOutlined} from "@ant-design/icons";
+import {CopyOutlined, RightOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 
 const QuizSummary = ({match}) => {
@@ -50,18 +50,25 @@ const QuizSummary = ({match}) => {
     }
   };
 
+  const onCopyToClipboardClick = async () => {
+    const summariesStringList = summaries.map((summary) => `${summary.title}: ${summary.summary}`)
+    const chatsStringList = questions.map((question) => ` - ${question.question} \n - ${question.answer}`)
+    const clipboard = summariesStringList.join('\n\n') + '\n\n---\n\n' + chatsStringList.join('\n\n---\n\n')
+    await navigator.clipboard.writeText(clipboard)
+  };
+
   if (!summaries) {
     return null;
   }
-
-  console.log('questions', questions)
 
   return (
     <div className="fullscreen-div-scrollable">
       <Row justify="center">
         <Col span={12} offset={6}>
           <div className="quiz-container quiz-container-summary">
-
+            <div className="copy-to-clipboard-button-container">
+              <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined /></Button>
+            </div>
             {
               summaries.map((summary, index) => (
                 <Row key={`summary-${index}`} justify="center">
