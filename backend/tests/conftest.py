@@ -22,6 +22,12 @@ def pytest_configure():
     os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_ID"] = "test_client_id"
     os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_SECRET"] = "test_client_secret"
 
+    os.environ["HUPRES_POSTGRES_USERNAME"] = "hupres"
+    os.environ["HUPRES_POSTGRES_PASSWORD"] = "123456"
+    os.environ["HUPRES_POSTGRES_HOSTNAME"] = "localhost"
+    os.environ["HUPRES_POSTGRES_PORT"] = "5432"
+    os.environ["HUPRES_POSTGRES_DATABASE_NAME"] = "hupres_test"
+
 
 @pytest.fixture(autouse=True, scope='session')
 def setup_before_all_tests():
