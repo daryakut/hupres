@@ -6,9 +6,11 @@ import {askFreeFormQuestion, generateQuizSummary, getFreeFormQuestions} from "..
 import Text from "antd/es/typography/Text";
 import {CopyOutlined, LoadingOutlined, RightOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import {useUser} from "../User/UserProvider";
 
 const QuizSummary = ({match}) => {
   let history = useHistory();
+  const {user} = useUser();
   const [summaries, setSummaries] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [freeFormQuestion, setFreeFormQuestion] = useState([]);
@@ -83,6 +85,9 @@ const QuizSummary = ({match}) => {
     return null;
   }
 
+  // Only logged in users can chat with AI
+  const isLoggedIn = !!user;
+
   return (
     <div className="fullscreen-div-scrollable">
       <Row justify="center">
@@ -117,7 +122,7 @@ const QuizSummary = ({match}) => {
                     {question.answer ? (
                       <h5 className="free-form-answer-content">{question.answer}</h5>
                     ) : (
-                      <div className="free-form-answer-content"><LoadingOutlined /></div>
+                      <div className="free-form-answer-content"><LoadingOutlined/></div>
                     )}
                   </div>
                 </div>
@@ -125,44 +130,48 @@ const QuizSummary = ({match}) => {
             }
           </div>
 
-          <div style={{height: 100}}/>
+          {isLoggedIn ? (
+            <div style={{height: 100}}/>
+          ) : null}
         </Col>
       </Row>
 
-      <div className="free-form-question-input-container">
-        <div className="free-form-question-input-container-fade"/>
-        <div className="free-form-question-input-container-white">
-          <Row>
-            <Col span={24} offset={0}>
-              <Text className="free-form-question-input-label">
-                Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
-              </Text>
-            </Col>
-          </Row>
-          <Row style={{marginTop: 6}}>
-            <Col span={20} offset={0}>
-              {/*<Input*/}
-              <TextArea rows={2}
-                        className="free-form-question-input"
-                        placeholder="Як мотивуваті цього респондента?"
-                        value={freeFormQuestion}
-                        onChange={(e) => setFreeFormQuestion(e.target.value)}
-                        onKeyDown={onFreeFormQuestionKeyDown}
-              />
-            </Col>
-            <Col span={4}>
-              <Button
-                className="free-form-question-button"
-                size='large'
-                disabled={!freeFormQuestion}
-                onClick={onAskFreeFormQuestionClick}
-              >
-                Спитати
-              </Button>
-            </Col>
-          </Row>
+      {isLoggedIn ? (
+        <div className="free-form-question-input-container">
+          <div className="free-form-question-input-container-fade"/>
+          <div className="free-form-question-input-container-white">
+            <Row>
+              <Col span={24} offset={0}>
+                <Text className="free-form-question-input-label">
+                  Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{marginTop: 6}}>
+              <Col span={20} offset={0}>
+                {/*<Input*/}
+                <TextArea rows={2}
+                          className="free-form-question-input"
+                          placeholder="Як мотивуваті цього респондента?"
+                          value={freeFormQuestion}
+                          onChange={(e) => setFreeFormQuestion(e.target.value)}
+                          onKeyDown={onFreeFormQuestionKeyDown}
+                />
+              </Col>
+              <Col span={4}>
+                <Button
+                  className="free-form-question-button"
+                  size='large'
+                  disabled={!freeFormQuestion}
+                  onClick={onAskFreeFormQuestionClick}
+                >
+                  Спитати
+                </Button>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
