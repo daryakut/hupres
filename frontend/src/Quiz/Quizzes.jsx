@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
-import {Col, Popconfirm, Row} from "antd";
+import {Button, Col, Popconfirm, Row} from "antd";
 import {Link, useHistory} from 'react-router-dom';
 import {deleteQuiz, getQuizzes} from "../api/quizzes_api";
-import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
+import {CopyOutlined, DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
 const Quizzes = ({match}) => {
   let history = useHistory();
@@ -35,7 +35,8 @@ const Quizzes = ({match}) => {
     }
   };
 
-  const deleteQuizAndRefresh = async function () {
+  const deleteQuizAndRefresh = async function (event) {
+    event.stopPropagation();
     setQuizTokenToDelete(null);
     await deleteQuiz(quizTokenToDelete);
     await fetchQuizzes();
@@ -45,41 +46,45 @@ const Quizzes = ({match}) => {
     setQuizTokenToDelete(quizToken);
   }
 
-  const onCancelDeleteQuizClick = async function () {
+  const onCancelDeleteQuizClick = async function (event) {
+    event.stopPropagation();
     setQuizTokenToDelete(null);
   }
 
   return (
     <Row justify="center" className="fullscreen-div">
       <Col span={12} offset={6}>
+        <div className="your-quizzes-title">Ваші анкети</div>
+        <hr className="quizzes-hr-divider"/>
         {
           quizzes.map((quiz, index) => (
-            <div
-              key={`quiz-${index}`}
-              className="quiz-list-item"
-            >
-              <Link to={`/quiz/${quiz.token}`} style={{color: '#fff'}}>{quiz.subject_name ?? 'Без назви'}</Link>
-              <Popconfirm
-                title="Ви точно хочете видалити цю анкету?"
-                onConfirm={deleteQuizAndRefresh}
-                onCancel={onCancelDeleteQuizClick}
-                okText="Так"
-                cancelText="Ті"
-              >
-                <DeleteOutlined
-                  onClick={() => onDeleteQuizClick(quiz.token)}
-                />
-              </Popconfirm>
-            </div>
+            <Link key={`quiz-${index}`} to={`/quiz/${quiz.token}`} style={{color: '#555'}}>
+              <div className="quiz-container quiz-container-quizzes">
+                {quiz.subject_name ?? 'Не завершено'}
+                <Popconfirm
+                  title="Ви точно хочете видалити цю анкету?"
+                  onConfirm={(e) => deleteQuizAndRefresh(e)}
+                  onCancel={(e) => onCancelDeleteQuizClick(e)}
+                  okText="Так"
+                  cancelText="Ні"
+                >
+                  <Button
+                    className="copy-to-clipboard-button"
+                    onClick={() => onDeleteQuizClick(quiz.token)}
+                  ><DeleteOutlined/></Button>
+                </Popconfirm>
+              </div>
+            </Link>
           ))
         }
-        <div
-          className="quiz-list-item"
-        >
-          <Link to={`/quiz`} style={{color: '#fff'}}>
-            Додати нову <PlusOutlined/>
-          </Link>
-        </div>
+        <hr className="quizzes-hr-divider"/>
+        <Link to={`/quiz`} style={{color: '#555'}}>
+          <div
+            className="quiz-container quiz-container-quizzes"
+          >
+            Додати нову анкету <PlusOutlined style={{margin: 10}}/>
+          </div>
+        </Link>
       </Col>
     </Row>
   );
