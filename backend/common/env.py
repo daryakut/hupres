@@ -20,13 +20,16 @@ class Env(BaseModel):
 if os.getenv('ENV') == 'development':
     _stage = EnvStage.DEV
     FRONTEND_URL = "http://localhost:3000"
+    BACKEND_URL = "http://localhost:8000"
 elif os.getenv('ENV') == 'test':
     _stage = EnvStage.TEST
     FRONTEND_URL = "http://localhost:3000"
+    BACKEND_URL = "http://localhost:8000"
 else:
     _stage = EnvStage.PROD
     FRONTEND_URL = "https://hupres-web.onrender.com"
+    BACKEND_URL = "https://hupres-backend.onrender.com"
 
-print("ENVIRONMENT:", _stage, FRONTEND_URL)
+print("ENVIRONMENT:", _stage, BACKEND_URL, FRONTEND_URL)
 
 env = Env(stage=_stage)

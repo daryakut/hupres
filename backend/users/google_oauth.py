@@ -7,7 +7,7 @@ from authlib.jose import JsonWebKey
 from authlib.jose import jwt as authlib_jwt
 from fastapi import Request
 
-from common.env import env, FRONTEND_URL
+from common.env import env, BACKEND_URL
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 
 GOOGLE_AUTH_CALLBACK_PATH = "/users/google-auth-callback"
@@ -35,7 +35,7 @@ class GoogleOAuthService:
             access_token_url='https://accounts.google.com/o/oauth2/token',
             access_token_params=None,
             refresh_token_url=None,
-            redirect_uri=f'{FRONTEND_URL}/{GOOGLE_AUTH_CALLBACK_PATH}',
+            redirect_uri=f'{BACKEND_URL}/{GOOGLE_AUTH_CALLBACK_PATH}',
             client_kwargs={'scope': 'openid profile email'},
             # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
             **metadata,
