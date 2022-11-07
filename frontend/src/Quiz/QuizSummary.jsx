@@ -4,7 +4,7 @@ import {Button, Col, Input, Row, Select} from "antd";
 import {useHistory} from 'react-router-dom';
 import {askFreeFormQuestion, generateQuizSummary, getFreeFormQuestions} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
-import {CopyOutlined, RightOutlined} from "@ant-design/icons";
+import {CopyOutlined, LoadingOutlined, RightOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 
 const QuizSummary = ({match}) => {
@@ -39,10 +39,24 @@ const QuizSummary = ({match}) => {
 
   const onAskFreeFormQuestionClick = async () => {
     try {
+      const originalQuestions = questions.slice(0);
       // setIsLoading(true);
+      setQuestions(originalQuestions.concat({question: freeFormQuestion, answer: null}));
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      })
+
       const freeFormAnswer = (await askFreeFormQuestion(quizToken, freeFormQuestion));
       console.log('freeFormAnswer', freeFormAnswer)
-      setQuestions(questions.concat({question: freeFormQuestion, answer: freeFormAnswer}));
+
+      setQuestions(originalQuestions.concat({question: freeFormQuestion, answer: freeFormAnswer}));
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
     } catch (error) {
       // setError(error);
     } finally {
@@ -57,6 +71,14 @@ const QuizSummary = ({match}) => {
     await navigator.clipboard.writeText(clipboard)
   };
 
+  const onFreeFormQuestionKeyDown = async (event) => {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      event.preventDefault();
+      setFreeFormQuestion(null);
+      await onAskFreeFormQuestionClick();
+    }
+  }
+
   if (!summaries) {
     return null;
   }
@@ -67,7 +89,7 @@ const QuizSummary = ({match}) => {
         <Col span={12} offset={6}>
           <div className="quiz-container quiz-container-summary">
             <div className="copy-to-clipboard-button-container">
-              <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined /></Button>
+              <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined/></Button>
             </div>
             {
               summaries.map((summary, index) => (
@@ -92,9 +114,11 @@ const QuizSummary = ({match}) => {
                     {/*</Col>*/}
                   </div>
                   <div key={`answer-${index}`} className="free-form-answer-container">
-                    {/*<Col key={`summary-${index}`} span={16} offset={0}>*/}
-                    <h5 className="free-form-answer-content">{question.answer}</h5>
-                    {/*</Col>*/}
+                    {question.answer ? (
+                      <h5 className="free-form-answer-content">{question.answer}</h5>
+                    ) : (
+                      <div className="free-form-answer-content"><LoadingOutlined /></div>
+                    )}
                   </div>
                 </div>
               ))
@@ -123,6 +147,7 @@ const QuizSummary = ({match}) => {
                         placeholder="Як мотивуваті цього респондента?"
                         value={freeFormQuestion}
                         onChange={(e) => setFreeFormQuestion(e.target.value)}
+                        onKeyDown={onFreeFormQuestionKeyDown}
               />
             </Col>
             <Col span={4}>
