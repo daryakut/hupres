@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from common.clock import clock
 from common.exceptions import Unauthorized, BadRequest
+from common.utils import check_not_none, check_not_empty
 from database.db_entities.db_quiz import DbQuiz
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
@@ -144,6 +145,7 @@ class AskFreeFormQuestionResponse(BaseModel):
 
 @router.post("/api/quizzes/{quiz_token}/free-form-questions/ask")
 async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
+    check_not_empty(request.free_form_question, "Please provide the question")
     free_form_answer = api_ask_free_form_question(Token.of(quiz_token), request.free_form_question)
     return AskFreeFormQuestionResponse(free_form_answer=free_form_answer)
 

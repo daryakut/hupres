@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
-import {Col, Row} from "antd";
+import {Button, Col, Input, Row} from "antd";
 import {useHistory} from 'react-router-dom';
 import {askFreeFormQuestion, generateQuizSummary, getFreeFormQuestions} from "../api/quizzes_api";
+import Text from "antd/es/typography/Text";
+import {RightOutlined} from "@ant-design/icons";
 
 const QuizSummary = ({match}) => {
   let history = useHistory();
   const [summaries, setSummaries] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [freeFormQuestion, setFreeFormQuestion] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -26,6 +29,19 @@ const QuizSummary = ({match}) => {
       const questions = (await getFreeFormQuestions(quizToken));
       setQuestions(questions ?? []);
       // await askFreeFormQuestion(quizToken, "Как лучше всего смотивировать сотрудника?");
+    } catch (error) {
+      // setError(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
+  const onAskFreeFormQuestionClick = async () => {
+    try {
+      // setIsLoading(true);
+      const freeFormAnswer = (await askFreeFormQuestion(quizToken, freeFormQuestion));
+      console.log('freeFormAnswer', freeFormAnswer)
+      setQuestions(questions.concat({question: freeFormQuestion, answer: freeFormAnswer}));
     } catch (error) {
       // setError(error);
     } finally {
@@ -67,6 +83,31 @@ const QuizSummary = ({match}) => {
           </div>
         ))
       }
+      <Row>
+        <Col span={12} offset={6}>
+          <Text className="free-form-question-input-label">Запитайте що вас цікавить стосовно респондента</Text>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8} offset={6}>
+          <Input
+            className="free-form-question-input"
+            placeholder="Як мотивуваті цього респондента?"
+            value={freeFormQuestion}
+            onChange={(e) => setFreeFormQuestion(e.target.value)}
+          />
+        </Col>
+        <Col span={4}>
+          <Button
+            className="free-form-question-button"
+            size='large'
+            disabled={!freeFormQuestion}
+            onClick={onAskFreeFormQuestionClick}
+          >
+            Спитати
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 };

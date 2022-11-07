@@ -104,7 +104,7 @@ export async function askFreeFormQuestion(quizToken, freeFormQuestion) {
         free_form_question: freeFormQuestion,
       }
     );
-    return response.free_form_answer;
+    return response.data.free_form_answer;
   } catch (error) {
     console.error(`There was an error generating the free form question for quiz token ${quizToken}:`, error);
     throw error;

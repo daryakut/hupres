@@ -3,6 +3,11 @@ def check_not_none(nullable_variable, message):
         raise ValueError(message)
 
 
+def check_not_empty(emptyable_variable, message):
+    if not emptyable_variable:
+        raise ValueError(message)
+
+
 def check(predicate, message):
     if not predicate():
         raise ValueError(message)
