@@ -1,5 +1,5 @@
+import os
 from contextvars import ContextVar
-from http.cookies import SimpleCookie
 from typing import Optional
 
 from fastapi import Request
@@ -9,11 +9,17 @@ from common.clock import clock
 from common.env import env
 from models.token import generate_session_token, Token
 from models.user import User
+from models.user_role import UserRole
 from tests.users.fake_sessions import get_fake_session_data_provider
 from users.session_data import SessionData
-from models.user_role import UserRole
 
 session_context_var: ContextVar[dict] = ContextVar("session", default={})
+
+SESSION_MIDDLEWARE_CONFIG = {
+    'secret_key': os.environ['HUPRES_SECRET_SESSION_KEY'],
+    'session_cookie': 'hupres_session',
+    'same_site': 'none',
+}
 
 
 class SessionDataMiddleware(BaseHTTPMiddleware):
@@ -71,6 +77,7 @@ class SetCookieMiddleware(BaseHTTPMiddleware):
         )
 
         return response
+
 
 class SessionDataProvider:
 
