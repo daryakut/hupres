@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import List
 
 from pydantic import BaseModel
@@ -26,7 +27,7 @@ class GenerateQuizSummaryResponse(BaseModel):
 
 
 PRODUCT_ID = 11
-EXCLUDE_PROFILES = {1}
+EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 
 
 def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> GenerateQuizSummaryResponse:
@@ -61,6 +62,7 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> GenerateQuizSummaryRes
         gender=gender,
     )
     profiles = export_chart_info(chart_info)
+    # print(json.dumps(profiles))
 
     summaries = []
     for profile in profiles:
@@ -71,9 +73,10 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> GenerateQuizSummaryRes
         for profile_item_summary in profile.get('properties', []):
             name = profile_item_summary.get('name')
             text = profile_item_summary.get('text')
-            if not name or not text:
+            if not name or not text or text == 'Коридор нормы':
                 continue
-            profile_summaries.append(f"{name}: {text}")
+            # profile_summaries.append(f"{name}: {text}")
+            profile_summaries.append(f"{text} ")
 
         summaries.append(
             ProfileSummary(
