@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from typing import List
+
 from common.exceptions import Unauthorized, BadRequest
 from database.db_entities.db_quiz_free_form_question import DbQuizFreeFormQuestion
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
-from models.quiz_models import Quiz, QuizSummary
+from models.quiz_models import Quiz, QuizSummary, QuizFreeFormQuestion
 from models.token import Token
 from quizzes.free_form.gpt_client import ask_gpt
 from users.sessions import session_data_provider
@@ -51,3 +53,17 @@ def api_ask_free_form_question(quiz_token: Token[Quiz], free_form_question: str)
         )
 
     return free_form_answer
+
+
+def api_get_free_form_questions(quiz_token: Token[Quiz]) -> List[QuizFreeFormQuestion]:
+    session_data = session_data_provider.get_current_session()
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, token=quiz_token)
+        if db_quiz.deleted_at is not None:
+            raise BadRequest(f"Cannot find quiz {quiz_token}")
+
+        if not session_data.is_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to access quiz")
+
+        db_quiz_free_form_questions = db_quiz.quiz_free_form_questions
+        return [db_question.to_model() for db_question in db_quiz_free_form_questions]

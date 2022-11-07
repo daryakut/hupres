@@ -99,7 +99,7 @@ export async function generateQuizSummary(quizToken) {
 export async function askFreeFormQuestion(quizToken, freeFormQuestion) {
   try {
     const response = await axiosInstance.post(
-      `/quizzes/${quizToken}/ask-free-form-question`,
+      `/quizzes/${quizToken}/free-form-questions/ask`,
       {
         free_form_question: freeFormQuestion,
       }
@@ -107,6 +107,18 @@ export async function askFreeFormQuestion(quizToken, freeFormQuestion) {
     return response.free_form_answer;
   } catch (error) {
     console.error(`There was an error generating the free form question for quiz token ${quizToken}:`, error);
+    throw error;
+  }
+}
+
+export async function getFreeFormQuestions(quizToken) {
+  try {
+    const response = await axiosInstance.get(
+      `/quizzes/${quizToken}/free-form-questions`,
+    );
+    return response.data.questions;
+  } catch (error) {
+    console.error(`There was an error getting the free form questions for quiz token ${quizToken}:`, error);
     throw error;
   }
 }

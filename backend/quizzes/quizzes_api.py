@@ -9,9 +9,9 @@ from database.db_entities.db_quiz import DbQuiz
 from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from models.pronounce import Pronounce
-from models.quiz_models import Quiz
+from models.quiz_models import Quiz, QuizFreeFormQuestion
 from models.token import Token
-from quizzes.free_form.free_form_question_service import api_ask_free_form_question
+from quizzes.free_form.free_form_question_service import api_ask_free_form_question, api_get_free_form_questions
 from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
 from quizzes.quiz_summary import api_generate_quiz_summary, QuizSummary
@@ -142,7 +142,17 @@ class AskFreeFormQuestionResponse(BaseModel):
     free_form_answer: str
 
 
-@router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
+@router.post("/api/quizzes/{quiz_token}/free-form-questions/ask")
 async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
     free_form_answer = api_ask_free_form_question(Token.of(quiz_token), request.free_form_question)
     return AskFreeFormQuestionResponse(free_form_answer=free_form_answer)
+
+
+class GetFreeFormQuestionResponse(BaseModel):
+    questions: List[QuizFreeFormQuestion]
+
+
+@router.get("/api/quizzes/{quiz_token}/free-form-questions")
+async def get_free_form_questions(quiz_token: str) -> GetFreeFormQuestionResponse:
+    free_form_questions = api_get_free_form_questions(Token.of(quiz_token))
+    return GetFreeFormQuestionResponse(questions=free_form_questions)

@@ -33,6 +33,7 @@ class DbQuiz(DbBase):
     quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
     quiz_answers = relationship('DbQuizAnswer', back_populates='quiz', lazy='select')
     quiz_summaries = relationship('DbQuizSummary', back_populates='quiz', lazy='select')
+    quiz_free_form_questions = relationship('DbQuizFreeFormQuestion', back_populates='quiz', lazy='select')
 
     def to_model(self) -> Quiz:
         return Quiz(
