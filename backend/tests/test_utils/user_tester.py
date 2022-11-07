@@ -19,7 +19,7 @@ from quizzes.quizzes_api import CreateQuizResponse, create_quiz, get_quizzes, \
     generate_quiz_summary, UpdateQuizRequest, update_quiz
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
 from tests.users.fake_sessions import get_fake_session_data_provider
-from users.users_api import google_auth, get_current_user_response, ADMIN_USER_EMAIL_ADDRESSES, logout
+from users.users_api import google_auth, get_current_user, ADMIN_USER_EMAIL_ADDRESSES, logout
 
 
 # client = TestClient(app)
@@ -147,7 +147,7 @@ class UserTester:
     async def login_with_google(self, email_address: str = "georgii@hupres.com"):
         get_fake_google_oauth_service().email_address_to_return = email_address
         await google_auth(None)
-        response = await get_current_user_response()
+        response = await get_current_user()
         self.user = response.user
 
     async def logout(self):

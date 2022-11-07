@@ -3,27 +3,59 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Col, Dropdown, Icon, Menu, Popover, Row} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {getBaseUrl} from "../api/server";
+import {useUser} from "../User/UserProvider";
+import {getCurrentUser, logout} from "../api/users_api";
 
 const searchEngine = 'Google';
 
-const menu = (
+const loggedOutMenu = (
   <Menu>
     <Menu.Item>
       <a href={`${getBaseUrl()}/users/google-login`}>РЕЄСТРАЦІЯ</a>
     </Menu.Item>
     <Menu.Item>
-    <a href={`${getBaseUrl()}/users/google-login`}>АВТОРИЗАЦІЯ</a>
+      <a href={`${getBaseUrl()}/users/google-login`}>УВІЙТИ</a>
     </Menu.Item>
   </Menu>
 );
 
-const SigninDropdown = () => (
-  <Dropdown overlay={menu} placement="bottomRight">
-    <UserOutlined key="profile" style={{fontSize: '26px', color: '#ddd', margin: '25px', cursor: 'pointer'}}/>
-  </Dropdown>
-);
+const SigninDropdown = () => {
+  const {user, setUser} = useUser();
+  let history = useHistory();
+
+  const logoutAndRedirect = async () => {
+    await logout();
+    const user = await getCurrentUser();
+    setUser(user)
+    history.push('/')
+  }
+
+  let menu = loggedOutMenu;
+  if (user) {
+    menu = (
+      <Menu>
+        <Menu.Item>
+          <Link key="button" to="/quiz">ПРОФІЛЬ</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={logoutAndRedirect}>ВИЙТИ</a>
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
+  const userName = user ? user.email_address.split("@")[0] : '';
+  return (
+    <Dropdown overlay={menu} placement="bottomCenter">
+      <div className="user-profile-dropdown">
+        <div className="user-profile">{userName}</div>
+        <UserOutlined key="profile" style={{fontSize: '26px', color: '#ddd'}}/>
+      </div>
+    </Dropdown>
+  );
+};
 
 export default class Header extends React.Component {
   static propTypes = {

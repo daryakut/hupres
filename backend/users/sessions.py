@@ -50,8 +50,8 @@ class SessionDataProvider:
     def update_current_session(self, user_token: Optional[Token[User]], user_role: Optional[UserRole]):
         print(f"Logging in user {user_token}")
         session = session_context_var.get()
-        session["user_token"] = user_token.value
-        session["user_role"] = user_role.value
+        session["user_token"] = user_token.value if user_token else None
+        session["user_role"] = user_role.value if user_role else None
 
 
 session_data_provider = SessionDataProvider() if env.is_not_test() else get_fake_session_data_provider()
