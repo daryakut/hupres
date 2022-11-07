@@ -3,8 +3,7 @@ import './static/style';
 import {Col, Popconfirm, Row} from "antd";
 import {Link, useHistory} from 'react-router-dom';
 import {deleteQuiz, getQuizzes} from "../api/quizzes_api";
-import {useUser} from "../User/UserProvider";
-import {DeleteOutlined} from "@ant-design/icons";
+import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
 const Quizzes = ({match}) => {
   let history = useHistory();
@@ -74,6 +73,13 @@ const Quizzes = ({match}) => {
             </div>
           ))
         }
+        <div
+          className="quiz-list-item"
+        >
+          <Link to={`/quiz`} style={{color: '#fff'}}>
+            Додати нову <PlusOutlined/>
+          </Link>
+        </div>
       </Col>
     </Row>
   );
