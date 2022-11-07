@@ -131,3 +131,16 @@ async def submit_quiz_answer(
 @router.post("/api/quizzes/{quiz_token}/generate-summary")
 async def generate_quiz_summary(quiz_token: str) -> GenerateQuizSummaryResponse:
     return api_generate_quiz_summary(Token.of(quiz_token))
+
+
+class AskFreeFormQuestionRequest(BaseModel):
+    free_form_question: str
+
+
+class AskFreeFormQuestionResponse(BaseModel):
+    free_form_answer: str
+
+
+@router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
+async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
+    return api_generate_quiz_summary(Token.of(quiz_token))
