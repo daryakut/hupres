@@ -11,6 +11,7 @@ from database.transaction import transaction
 from models.pronounce import Pronounce
 from models.quiz_models import Quiz
 from models.token import Token
+from quizzes.free_form.free_form_question_service import api_ask_free_form_question
 from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
     SubmitAnswerResponse
 from quizzes.quiz_summary import api_generate_quiz_summary, QuizSummary
@@ -141,6 +142,7 @@ class AskFreeFormQuestionResponse(BaseModel):
     free_form_answer: str
 
 
-# @router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
-# async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
-#     return api_generate_quiz_summary(Token.of(quiz_token))
+@router.post("/api/quizzes/{quiz_token}/ask-free-form-question")
+async def ask_free_form_question(quiz_token: str, request: AskFreeFormQuestionRequest) -> AskFreeFormQuestionResponse:
+    free_form_answer = api_ask_free_form_question(Token.of(quiz_token), request.free_form_question)
+    return AskFreeFormQuestionResponse(free_form_answer=free_form_answer)

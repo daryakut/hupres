@@ -17,6 +17,12 @@ class QuizSummary(BaseModel):
     summaries: List[QuizProfileSummary]
 
 
+class QuizFreeFormQuestion(BaseModel):
+    """Textual representation of the DB object"""
+    question: str
+    answer: str
+
+
 class Quiz(BaseModel):
     """Representation of the DB object, whatever the Frontend might need to know about it"""
     token: str
