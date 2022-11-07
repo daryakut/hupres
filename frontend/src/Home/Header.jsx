@@ -36,8 +36,11 @@ const SigninDropdown = () => {
   if (user) {
     menu = (
       <Menu>
+        {/*<Menu.Item>*/}
+        {/*  <Link key="button" to="/quiz">ПРОФІЛЬ</Link>*/}
+        {/*</Menu.Item>*/}
         <Menu.Item>
-          <Link key="button" to="/quiz">ПРОФІЛЬ</Link>
+          <Link key="button" to="/quizzes">МОЇ АНКЕТИ</Link>
         </Menu.Item>
         <Menu.Item>
           <a onClick={logoutAndRedirect}>ВИЙТИ</a>

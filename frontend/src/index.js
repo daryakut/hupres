@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Quiz from "./Quiz/Quiz";
 import QuizSummary from "./Quiz/QuizSummary";
 import {UserProvider} from "./User/UserProvider";
+import Quizzes from "./Quiz/Quizzes";
 
 const App = () => {
   return (
@@ -17,9 +18,8 @@ const App = () => {
             </Route>
             <Route path="/quiz/:quizToken/summary" component={QuizSummary}/>
             <Route path="/quiz/:quizToken" component={Quiz}/>
-            <Route path="/quiz">
-              <Quiz/>
-            </Route>
+            <Route path="/quiz"><Quiz/></Route>
+            <Route path="/quizzes"><Quizzes/></Route>
           </Switch>
         </div>
       </UserProvider>

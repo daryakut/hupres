@@ -84,6 +84,7 @@ const Quiz = ({match}) => {
       await updateQuiz(quizToken, respondentName, pronounce);
       // console.log('response', response)
       // setQuestion(response);
+      history.replace(`/quiz/${quiz.token}/summary`);
     } catch (error) {
       setError(error);
     } finally {
