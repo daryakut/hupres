@@ -37,6 +37,23 @@ async def create_quiz() -> CreateQuizResponse:
     return CreateQuizResponse(quiz=quiz)
 
 
+class GetQuizResponse(BaseModel):
+    quiz: Quiz
+
+
+@router.get("/api/quizzes/{quiz_token}")
+async def get_quiz(quiz_token) -> GetQuizResponse:
+    session_data = session_data_provider.get_current_session()
+    with transaction() as session:
+        db_quiz = QuizQueries.find_by_token(session, token=quiz_token)
+        if db_quiz.deleted_at is not None:
+            raise BadRequest(f"Cannot find quiz {quiz_token}")
+
+        if not session_data.is_owner_of(db_quiz):
+            raise Unauthorized("You are not allowed to delete this quiz")
+        return GetQuizResponse(quiz=db_quiz.to_model())
+
+
 class GetQuizzesResponse(BaseModel):
     quizzes: List[Quiz]
 

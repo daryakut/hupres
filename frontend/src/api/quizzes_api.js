@@ -25,6 +25,16 @@ export async function getQuizzes() {
   }
 }
 
+export async function getQuiz(quizToken) {
+  try {
+    const response = await axiosInstance.get(`/quizzes/${quizToken}`);
+    return response.data.quiz;
+  } catch (error) {
+    console.error(`There was an error fetching the quiz ${quizToken}:`, error);
+    throw error;
+  }
+}
+
 export async function deleteQuiz(quizToken) {
   try {
     await axiosInstance.delete(`/quizzes/${quizToken}`);

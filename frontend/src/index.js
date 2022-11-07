@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Home from './Home';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Quiz from "./Quiz";
+import Quiz from "./Quiz/Quiz";
 
 function App() {
   return (

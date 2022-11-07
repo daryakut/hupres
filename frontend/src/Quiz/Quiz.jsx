@@ -4,12 +4,13 @@ import {enquireScreen} from 'enquire-js';
 import {Button, Col, Input, Row, Select} from "antd";
 import QueueAnim from "rc-queue-anim";
 import { useHistory } from 'react-router-dom';
-import {createQuiz, getNextQuizQuestion, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
+import {createQuiz, getNextQuizQuestion, getQuiz, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
 import {RightOutlined} from "@ant-design/icons";
 
 const Quiz = ({match}) => {
   let history = useHistory();
+  const [quiz, setQuiz] = useState(null);
   const [question, setQuestion] = useState(null);
   const [pronounce, setPronounce] = useState(null);
   const [respondentName, setRespondentName] = useState(null);
@@ -27,16 +28,29 @@ const Quiz = ({match}) => {
   useEffect(() => {
     console.log("!!!! USE EFFECT")
     if (!quizToken) {
-      async function createQuizAndLoad() {
-        const quiz = (await createQuiz()).quiz;
-        console.log('quiz', quiz)
-        history.push(`/quiz/${quiz.token}`);
-      }
-      createQuizAndLoad();
+      createQuizAndNavigate();
     } else {
-      fetchNextQuestion();
+      fetchQuiz().then(fetchNextQuestion);
     }
   }, [quizToken]);
+
+  const createQuizAndNavigate = async function () {
+    const quiz = (await createQuiz()).quiz;
+    console.log('quiz', quiz)
+    history.push(`/quiz/${quiz.token}`);
+  }
+
+  const fetchQuiz = async () => {
+    try {
+      // setIsLoading(true);
+      const quiz = await getQuiz(quizToken);
+      setQuiz(quiz);
+    } catch (error) {
+      // setError(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
 
   const fetchNextQuestion = async () => {
     try {
@@ -80,7 +94,6 @@ const Quiz = ({match}) => {
   const onAnswerClick = async (answerName) => {
     await submitQuizAnswer(quizQuestionToken, answerName);
     await fetchNextQuestion();
-    // history.push('/some/path');
   }
 
   if (error) {
@@ -100,6 +113,11 @@ const Quiz = ({match}) => {
   }
 
   if (question && !question.quiz_question) {
+    // if (quiz.subject_name && quiz.pronounce) {
+    //   // Quiz already completed, let's show the results
+    //   history.push(`/quiz/${quiz.token}/summary`);
+    //   return null;
+    // }
     // End of quiz, let's ask for their name and gender
     return (
       <Row justify="center" className="fullscreen-div">
@@ -126,7 +144,7 @@ const Quiz = ({match}) => {
             <Select.Option value="HE_HIM">Чоловічий</Select.Option>
             <Select.Option value="SHE_HER">Жінойчий</Select.Option>
             <Select.Option value="THEY_THEM">Інше</Select.Option>
-            <Select.Option value="PREFER_NOT_TO_SAY">Волію не вказувати</Select.Option>
+            <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
           </Select>
         </Col>
         <Col span={12} offset={6}>
@@ -142,12 +160,6 @@ const Quiz = ({match}) => {
       </Row>
     )
   }
-
-  // const handleNavigate = () => {
-  //   history.push('/some/path');
-  // };
-
-  // const {quizToken} = match.params;
 
   const displayQuestion = question?.quiz_question?.question_display_name;
   const displayAnswers = question?.available_answers;
