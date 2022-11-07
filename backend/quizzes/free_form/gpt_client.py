@@ -1,10 +1,12 @@
 import os
 
-import openai
+from openai import OpenAI, OpenAIError
 
 from models.pronounce import Pronounce
 
-openai.api_key = os.environ["HUPRES_OPENAI_API_KEY"]
+client = OpenAI(
+    api_key=os.environ.get("HUPRES_OPENAI_API_KEY"),
+)
 
 
 def ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: str, pronounce: Pronounce):
@@ -20,8 +22,8 @@ def ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: s
 
     try:
         # Start a conversation
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo-1106",
             messages=[
                 {
                     "role": "system",
@@ -39,10 +41,10 @@ def ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: s
                 },
             ]
         )
-
+        print("GPT response", response)
         # Return the response text
-        return response['choices'][0]['message']['content']
-    except openai.error.OpenAIError as e:
+        return response.choices[0].message.content
+    except OpenAIError as e:
         print("Error calling OpenAI API")
         print(e)
         return f"Вибачте, але я не розумію запитання"

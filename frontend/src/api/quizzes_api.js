@@ -95,3 +95,18 @@ export async function generateQuizSummary(quizToken) {
     throw error;
   }
 }
+
+export async function askFreeFormQuestion(quizToken, freeFormQuestion) {
+  try {
+    const response = await axiosInstance.post(
+      `/quizzes/${quizToken}/ask-free-form-question`,
+      {
+        free_form_question: freeFormQuestion,
+      }
+    );
+    return response.free_form_answer;
+  } catch (error) {
+    console.error(`There was an error generating the free form question for quiz token ${quizToken}:`, error);
+    throw error;
+  }
+}

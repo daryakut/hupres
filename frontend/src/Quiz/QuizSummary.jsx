@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './static/style';
 import {Col, Row} from "antd";
 import {useHistory} from 'react-router-dom';
-import {generateQuizSummary} from "../api/quizzes_api";
+import {askFreeFormQuestion, generateQuizSummary} from "../api/quizzes_api";
 
 const QuizSummary = ({match}) => {
   let history = useHistory();
@@ -21,6 +21,7 @@ const QuizSummary = ({match}) => {
       // setIsLoading(true);
       const summaries = (await generateQuizSummary(quizToken)).summaries;
       setSummaries(summaries);
+      // await askFreeFormQuestion(quizToken, "Как лучше всего смотивировать сотрудника?");
     } catch (error) {
       // setError(error);
     } finally {
