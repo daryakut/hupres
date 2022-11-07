@@ -3,6 +3,7 @@ import re
 from fastapi import APIRouter
 from fastapi import Request
 from pydantic import BaseModel
+from starlette.responses import RedirectResponse
 
 from database.db_entities.db_user import DbUser
 from database.queries.quiz_queries import QuizQueries
@@ -52,7 +53,8 @@ async def google_auth(request: Request):
             db_quiz.user_id = db_user.id
 
     session_data_provider.update_current_session(user_token=user_token, user_role=role)
-    return {"email": email_address, "user_token": user_token.value}
+    # return {"email": email_address, "user_token": user_token.value}
+    return RedirectResponse(url="http://localhost:3000")
 
 
 @router.get("/users/google-login")
@@ -61,6 +63,11 @@ async def google_login(request: Request):
     redirect_uri = request.url_for(google_auth.__name__)
     print(f"redirect_uri {redirect_uri}")
     return await google_oauth_service.authorize_redirect(request, redirect_uri)
+
+
+@router.get("/test-redirect")
+async def test_redirect(request: Request):
+    return RedirectResponse(url="http://localhost:3000")
 
 
 @router.get("/api/users/logout")
