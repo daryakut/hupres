@@ -25,7 +25,7 @@ SESSION_MIDDLEWARE_CONFIG = {
 # work because we're on localhost domain for both backend and frontend
 if env.is_prod():
     SESSION_MIDDLEWARE_CONFIG["same_site"] = "none"
-    SESSION_MIDDLEWARE_CONFIG["secure"] = True
+    SESSION_MIDDLEWARE_CONFIG["https_only"] = True
 
 
 class SessionDataMiddleware(BaseHTTPMiddleware):
