@@ -18,8 +18,14 @@ session_context_var: ContextVar[dict] = ContextVar("session", default={})
 SESSION_MIDDLEWARE_CONFIG = {
     'secret_key': os.environ['HUPRES_SECRET_SESSION_KEY'],
     'session_cookie': 'hupres_session',
-    'same_site': 'none',
 }
+
+# When running in production, we need to set the SameSite attribute to 'None' and the Secure attribute to True
+# Locally we don't have secure connection and can't use SameSite=None; however, SameSite=Lax (default) would still
+# work because we're on localhost domain for both backend and frontend
+if env.is_prod():
+    SESSION_MIDDLEWARE_CONFIG["same_site"] = "none"
+    SESSION_MIDDLEWARE_CONFIG["secure"] = True
 
 
 class SessionDataMiddleware(BaseHTTPMiddleware):

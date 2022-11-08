@@ -9,8 +9,13 @@ from fastapi import Request
 
 from common.env import env, BACKEND_URL
 from tests.users.fake_google_oauth import get_fake_google_oauth_service
+import secrets
 
 GOOGLE_AUTH_CALLBACK_PATH = "/users/google-auth-callback"
+
+
+def generate_state():
+    return secrets.token_urlsafe(32)
 
 
 class GoogleOAuthService:

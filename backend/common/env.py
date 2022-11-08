@@ -16,6 +16,9 @@ class Env(BaseModel):
     def is_not_test(self):
         return self.stage != EnvStage.TEST
 
+    def is_prod(self):
+        return self.stage == EnvStage.PROD
+
 
 if os.getenv('ENV') == 'development':
     _stage = EnvStage.DEV
