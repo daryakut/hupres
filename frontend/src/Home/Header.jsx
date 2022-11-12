@@ -13,10 +13,10 @@ const searchEngine = 'Google';
 const loggedOutMenu = (
   <Menu>
     <Menu.Item>
-      <a href={`${getBaseUrl()}/users/google-login`}>РЕЄСТРАЦІЯ</a>
+      <a href={`${getBaseUrl()}/api/users/google-login`}>РЕЄСТРАЦІЯ</a>
     </Menu.Item>
     <Menu.Item>
-      <a href={`${getBaseUrl()}/users/google-login`}>УВІЙТИ</a>
+      <a href={`${getBaseUrl()}/api/users/google-login`}>УВІЙТИ</a>
     </Menu.Item>
   </Menu>
 );

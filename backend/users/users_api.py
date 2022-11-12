@@ -59,9 +59,9 @@ async def google_auth(request: Request):
     return RedirectResponse(url=FRONTEND_URL)
 
 
-@router.get("/users/google-login")
+@router.get("/api/users/google-login")
 async def google_login(request: Request):
-    # This is http://localhost:8000/users/google-auth-callback
+    # This is http://localhost:8000/api/users/google-auth-callback
     redirect_uri = request.url_for(google_auth.__name__)
     print(f"redirect_uri {redirect_uri}")
     return await google_oauth_service.authorize_redirect(request, redirect_uri)

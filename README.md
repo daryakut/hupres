@@ -1,25 +1,37 @@
-## Running Locally
+## Deploy (on linux)
+
+Pyenv install:
+
+    curl https://pyenv.run | bash
+
+Create Python environment:
+
+    pyenv install 3.10.3 && pyenv virtualenv 3.10.3 hupres-monorepo-3.10
 
 Postgresql install:
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    brew update
-    brew install postgresql
+    sudo apt update
+    sudo apt install postgresql postgresql-contrib
+    sudo yum install postgresql-server
 
 Start/Stop/Restart Postgresql:
     
-    brew services start postgresql
-    brew services stop postgresql
-    brew services restart postgresql
+    sudo systemctl start postgresql
+    sudo systemctl enable postgresql
 
-Create a user and a database (enter password when prompted 123456)
+and to verify installation:
 
+    sudo systemctl status postgresql
+
+Create a user and a database (enter prod DB password when prompted)
+
+    sudo -i -u postgres
     createuser --username=postgres --no-superuser --pwprompt --createdb hupres
-    createdb -U hupres -h localhost -p 5432 hupres_test
+    createdb -U hupres -h localhost -p 5432 hupres_prod
 
 Test database connection:
 
-    psql -U hupres -W -d hupres_test -h localhost -p 5432
+    psql -U hupres -W -d hupres_prod -h localhost -p 5432
 
 List Postgres users:
 
@@ -37,9 +49,6 @@ Run (specifying port is optional):
 
     uvicorn main:main --port=8000
 
-Install nginx for production build
-
-    brew install nginx
 
 ## Heroku
 

@@ -1,0 +1,6 @@
+FROM python:3.10
+WORKDIR /app
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ .
+CMD ["gunicorn", "-b", ":8000", "-w", "3", "-k", "uvicorn.workers.UvicornWorker", "app:app", "8000"]

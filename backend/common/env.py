@@ -30,8 +30,10 @@ elif os.getenv('ENV') == 'test':
     BACKEND_URL = "http://localhost:8000"
 else:
     _stage = EnvStage.PROD
-    FRONTEND_URL = "https://hupres-web.onrender.com"
-    BACKEND_URL = "https://hupres-backend.onrender.com"
+    FRONTEND_URL = "http://localhost"
+    BACKEND_URL = "http://localhost"
+    # FRONTEND_URL = "https://hupres-web.onrender.com"
+    # BACKEND_URL = "https://hupres-backend.onrender.com"
 
 print("ENVIRONMENT:", _stage, BACKEND_URL, FRONTEND_URL)
 

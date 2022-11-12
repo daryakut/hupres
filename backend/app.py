@@ -2,6 +2,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy import func
 from gettext import gettext as _
 
+from common.env import env
 from database.transaction import transaction
 from main.fast_api_app import app
 
@@ -11,7 +12,7 @@ async def home():
     with transaction() as session:
         current_timestamp = session.query(func.now()).scalar()
         message = _("Hello world!")
-        return HTMLResponse(f"{message} {current_timestamp}")
+        return HTMLResponse(f"{message} {current_timestamp} {env.stage}")
 
 
 @app.get("/404")
