@@ -13,9 +13,16 @@ relative_path = current_file.relative_to(current_file.parent.parent)
 
 TABLES_TO_AVOID_TRUNCATING = ['alembic_version']
 
+# Ensure this only runs in test environment
+assert env.stage == EnvStage.TEST
+assert not os.environ.get('HUPRES_POSTGRES_USERNAME')
+assert not os.environ.get('HUPRES_POSTGRES_PASSWORD')
+assert not os.environ.get('HUPRES_POSTGRES_HOSTNAME')
+assert not os.environ.get('HUPRES_POSTGRES_PORT')
+assert not os.environ.get('HUPRES_POSTGRES_DATABASE_NAME')
+
 
 def pytest_configure():
-    env.stage = EnvStage.TEST
     os.environ["HUPRES_ENV"] = "test"
     os.environ["HUPRES_APP_PORT"] = "8080"
 
