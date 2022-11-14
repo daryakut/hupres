@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile-frontend
       args:
-        - HUPRES_ENV="${HUPRES_ENV}"
-        - HUPRES_APP_PORT="${HUPRES_APP_PORT}"
-        - HUPRES_PROD_HOSTNAME="${HUPRES_PROD_HOSTNAME}"
+        - HUPRES_ENV=${HUPRES_ENV}
+        - HUPRES_APP_PORT=${HUPRES_APP_PORT}
+        - HUPRES_PROD_HOSTNAME=${HUPRES_PROD_HOSTNAME}
     image: hupres/hupres-monorepo:frontend
     ports:
       - "${HUPRES_APP_PORT}:80"

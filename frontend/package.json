@@ -58,7 +58,7 @@
     "lint"
   ],
   "scripts": {
-    "start": "webpack serve --mode development --open",
+    "start": "export HUPRES_ENV=development && webpack serve --mode development --open",
     "build": "webpack --mode production",
     "lint": "eslint --ext .js,.jsx src/",
     "eslint-fix": "eslint --fix src/ --ext .js,.jsx",
