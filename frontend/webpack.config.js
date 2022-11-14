@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
 const path = require('path');
 
 module.exports = (env, argv) => {
@@ -63,23 +62,15 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './public/index.html',
         filename: 'index.html', // the output file name that will be created in the dist folder
+        favicon: './public/favicon.ico',
       }),
       // new webpack.DefinePlugin(envKeys),
       new webpack.DefinePlugin({
-        'process.env.HUPRES_ENV': process.env.HUPRES_ENV ?? JSON.stringify(isProduction ? 'production' : 'development'),
-        'process.env.HUPRES_APP_PORT': process.env.HUPRES_APP_PORT,
-        'process.env.HUPRES_PROD_HOSTNAME': process.env.HUPRES_PROD_HOSTNAME,
+        'process.env.HUPRES_ENV': JSON.stringify(process.env.HUPRES_ENV ?? isProduction ? 'production' : 'development'),
+        'process.env.HUPRES_APP_PORT': JSON.stringify(process.env.HUPRES_APP_PORT),
+        'process.env.HUPRES_PROD_HOSTNAME': JSON.stringify(process.env.HUPRES_PROD_HOSTNAME),
       })
-      // // Only use the SkipAssetsPlugin if you actually want to skip some assets
-      // new HtmlWebpackSkipAssetsPlugin({
-      //   // specify assets to skip here if necessary
-      // }),
     ],
-    // plugins: [
-    //   new HtmlWebpackSkipAssetsPlugin({
-    //     template: './public/index.html', // update the path to your index.html if necessary
-    //   }),
-    // ],
     resolve: {
       extensions: ['.js', '.jsx'], // resolve these extensions
     },
