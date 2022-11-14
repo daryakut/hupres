@@ -4,4 +4,3 @@ HUPRES_POSTGRES_HOSTNAME="host.docker.internal"
 HUPRES_PROD_HOSTNAME="localhost"
 HUPRES_ENV="development_docker"
 docker-compose build --no-cache
-docker-compose up --build

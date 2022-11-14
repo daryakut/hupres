@@ -37,9 +37,13 @@ List Postgres users:
 
     psql -U postgres -h localhost -p 5432 -c "\du"
 
-Install:
+Install Docker:
 
-    python -m pip install -r requirements.txt
+    
+
+Install Docker:
+
+    docker login
 
 Install gettext for localization
 
