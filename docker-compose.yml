@@ -5,13 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-frontend
+      args:
+        - HUPRES_ENV="${HUPRES_ENV}"
+        - HUPRES_APP_PORT="${HUPRES_APP_PORT}"
+        - HUPRES_PROD_HOSTNAME="${HUPRES_PROD_HOSTNAME}"
     ports:
       - "${HUPRES_APP_PORT}:80"
     depends_on:
       - backend
-    environment:
-      HUPRES_ENV: ${HUPRES_ENV}
-      HUPRES_APP_PORT: ${HUPRES_APP_PORT}
 
   backend:
     build:
@@ -22,6 +23,7 @@ services:
     environment:
       HUPRES_ENV: ${HUPRES_ENV}
       HUPRES_APP_PORT: ${HUPRES_APP_PORT}
+      HUPRES_PROD_HOSTNAME: ${HUPRES_PROD_HOSTNAME}
       HUPRES_GOOGLE_0AUTH_CLIENT_ID: ${HUPRES_GOOGLE_0AUTH_CLIENT_ID}
       HUPRES_GOOGLE_0AUTH_CLIENT_SECRET: ${HUPRES_GOOGLE_0AUTH_CLIENT_SECRET}
       HUPRES_SECRET_SESSION_KEY: ${HUPRES_SECRET_SESSION_KEY}

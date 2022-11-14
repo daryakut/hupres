@@ -6,6 +6,8 @@ const path = require('path');
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
+  console.log(`Building frontend for environment ${process.env.HUPRES_ENV} at ${process.env.HUPRES_PROD_HOSTNAME}:${process.env.HUPRES_APP_PORT}`);
+
   return {
     mode: 'development',
     entry: './src/index.js', // update the entry path if necessary
@@ -64,7 +66,7 @@ module.exports = (env, argv) => {
       }),
       // new webpack.DefinePlugin(envKeys),
       new webpack.DefinePlugin({
-        'process.env.HUPRES_ENV': process.env.HUPRES_ENV ?? (isProduction ? 'production' : 'development'),
+        'process.env.HUPRES_ENV': process.env.HUPRES_ENV ?? JSON.stringify(isProduction ? 'production' : 'development'),
         'process.env.HUPRES_APP_PORT': process.env.HUPRES_APP_PORT,
         'process.env.HUPRES_PROD_HOSTNAME': process.env.HUPRES_PROD_HOSTNAME,
       })
