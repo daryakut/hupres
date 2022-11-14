@@ -12,7 +12,7 @@ from tests.users.fake_google_oauth import get_fake_google_oauth_service
 import secrets
 
 GOOGLE_AUTH_CALLBACK_PATH = "/api/users/google-auth-callback"
-
+REDIRECT_URI = f'{BACKEND_URL}{GOOGLE_AUTH_CALLBACK_PATH}'
 
 def generate_state():
     return secrets.token_urlsafe(32)
@@ -40,7 +40,7 @@ class GoogleOAuthService:
             access_token_url='https://accounts.google.com/o/oauth2/token',
             access_token_params=None,
             refresh_token_url=None,
-            redirect_uri=f'{BACKEND_URL}/{GOOGLE_AUTH_CALLBACK_PATH}',
+            redirect_uri=REDIRECT_URI,
             client_kwargs={'scope': 'openid profile email'},
             # server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
             **metadata,

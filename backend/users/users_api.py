@@ -12,7 +12,7 @@ from database.queries.quiz_queries import QuizQueries
 from database.transaction import transaction
 from models.user import User
 from models.user_role import UserRole
-from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service
+from users.google_oauth import GOOGLE_AUTH_CALLBACK_PATH, google_oauth_service, REDIRECT_URI
 from users.sessions import session_data_provider
 
 router = APIRouter()
@@ -61,10 +61,8 @@ async def google_auth(request: Request):
 
 @router.get("/api/users/google-login")
 async def google_login(request: Request):
-    # This is http://localhost:8000/api/users/google-auth-callback
-    redirect_uri = request.url_for(google_auth.__name__)
-    print(f"redirect_uri {redirect_uri}")
-    return await google_oauth_service.authorize_redirect(request, redirect_uri)
+    print(f"redirect_uri {REDIRECT_URI}")
+    return await google_oauth_service.authorize_redirect(request, REDIRECT_URI)
 
 
 class GetCurrentUserResponse(BaseModel):
