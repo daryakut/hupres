@@ -1,21 +1,10 @@
-### ant design 2.x
+## Running Locally
 
-ant design 2.x 里的 landing page. 
+To update the frontend and install dependencies:
 
-脚手架使用的是： [antd-init](https://github.com/ant-design/antd-init);
+    git pull
+    yarn install
 
-## preview
+To run the app locally:
 
-https://ant-motion.github.io/ant-design-2.x-landing-page/
-
-
-## install
-```
-$ npm i 
-```
-
-## Development
-
-```
-$ npm start
-```
+    yarn start

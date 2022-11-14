@@ -29,8 +29,14 @@ List Postgres users:
 
     psql -U postgres -h localhost -p 5432 -c "\du"
 
-Install:
+Install `pyenv` if necessary. Create the `pyenv` environment and activate it:
 
+    pyenv virtualenv 3.10.3 hupres-monorepo-3.10
+    pyenv activate hupres-monorepo-3.10
+
+Install from `backend folder`:
+
+    cd backend
     python -m pip install -r requirements.txt
 
 Install gettext for localization
@@ -39,32 +45,8 @@ Install gettext for localization
 
 Run migrations:
 
-    cd backend && migrate_head.sh
+    migrate_head.sh
 
-Run (specifying port is optional):
+Run locally on port 8000:
 
-    uvicorn main:main --port=8000
-
-Install nginx for production build
-
-    brew install nginx
-
-## Heroku
-
-The main can be deployed to [Heroku](https://heroku.com) using free resources, however you will need to establish your
-account first. Once you have an account, you can click the button here to deploy to Heroku:
-
-1. Log into (or create) your Heroku account
-2. Click this button [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/bennylope/python-deployments-hello-world)
-3. Enter a name for your main (it will need to be unique across all of Heroku)
-4. Choose your region
-5. Click "Deploy main"
-
-Alternatively, fork this repository, create a Heroku main in your Heroku dashboard, then Git push to that repository.
-
-1. Fork this repository in your GitHub account
-1. Log into (or create) your Heroku account
-2. Click "New" then select "Create new main"
-3. Enter a name for your main (it will need to be unique across all of Heroku)
-4. Choose your region and click Deploy
-5. Select "Connect to GitHub", choose your fork and click "Connect"
+    ./run.sh
