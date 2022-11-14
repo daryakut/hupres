@@ -143,3 +143,9 @@ Then, start up the app and start recording the logs to a file:
 To shut down docker, run from `~/hupres-monorepo`:
 
     docker-compose down
+
+# Development
+
+Favicon, a few nice resources:
+* https://editsvgcode.com/
+* https://www.freeconvert.com/svg-to-ico
