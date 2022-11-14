@@ -29,19 +29,24 @@ Create a user and a database (enter prod DB password when prompted)
     createuser --username=postgres --no-superuser --pwprompt --createdb hupres
     createdb -U hupres -h localhost -p 5432 hupres_prod
 
+or:
+
+    psql -U $HUPRES_POSTGRES_USERNAME -h $HUPRES_POSTGRES_HOSTNAME -p 5432 -d postgres
+    CREATE DATABASE hupres_prod;
+
 Test database connection:
 
     psql -U hupres -W -d hupres_prod -h localhost -p 5432
+
+or
+
+    psql -U $HUPRES_POSTGRES_USERNAME -h $HUPRES_POSTGRES_HOSTNAME -p 5432 -d $HUPRES_POSTGRES_DATABASE_NAME
 
 List Postgres users:
 
     psql -U postgres -h localhost -p 5432 -c "\du"
 
-Install Docker:
-
-    
-
-Install Docker:
+Docker login:
 
     docker login
 
