@@ -126,6 +126,7 @@ Copy `docker-compose.yml` to server from your local machine:
     cd /path/to/hupres-monorepo
     git pull
     scp -i /path/to/key.pem docker-compose.yml ec2-user@3.16.83.5:~/hupres-monorepo
+    scp -i /path/to/key.pem prod-update.sh ec2-user@3.16.83.5:~/hupres-monorepo
 
 Push the recent images:
 
