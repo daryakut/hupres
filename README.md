@@ -1,4 +1,17 @@
-# Running Docker locally:
+# Running locally
+
+The app can be run locally with or without docker. Without docket is best for development
+because backend and frontend instantly refresh after any changes and start up quickly.
+
+The benefits of Docker is that the setup would be equivalent to that of production, so
+I recommend you only run as docker for testing before release.
+
+## Running without Docker
+
+Run each backend and frontend apps separately. See the corresponding README.md
+files for each app for more details.
+
+## Running with Docker
 
 Install docker depending on your system. On Mac it's best to install Docker Desktop. 
 
