@@ -7,6 +7,7 @@ import Text from "antd/es/typography/Text";
 import {CopyOutlined, LoadingOutlined, RightOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import {useUser} from "../User/UserProvider";
+import Header from "../Home/Header";
 
 const QuizSummary = ({match}) => {
   let history = useHistory();
@@ -89,91 +90,96 @@ const QuizSummary = ({match}) => {
   const isLoggedIn = !!user;
 
   return (
-    <div className="fullscreen-div-scrollable">
-      <Row justify="center">
-        <Col span={12} offset={6}>
-          <div className="quiz-container quiz-container-summary">
-            <div className="copy-to-clipboard-button-container">
-              <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined/></Button>
+    <>
+      <Header key="header"/>
+      {/*<div style={{height: 80}}/>*/}
+      <div className="fullscreen-div-scrollable">
+        <Row justify="center">
+          <Col span={12} offset={6}>
+            <div className="quiz-container quiz-container-summary">
+              <div className="copy-to-clipboard-button-container">
+                <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined/></Button>
+              </div>
+              {
+                summaries.map((summary, index) => (
+                  <Row key={`summary-${index}`} justify="center">
+                    <Col span={24}>
+                      <h2 className="quiz-summary-title">{summary.title}</h2>
+                      <h5 className="quiz-summary-content">{summary.summary}</h5>
+                    </Col>
+                  </Row>
+                ))
+              }
             </div>
-            {
-              summaries.map((summary, index) => (
-                <Row key={`summary-${index}`} justify="center">
-                  <Col span={24}>
-                    <h2 className="quiz-summary-title">{summary.title}</h2>
-                    <h5 className="quiz-summary-content">{summary.summary}</h5>
-                  </Col>
-                </Row>
-              ))
-            }
-          </div>
 
-          <div className="free-form-chat-container">
-            {
-              questions.map((question, index) => (
-                <div key={`question-${index}`}>
-                  <hr className="free-form-hr-divider"/>
-                  <div key={`question-${index}`} className="free-form-question-container">
-                    {/*<Col key={`summary-${index}`} span={16} offset={8}>*/}
-                    <h5 className="free-form-question-content" style={{textAlign: 'right'}}>{question.question}</h5>
-                    {/*</Col>*/}
+            <div className="free-form-chat-container">
+              {
+                questions.map((question, index) => (
+                  <div key={`question-${index}`}>
+                    <hr className="free-form-hr-divider"/>
+                    <div key={`question-${index}`} className="free-form-question-container">
+                      {/*<Col key={`summary-${index}`} span={16} offset={8}>*/}
+                      <h5 className="free-form-question-content" style={{textAlign: 'right'}}>{question.question}</h5>
+                      {/*</Col>*/}
+                    </div>
+                    <div key={`answer-${index}`} className="free-form-answer-container">
+                      {question.answer ? (
+                        <h5 className="free-form-answer-content">{question.answer}</h5>
+                      ) : (
+                        <div className="free-form-answer-content"><LoadingOutlined/></div>
+                      )}
+                    </div>
                   </div>
-                  <div key={`answer-${index}`} className="free-form-answer-container">
-                    {question.answer ? (
-                      <h5 className="free-form-answer-content">{question.answer}</h5>
-                    ) : (
-                      <div className="free-form-answer-content"><LoadingOutlined/></div>
-                    )}
-                  </div>
-                </div>
-              ))
-            }
-          </div>
+                ))
+              }
+            </div>
 
-          {isLoggedIn ? (
-            <div style={{height: 100}}/>
-          ) : null}
-        </Col>
-      </Row>
+            {isLoggedIn ? (
+              <div style={{height: 100}}/>
+            ) : null}
+          </Col>
+        </Row>
 
-      {isLoggedIn ? (
-        <div className="free-form-question-input-container">
-          <div className="free-form-question-input-container-fade"/>
-          <div className="free-form-question-input-container-white">
-            <Row>
-              <Col span={24} offset={0}>
-                <Text className="free-form-question-input-label">
-                  Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
-                </Text>
-              </Col>
-            </Row>
-            <Row style={{marginTop: 6}}>
-              <Col span={20} offset={0}>
-                {/*<Input*/}
-                <TextArea rows={2}
-                          className="free-form-question-input"
-                          placeholder="Як мотивуваті цього респондента?"
-                          value={freeFormQuestion}
-                          onChange={(e) => setFreeFormQuestion(e.target.value)}
-                          onKeyDown={onFreeFormQuestionKeyDown}
-                />
-              </Col>
-              <Col span={4}>
-                <Button
-                  className="free-form-question-button"
-                  size='large'
-                  disabled={!freeFormQuestion}
-                  onClick={onAskFreeFormQuestionClick}
-                >
-                  Спитати
-                </Button>
-              </Col>
-            </Row>
+        {isLoggedIn ? (
+          <div className="free-form-question-input-container">
+            <div className="free-form-question-input-container-fade"/>
+            <div className="free-form-question-input-container-white">
+              <Row>
+                <Col span={24} offset={0}>
+                  <Text className="free-form-question-input-label">
+                    Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
+                  </Text>
+                </Col>
+              </Row>
+              <Row style={{marginTop: 6}}>
+                <Col span={20} offset={0}>
+                  {/*<Input*/}
+                  <TextArea rows={2}
+                            className="free-form-question-input"
+                            placeholder="Як мотивуваті цього респондента?"
+                            value={freeFormQuestion}
+                            onChange={(e) => setFreeFormQuestion(e.target.value)}
+                            onKeyDown={onFreeFormQuestionKeyDown}
+                  />
+                </Col>
+                <Col span={4}>
+                  <Button
+                    className="free-form-question-button"
+                    size='large'
+                    disabled={!freeFormQuestion}
+                    onClick={onAskFreeFormQuestionClick}
+                  >
+                    Спитати
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           </div>
-        </div>
-      ) : null}
-    </div>
-  );
+        ) : null}
+      </div>
+    </>
+  )
+    ;
 };
 
 export default QuizSummary;
