@@ -14,7 +14,7 @@ trap 'cleanup' 2
 # Run commands in background and store their PIDs
 echo "Starting backend..."
 pushd backend
-export ENV=production
+export HUPRES_ENV=production
 uvicorn app:app --port=8000 & pid_backend=$!
 popd
 

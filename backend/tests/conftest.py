@@ -18,7 +18,7 @@ TABLES_TO_AVOID_TRUNCATING = ['alembic_version']
 
 def pytest_configure():
     env.stage = EnvStage.TEST
-    os.environ["ENV"] = "test"
+    os.environ["HUPRES_ENV"] = "test"
 
     os.environ["HUPRES_SECRET_SESSION_KEY"] = "test_key"
     os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_ID"] = "test_client_id"

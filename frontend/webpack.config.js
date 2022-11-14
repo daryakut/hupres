@@ -64,7 +64,9 @@ module.exports = (env, argv) => {
       }),
       // new webpack.DefinePlugin(envKeys),
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development')
+        'process.env.HUPRES_ENV': process.env.HUPRES_ENV ?? (isProduction ? 'production' : 'development'),
+        'process.env.HUPRES_APP_PORT': process.env.HUPRES_APP_PORT,
+        'process.env.HUPRES_PROD_HOSTNAME': process.env.HUPRES_PROD_HOSTNAME,
       })
       // // Only use the SkipAssetsPlugin if you actually want to skip some assets
       // new HtmlWebpackSkipAssetsPlugin({
