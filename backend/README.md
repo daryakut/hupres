@@ -12,9 +12,13 @@ Start/Stop/Restart Postgresql:
     brew services stop postgresql
     brew services restart postgresql
 
-Create a user and a database (enter password when prompted 123456)
+Create a local user and a database (enter password when prompted 123456)
 
     createuser --username=postgres --no-superuser --pwprompt --createdb hupres
+    createdb -U hupres -h localhost -p 5432 hupres_dev
+
+Create a test database for integ tests
+
     createdb -U hupres -h localhost -p 5432 hupres_test
 
 Test database connection:
@@ -32,6 +36,10 @@ Install:
 Install gettext for localization
 
     brew install gettext
+
+Run migrations:
+
+    cd backend && migrate_head.sh
 
 Run (specifying port is optional):
 
