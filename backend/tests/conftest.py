@@ -7,8 +7,6 @@ from alembic.config import Config
 from sqlalchemy import inspect, text
 
 from common.env import env, EnvStage
-from database.connection import database_engine
-from database.transaction import transaction
 
 current_file = Path(__file__)
 relative_path = current_file.relative_to(current_file.parent.parent)
@@ -19,6 +17,7 @@ TABLES_TO_AVOID_TRUNCATING = ['alembic_version']
 def pytest_configure():
     env.stage = EnvStage.TEST
     os.environ["HUPRES_ENV"] = "test"
+    os.environ["HUPRES_APP_PORT"] = "8080"
 
     os.environ["HUPRES_SECRET_SESSION_KEY"] = "test_key"
     os.environ["HUPRES_GOOGLE_0AUTH_CLIENT_ID"] = "test_client_id"
@@ -43,7 +42,8 @@ def setup_before_all_tests():
 
 @pytest.fixture(autouse=True, scope='function')
 def setup_each_function(request):
-# def pytest_runtest_setup():
+    from database.connection import database_engine
+    from database.transaction import transaction
     print("Cleaning the database", request.node.name)
     inspector = inspect(database_engine)
     table_list = [table for table in inspector.get_table_names() if table not in TABLES_TO_AVOID_TRUNCATING]

@@ -20,7 +20,7 @@ class Env(BaseModel):
         return self.stage == EnvStage.PROD
 
 
-_HUPRES_ENV = os.getenv('HUPRES_ENV')
+_HUPRES_ENV = os.getenv('HUPRES_ENV') or 'test'
 env = Env(stage=EnvStage(_HUPRES_ENV))
 
 if env.stage == EnvStage.TEST:
