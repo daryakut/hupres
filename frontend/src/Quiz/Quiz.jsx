@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
-import {enquireScreen} from 'enquire-js';
-import {Button, Card, Checkbox, Col, Input, Row, Select} from "antd";
+import {Button, Checkbox, Input, Row, Select} from "antd";
 import QueueAnim from "rc-queue-anim";
 import {useHistory} from 'react-router-dom';
 import {createQuiz, getNextQuizQuestion, getQuiz, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
 import {RightOutlined} from "@ant-design/icons";
 import Header from "../Home/Header";
+import QuizContainer from "./QuizContainer";
 
 const Quiz = ({match}) => {
   let history = useHistory();
@@ -123,41 +123,38 @@ const Quiz = ({match}) => {
       <>
         <Header/>
         <div className="fullscreen-div">
-          <Row justify="center">
-            <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
-            <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-              <div className="quiz-container quiz-container-summary" style={{ marginTop: 300 }}>
-                <div className="quiz-input-container">
-                  <Text className="quiz-input-label quiz-font">Імʼя чи нікнейм респондента</Text>
-                  <Input
-                    className="quiz-input quiz-font"
-                    placeholder="Імʼя респондента"
-                    onChange={(e) => setRespondentName(e.target.value)}
-                    value={respondentName}
-                  />
-                  <Text className="quiz-input-label quiz-font">Стать чи гендер респондента</Text>
-                  <Select
-                    placeholder="Стать респондента"
-                    className="quiz-input quiz-font"
-                    onChange={setPronounce}
-                  >
-                    <Select.Option value="HE_HIM">Чоловічий</Select.Option>
-                    <Select.Option value="SHE_HER">Жінойчий</Select.Option>
-                    <Select.Option value="THEY_THEM">Інше</Select.Option>
-                    <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
-                  </Select>
-                  <Button
-                    className="quiz-get-summary-button quiz-font-large"
-                    size='large'
-                    disabled={!respondentName || !pronounce}
-                    onClick={onGetResultsClick}
-                  >
-                    Отримати Результат<RightOutlined/>
-                  </Button>
-                </div>
+          <QuizContainer>
+            <div className="quiz-container quiz-container-summary" style={{marginTop: 300}}>
+              <div className="quiz-input-container">
+                <Text className="quiz-input-label quiz-font">Імʼя чи нікнейм респондента</Text>
+                <Input
+                  className="quiz-input quiz-font"
+                  placeholder="Імʼя респондента"
+                  onChange={(e) => setRespondentName(e.target.value)}
+                  value={respondentName}
+                />
+                <Text className="quiz-input-label quiz-font">Стать чи гендер респондента</Text>
+                <Select
+                  placeholder="Стать респондента"
+                  className="quiz-input quiz-font"
+                  onChange={setPronounce}
+                >
+                  <Select.Option value="HE_HIM">Чоловічий</Select.Option>
+                  <Select.Option value="SHE_HER">Жінойчий</Select.Option>
+                  <Select.Option value="THEY_THEM">Інше</Select.Option>
+                  <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
+                </Select>
+                <Button
+                  className="quiz-get-summary-button quiz-font-lg"
+                  size='large'
+                  disabled={!respondentName || !pronounce}
+                  onClick={onGetResultsClick}
+                >
+                  Отримати Результат<RightOutlined/>
+                </Button>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </QuizContainer>
         </div>
       </>
     )
@@ -169,49 +166,46 @@ const Quiz = ({match}) => {
     <>
       <Header/>
       <div className="fullscreen-div">
-        <Row justify="center">
-          <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
-          <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-            {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
-            {/*  <p>Card content</p>*/}
-            {/*  <p>Card content</p>*/}
-            {/*  <p>Card content</p>*/}
-            {/*</Card>*/}
-            <div className="quiz-container" style={{marginTop}}>
-              <QueueAnim
-                type="left"
-                delay={300}
-                // enterAnim={[
-                //   { opacity: [1, 0], translateY: [0, 50] },
-                //   { height: [200, 0], duration: [500, 0] }
-                // ]}
-                // leaveAnim={[
-                //   { opacity: [0, 1], translateY: [50, 0] },
-                //   { height: 0 }
-                // ]}
-              >
-                <div key="question">
-                  <h2 className="quiz-question">{displayQuestion}</h2>
-                  <hr className="quiz-hr"/>
-                </div>
-                {
-                  answers.map((answer, index) => (
-                    <Checkbox
-                      key={`answer-${index}`}
-                      className="quiz-answer"
-                      onChange={() => onAnswerClick(answer.answer_name)}>
-                      {answer.answer_display_name}
-                    </Checkbox>
-                    // <div key={`answer-${index}`} className="quiz-answer"
-                    //      onClick={() => onAnswerClick(answer.answer_name)}>
-                    //   {answer.answer_display_name}
-                    // </div>
-                  ))
-                }
-              </QueueAnim>
-            </div>
-          </Col>
-        </Row>
+        <QuizContainer>
+          {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
+          {/*  <p>Card content</p>*/}
+          {/*  <p>Card content</p>*/}
+          {/*  <p>Card content</p>*/}
+          {/*</Card>*/}
+          <div className="quiz-container" style={{marginTop}}>
+            <QueueAnim
+              type="left"
+              delay={300}
+              // enterAnim={[
+              //   { opacity: [1, 0], translateY: [0, 50] },
+              //   { height: [200, 0], duration: [500, 0] }
+              // ]}
+              // leaveAnim={[
+              //   { opacity: [0, 1], translateY: [50, 0] },
+              //   { height: 0 }
+              // ]}
+            >
+              <div key="question">
+                <h2 className="quiz-question">{displayQuestion}</h2>
+                <hr className="quiz-hr"/>
+              </div>
+              {
+                answers.map((answer, index) => (
+                  <Checkbox
+                    key={`answer-${index}`}
+                    className="quiz-answer"
+                    onChange={() => onAnswerClick(answer.answer_name)}>
+                    {answer.answer_display_name}
+                  </Checkbox>
+                  // <div key={`answer-${index}`} className="quiz-answer"
+                  //      onClick={() => onAnswerClick(answer.answer_name)}>
+                  //   {answer.answer_display_name}
+                  // </div>
+                ))
+              }
+            </QueueAnim>
+          </div>
+        </QuizContainer>
       </div>
     </>
   );

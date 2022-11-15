@@ -51,9 +51,8 @@ class AnswerName(Enum):
     # Body Shape Descriptors
     SHAPE_SMALL_RECTANGLE = 'Малый прямоугольник'
     SHAPE_NARROW_RECTANGLE = 'Узкий прямоугольник'
-    SHAPE_LARGE_WIDE_RECTANGLE = 'Сероо-голубые глаза с темными вкраплениями'
-    # TODO: uncomment
-    # SHAPE_LARGE_WIDE_RECTANGLE = 'Больш шир прямоугольник'
+    # SHAPE_LARGE_WIDE_RECTANGLE = 'Сероо-голубые глаза с темными вкраплениями'  # долгий текст для тестирования
+    SHAPE_LARGE_WIDE_RECTANGLE = 'Больш шир прямоугольник'
     SHAPE_BROAD_SHOULDERS = 'Шире в плечах'
     SHAPE_BROAD_HIPS = 'Шире в бедрах'
     BODY_DRY = 'Тело сухое'
