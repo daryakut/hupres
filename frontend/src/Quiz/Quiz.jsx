@@ -104,6 +104,7 @@ const Quiz = ({match}) => {
   }
 
   if (!quizToken || isLoading) {
+    // This looks makes the impression of new quiz paper being added
     return (
       <Row justify="center" className="fullscreen-div">
       </Row>
@@ -116,45 +117,49 @@ const Quiz = ({match}) => {
       history.replace(`/quiz/${quiz.token}/summary`);
       return null;
     }
+
     // End of quiz, let's ask for their name and gender
     return (
-      <div className="fullscreen-div">
-        <Row justify="center">
-          <Col xs={0} sm={2} md={4} lg={5} xl={6}/>
-          <Col xs={24} sm={20} md={16} lg={14} xl={12}>
-            <div className="quiz-container quiz-container-summary">
-              <div className="quiz-input-container">
-                <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
-                <Input
-                  className="quiz-input"
-                  placeholder="Імʼя респондента"
-                  onChange={(e) => setRespondentName(e.target.value)}
-                  value={respondentName}
-                />
-                <Text className="quiz-input-label">Стать чи гендер респондента</Text>
-                <Select
-                  placeholder="Стать респондента"
-                  className="quiz-input"
-                  onChange={setPronounce}
-                >
-                  <Select.Option value="HE_HIM">Чоловічий</Select.Option>
-                  <Select.Option value="SHE_HER">Жінойчий</Select.Option>
-                  <Select.Option value="THEY_THEM">Інше</Select.Option>
-                  <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
-                </Select>
-                <Button
-                  className="quiz-get-summary-button"
-                  size='large'
-                  disabled={!respondentName || !pronounce}
-                  onClick={onGetResultsClick}
-                >
-                  Отримати Результат<RightOutlined/>
-                </Button>
+      <>
+        <Header/>
+        <div className="fullscreen-div">
+          <Row justify="center">
+            <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
+            <Col xs={22} sm={20} md={16} lg={12} xl={10}>
+              <div className="quiz-container quiz-container-summary" style={{ marginTop: 300 }}>
+                <div className="quiz-input-container">
+                  <Text className="quiz-input-label quiz-font">Імʼя чи нікнейм респондента</Text>
+                  <Input
+                    className="quiz-input quiz-font"
+                    placeholder="Імʼя респондента"
+                    onChange={(e) => setRespondentName(e.target.value)}
+                    value={respondentName}
+                  />
+                  <Text className="quiz-input-label quiz-font">Стать чи гендер респондента</Text>
+                  <Select
+                    placeholder="Стать респондента"
+                    className="quiz-input quiz-font"
+                    onChange={setPronounce}
+                  >
+                    <Select.Option value="HE_HIM">Чоловічий</Select.Option>
+                    <Select.Option value="SHE_HER">Жінойчий</Select.Option>
+                    <Select.Option value="THEY_THEM">Інше</Select.Option>
+                    <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
+                  </Select>
+                  <Button
+                    className="quiz-get-summary-button quiz-font-large"
+                    size='large'
+                    disabled={!respondentName || !pronounce}
+                    onClick={onGetResultsClick}
+                  >
+                    Отримати Результат<RightOutlined/>
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Col>
-        </Row>
-      </div>
+            </Col>
+          </Row>
+        </div>
+      </>
     )
   }
 
@@ -165,14 +170,14 @@ const Quiz = ({match}) => {
       <Header/>
       <div className="fullscreen-div">
         <Row justify="center">
-          <Col xs={1} sm={2} md={4} lg={5} xl={6}/>
-          <Col xs={22} sm={20} md={16} lg={14} xl={12}>
+          <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
+          <Col xs={22} sm={20} md={16} lg={12} xl={10}>
             {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
             {/*  <p>Card content</p>*/}
             {/*  <p>Card content</p>*/}
             {/*  <p>Card content</p>*/}
             {/*</Card>*/}
-            <div className="quiz-container" style={{ marginTop }}>
+            <div className="quiz-container" style={{marginTop}}>
               <QueueAnim
                 type="left"
                 delay={300}
