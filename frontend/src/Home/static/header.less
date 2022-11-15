@@ -7,7 +7,7 @@
   border-bottom: 1px solid transparent;
   transition: border .5s cubic-bezier(0.455, 0.03, 0.515, 0.955), background .5s cubic-bezier(0.455, 0.03, 0.515, 0.955);
   height: @header-height;
-  padding: 0 48px;
+  //padding: 0 48px;
   width: 100%;
   &.home-nav-bottom {
     background: rgba(255, 255, 255, 0.9);
@@ -187,6 +187,20 @@
   background: rgba(120, 120, 120, 0.91);
 }
 
+.home-nav-main {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.home-nav-logo {
+  flex: 0 0 auto;
+  margin-left: 30px;
+}
+.home-nav-profile {
+  flex: 0 0 auto;
+}
+
 #nav li {
   color: #eee;
   transition: all 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955);
@@ -199,7 +213,8 @@
 }
 
 .user-profile-dropdown {
-  margin: 27px;
+  margin-top: 27px;
+  margin-right: 27px;
   cursor: pointer;
   display: flex;
   flex-direction: row;

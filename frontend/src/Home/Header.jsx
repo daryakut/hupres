@@ -99,7 +99,8 @@ export default class Header extends React.Component {
 
     const isLandingPage = window.location.pathname === '/';
     const headerClassName = classNames({
-      clearfix: true,
+      'home-nav-main': true,
+      // clearfix: true,
       'home-nav-white': !isFirstScreen && isLandingPage,
       'home-nav-black': !isLandingPage,
     });
@@ -144,22 +145,20 @@ export default class Header extends React.Component {
           {/*    />*/}
           {/*  </Popover>*/}
           {/*) : null}*/}
-          <Row>
             {/*<Col lg={4} md={5} sm={22} xs={22}>*/}
-            <Col span={2}>
+            <div className="home-nav-logo">
               <a id="logo" href='/'>
                 <img alt="logo" src="https://hupres.com/image/catalog/logo.svg"/>
               </a>
-            </Col>
+            </div>
             {/*<Col lg={18} md={17} sm={0} xs={0}>*/}
             {/*  {menuMode === 'horizontal' ? menu : null}*/}
             {/*</Col>*/}
             {/*<Col lg={2} md={2} sm={2} xs={2}>*/}
-            <Col span={2} offset={20}>
+            <div className="home-nav-profile">
               {/*<UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 25, cursor: "pointer" }}/>*/}
               <SigninDropdown/>
-            </Col>
-          </Row>
+            </div>
         </header>
         {!isLandingPage ? (
           <div style={{height: 80}}/>
