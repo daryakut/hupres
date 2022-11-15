@@ -13,9 +13,7 @@ const App = () => {
       <UserProvider>
         <div>
           <Switch>
-            <Route exact path="/">
-              <Home/>
-            </Route>
+            <Route exact path="/" component={Home} />
             <Route path="/quiz/:quizToken/summary" component={QuizSummary}/>
             <Route path="/quiz/:quizToken" component={Quiz}/>
             <Route path="/quiz"><Quiz/></Route>

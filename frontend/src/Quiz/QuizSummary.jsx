@@ -32,6 +32,13 @@ const QuizSummary = ({match}) => {
   }, [quizToken]);
 
   const fetchQuizSummary = async () => {
+    // Grab the recent form content from localStorage
+    const freeFormQuestionContent = localStorage.getItem('freeFormQuestionContent');
+    if (freeFormQuestionContent) {
+      setFreeFormQuestion(freeFormQuestionContent)
+      localStorage.removeItem('freeFormQuestionContent');
+    }
+
     try {
       // setIsLoading(true);
       const summaries = (await generateQuizSummary(quizToken)).summaries;
@@ -94,6 +101,13 @@ const QuizSummary = ({match}) => {
       }
       await onAskFreeFormQuestionClick();
     }
+  }
+
+  const onRegisterOrLoginClick = async (event) => {
+    // Store the redirect URL in localStorage so that user sees the same quiz after login
+    localStorage.setItem('redirectUrl', `/quiz/${quizToken}/summary`);
+    // Also store the question content for convenience
+    localStorage.setItem('freeFormQuestionContent', freeFormQuestion);
   }
 
   if (isLoading) {
@@ -224,26 +238,28 @@ const QuizSummary = ({match}) => {
         centered
       >
         <div className="quiz-summary-login-modal">
-            <a href={`${getBaseUrl()}/api/users/google-login`}
-               className="quiz-summary-login-link"
+          <a href={`${getBaseUrl()}/api/users/google-login`}
+             className="quiz-summary-login-link"
+             onClick={onRegisterOrLoginClick}
+          >
+            <Button
+              size='large'
+              className="quiz-summary-login-button cta-button"
             >
-              <Button
-                size='large'
-                className="quiz-summary-login-button cta-button"
-              >
-                РЕЄСТРАЦІЯ
-              </Button>
-            </a>
-            <a href={`${getBaseUrl()}/api/users/google-login`}
-               className="quiz-summary-login-link"
+              РЕЄСТРАЦІЯ
+            </Button>
+          </a>
+          <a href={`${getBaseUrl()}/api/users/google-login`}
+             className="quiz-summary-login-link"
+             onClick={onRegisterOrLoginClick}
+          >
+            <Button
+              size='large'
+              className="quiz-summary-login-button"
             >
-              <Button
-                size='large'
-               className="quiz-summary-login-button"
-              >
-                УВІЙТИ
-              </Button>
-            </a>
+              УВІЙТИ
+            </Button>
+          </a>
         </div>
       </Modal>
     </>

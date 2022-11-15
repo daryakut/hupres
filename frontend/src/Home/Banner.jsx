@@ -29,8 +29,8 @@ export default function Banner({ onEnterChange }) {
           <h2 key="h2">РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ</h2>
           {/*<hr />*/}
           <hr key="hr" className="landing-hr"/>
-          <h5 key="h5">ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ</h5>
-          <h5 key="h5">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
+          <h5 key="h5.1">ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ</h5>
+          <h5 key="h5.2">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
           <Link key="button" to="/quiz"><Button className="start-test-button">ПРОЙТИ ТЕСТ<RightOutlined /></Button></Link>
         </QueueAnim>
         <Icon type="down" className="down" />

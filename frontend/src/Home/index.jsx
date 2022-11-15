@@ -27,6 +27,13 @@ class Home extends React.PureComponent {
         isMobile: !!b,
       });
     });
+
+    const redirectUrl = localStorage.getItem('redirectUrl');
+    if (redirectUrl) {
+      // this.props.history.replace(redirectUrl);
+      localStorage.removeItem('redirectUrl');
+      window.location.href = redirectUrl;
+    }
   }
 
   onEnterChange = (mode) => {
