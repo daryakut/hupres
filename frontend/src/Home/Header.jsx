@@ -93,9 +93,11 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const {isFirstScreen, isMoblie, isLandingPage} = this.props;
+    const {isFirstScreen, isMoblie} = this.props;
     const {menuVisible} = this.state;
     const menuMode = isMoblie ? 'inline' : 'horizontal';
+
+    const isLandingPage = window.location.pathname === '/';
     const headerClassName = classNames({
       clearfix: true,
       'home-nav-white': !isFirstScreen && isLandingPage,

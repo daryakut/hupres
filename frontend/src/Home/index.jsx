@@ -37,7 +37,7 @@ class Home extends React.PureComponent {
   render() {
     return (
       [
-        <Header key="header" isFirstScreen={this.state.isFirstScreen} isMobile={this.state.isMobile} isLandingPage={true} />,
+        <Header key="header" isFirstScreen={this.state.isFirstScreen} isMobile={this.state.isMobile}/>,
         <Banner key="banner" onEnterChange={this.onEnterChange} />,
         // <Page1 key="page1" isMobile={this.state.isMobile} />,
         // <Page2 key="page2" />,
