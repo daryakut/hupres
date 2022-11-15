@@ -311,10 +311,30 @@
   resize: none;
 }
 
-.cta-button-2 {
+.cta-button {
   font-family: Lato, @font-family;
   background: #ff8f3c;
   color: #eee;
+}
+
+.quiz-summary-login-modal {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 576px) {
+  .quiz-summary-login-modal {
+    flex-direction: column;
+  }
+}
+
+.quiz-summary-login-link {
+  flex: 1 0 0;
+  margin: 6px;
+}
+
+.quiz-summary-login-button {
+  width: 100%;
 }
 
 .free-form-question-button {

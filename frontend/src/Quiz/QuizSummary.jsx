@@ -115,7 +115,7 @@ const QuizSummary = ({match}) => {
               Анкета ще не заповнена!
             </div>
             <Button
-              className="cta-button-2"
+              className="cta-button"
               size='large'
               onClick={() => history.replace(`/quiz/${quizToken}`)}
             >
@@ -182,35 +182,35 @@ const QuizSummary = ({match}) => {
             {/*<Row>*/}
             {/*  <Col xs={0} sm={0} md={1} lg={2} xl={3}/>*/}
             {/*  <Col xs={24} sm={24} md={20} lg={20} xl={18}>*/}
-                <Row>
-                  <Col span={24} offset={0}>
-                    <Text className="free-form-question-input-label">
-                      Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
-                    </Text>
-                  </Col>
-                </Row>
-                <Row style={{marginTop: 6}}>
-                  <Col xs={16} sm={18} md={20} lg={21} xl={21}>
-                    {/*<Input*/}
-                    <TextArea rows={2}
-                              className="free-form-question-input"
-                              placeholder="Як мотивуваті цього респондента?"
-                              value={freeFormQuestion}
-                              onChange={(e) => setFreeFormQuestion(e.target.value)}
-                              onKeyDown={onFreeFormQuestionKeyDown}
-                    />
-                  </Col>
-                  <Col xs={8} sm={6} md={4} lg={3} xl={3}>
-                    <Button
-                      className="free-form-question-button"
-                      size='large'
-                      disabled={!freeFormQuestion}
-                      onClick={onAskFreeFormQuestionClick}
-                    >
-                      Спитати
-                    </Button>
-                  </Col>
-                </Row>
+            <Row>
+              <Col span={24} offset={0}>
+                <Text className="free-form-question-input-label">
+                  Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{marginTop: 6}}>
+              <Col xs={16} sm={18} md={20} lg={21} xl={21}>
+                {/*<Input*/}
+                <TextArea rows={2}
+                          className="free-form-question-input"
+                          placeholder="Як мотивуваті цього респондента?"
+                          value={freeFormQuestion}
+                          onChange={(e) => setFreeFormQuestion(e.target.value)}
+                          onKeyDown={onFreeFormQuestionKeyDown}
+                />
+              </Col>
+              <Col xs={8} sm={6} md={4} lg={3} xl={3}>
+                <Button
+                  className="free-form-question-button"
+                  size='large'
+                  disabled={!freeFormQuestion}
+                  onClick={onAskFreeFormQuestionClick}
+                >
+                  Спитати
+                </Button>
+              </Col>
+            </Row>
             {/*  </Col>*/}
             {/*</Row>*/}
           </div>
@@ -221,22 +221,30 @@ const QuizSummary = ({match}) => {
         visible={isLoginModalOpen}
         onCancel={() => setIsLoginModalOpen(false)}
         footer={[]}
+        centered
       >
-        <a href={`${getBaseUrl()}/api/users/google-login`}>
-          <Button
-            size='large'
-            className="cta-button-2"
-          >
-            РЕЄСТРАЦІЯ
-          </Button>
-        </a>
-        <a href={`${getBaseUrl()}/api/users/google-login`}>
-          <Button
-            size='large'
-          >
-            УВІЙТИ
-          </Button>
-        </a>
+        <div className="quiz-summary-login-modal">
+            <a href={`${getBaseUrl()}/api/users/google-login`}
+               className="quiz-summary-login-link"
+            >
+              <Button
+                size='large'
+                className="quiz-summary-login-button cta-button"
+              >
+                РЕЄСТРАЦІЯ
+              </Button>
+            </a>
+            <a href={`${getBaseUrl()}/api/users/google-login`}
+               className="quiz-summary-login-link"
+            >
+              <Button
+                size='large'
+               className="quiz-summary-login-button"
+              >
+                УВІЙТИ
+              </Button>
+            </a>
+        </div>
       </Modal>
     </>
   )
