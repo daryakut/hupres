@@ -118,7 +118,8 @@ const Quiz = ({match}) => {
     return (
       <div className="fullscreen-div">
         <Row justify="center">
-          <Col span={12} offset={6}>
+          <Col xs={0} sm={2} md={4} lg={5} xl={6} />
+          <Col xs={24} sm={20} md={16} lg={14} xl={12} >
             <div className="quiz-container quiz-container-summary">
               <div className="quiz-input-container">
                 <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
@@ -162,7 +163,8 @@ const Quiz = ({match}) => {
       <Header />
       <div className="fullscreen-div">
         <Row justify="center">
-          <Col span={12} offset={6}>
+          <Col xs={1} sm={2} md={4} lg={5} xl={6} />
+          <Col xs={22} sm={20} md={16} lg={14} xl={12} >
             <Row justify="center">
               <Col span={24}>
                 {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
