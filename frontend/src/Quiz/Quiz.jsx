@@ -13,7 +13,7 @@ const Quiz = ({match}) => {
   let history = useHistory();
   const [quiz, setQuiz] = useState(null);
   const [question, setQuestion] = useState(null);
-  const [answers, setAnswers] = useState(null);
+  const [answers, setAnswers] = useState([]);
   const [isQuizComplete, setQuizComplete] = useState(false);
   const [pronounce, setPronounce] = useState(null);
   const [respondentName, setRespondentName] = useState(null);
@@ -27,6 +27,8 @@ const Quiz = ({match}) => {
   console.log('quizToken', quizToken)
   console.log('quizQuestionToken', quizQuestionToken)
   console.log('question', question)
+
+  const marginTop = Math.max(10, 360 - answers.length * 16);
 
   useEffect(() => {
     console.log("!!!! USE EFFECT")
@@ -118,8 +120,8 @@ const Quiz = ({match}) => {
     return (
       <div className="fullscreen-div">
         <Row justify="center">
-          <Col xs={0} sm={2} md={4} lg={5} xl={6} />
-          <Col xs={24} sm={20} md={16} lg={14} xl={12} >
+          <Col xs={0} sm={2} md={4} lg={5} xl={6}/>
+          <Col xs={24} sm={20} md={16} lg={14} xl={12}>
             <div className="quiz-container quiz-container-summary">
               <div className="quiz-input-container">
                 <Text className="quiz-input-label">Імʼя чи нікнейм респондента</Text>
@@ -160,53 +162,49 @@ const Quiz = ({match}) => {
 
   return (
     <>
-      <Header />
+      <Header/>
       <div className="fullscreen-div">
         <Row justify="center">
-          <Col xs={1} sm={2} md={4} lg={5} xl={6} />
-          <Col xs={22} sm={20} md={16} lg={14} xl={12} >
-            <Row justify="center">
-              <Col span={24}>
-                {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
-                {/*  <p>Card content</p>*/}
-                {/*  <p>Card content</p>*/}
-                {/*  <p>Card content</p>*/}
-                {/*</Card>*/}
-                <div className="quiz-container">
-                  <QueueAnim
-                    type="left"
-                    delay={300}
-                    // enterAnim={[
-                    //   { opacity: [1, 0], translateY: [0, 50] },
-                    //   { height: [200, 0], duration: [500, 0] }
-                    // ]}
-                    // leaveAnim={[
-                    //   { opacity: [0, 1], translateY: [50, 0] },
-                    //   { height: 0 }
-                    // ]}
-                  >
-                    <div key="question">
-                      <h2 className="quiz-question">{displayQuestion}</h2>
-                      <hr className="quiz-hr"/>
-                    </div>
-                    {
-                      answers.map((answer, index) => (
-                        <Checkbox
-                          key={`answer-${index}`}
-                          className="quiz-answer"
-                          onChange={() => onAnswerClick(answer.answer_name)}>
-                          {answer.answer_display_name}
-                        </Checkbox>
-                        // <div key={`answer-${index}`} className="quiz-answer"
-                        //      onClick={() => onAnswerClick(answer.answer_name)}>
-                        //   {answer.answer_display_name}
-                        // </div>
-                      ))
-                    }
-                  </QueueAnim>
+          <Col xs={1} sm={2} md={4} lg={5} xl={6}/>
+          <Col xs={22} sm={20} md={16} lg={14} xl={12}>
+            {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
+            {/*  <p>Card content</p>*/}
+            {/*  <p>Card content</p>*/}
+            {/*  <p>Card content</p>*/}
+            {/*</Card>*/}
+            <div className="quiz-container" style={{ marginTop }}>
+              <QueueAnim
+                type="left"
+                delay={300}
+                // enterAnim={[
+                //   { opacity: [1, 0], translateY: [0, 50] },
+                //   { height: [200, 0], duration: [500, 0] }
+                // ]}
+                // leaveAnim={[
+                //   { opacity: [0, 1], translateY: [50, 0] },
+                //   { height: 0 }
+                // ]}
+              >
+                <div key="question">
+                  <h2 className="quiz-question">{displayQuestion}</h2>
+                  <hr className="quiz-hr"/>
                 </div>
-              </Col>
-            </Row>
+                {
+                  answers.map((answer, index) => (
+                    <Checkbox
+                      key={`answer-${index}`}
+                      className="quiz-answer"
+                      onChange={() => onAnswerClick(answer.answer_name)}>
+                      {answer.answer_display_name}
+                    </Checkbox>
+                    // <div key={`answer-${index}`} className="quiz-answer"
+                    //      onClick={() => onAnswerClick(answer.answer_name)}>
+                    //   {answer.answer_display_name}
+                    // </div>
+                  ))
+                }
+              </QueueAnim>
+            </div>
           </Col>
         </Row>
       </div>
