@@ -7,7 +7,7 @@
 }
 .banner-text-wrapper {
   display: flex;
-  top: 30%;
+  top: 28%;
   position: absolute;
   width: 100%;
   flex-direction: column;
@@ -39,15 +39,15 @@
   color: #fff;
   margin-bottom: 30px;
 }
-.cta-button {
-  font-size: 20px;
-  height: 50px;
-  width: 200px;
+.start-test-button {
+  font-size: 22px;
+  height: 60px;
+  width: 240px;
   font-family: Lato, @font-family;
   background: #ff8f3c;
   color: #eee;
 }
-.cta-button:hover {
+.start-test-button:hover {
   background: #007bff;
 }
 #page1 {
@@ -209,5 +209,76 @@
 @keyframes upDownMove {
   to {
     transform: translateY(10px);
+  }
+}
+
+
+@media (max-width: 576px) {
+  .banner-text-wrapper {
+    //top: 30%;
+  }
+  .banner-text-wrapper h2 {
+    font-size: 26px;
+    width: 90%;
+  }
+  .banner-text-wrapper h5 {
+    font-size: 14px;
+    width: 90%;
+  }
+}
+
+@media (min-width: 576px) {
+  .banner-text-wrapper {
+    //top: 30%;
+  }
+  .banner-text-wrapper h2 {
+    font-size: 30px;
+    width: 80%;
+  }
+  .banner-text-wrapper h5 {
+    font-size: 16px;
+    width: 80%;
+  }
+}
+
+@media (min-width: 768px) {
+  .banner-text-wrapper {
+    //top: 30%;
+  }
+  .banner-text-wrapper h2 {
+    font-size: 35px;
+    width: 70%;
+  }
+  .banner-text-wrapper h5 {
+    font-size: 18px;
+    width: 70%;
+  }
+}
+
+@media (min-width: 992px) {
+  .banner-text-wrapper {
+    //top: 30%;
+  }
+  .banner-text-wrapper h2 {
+    font-size: 40px;
+    width: 60%;
+  }
+  .banner-text-wrapper h5 {
+    font-size: 20px;
+    width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .banner-text-wrapper {
+    //top: 30%;
+  }
+  .banner-text-wrapper h2 {
+    font-size: 46px;
+    width: 50%;
+  }
+  .banner-text-wrapper h5 {
+    font-size: 22px;
+    width: 50%;
   }
 }
