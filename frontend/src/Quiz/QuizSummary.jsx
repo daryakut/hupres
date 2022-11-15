@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
-import {Button, Col, Input, Row, Select} from "antd";
+import {Button, Col, Input, Modal, Row, Select} from "antd";
 import {useHistory} from 'react-router-dom';
 import {askFreeFormQuestion, generateQuizSummary, getFreeFormQuestions} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
@@ -8,15 +8,21 @@ import {CopyOutlined, LoadingOutlined, RightOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import {useUser} from "../User/UserProvider";
 import Header from "../Home/Header";
+import {getBaseUrl} from "../api/server";
 
 const QuizSummary = ({match}) => {
   let history = useHistory();
   const {user} = useUser();
-  const [summaries, setSummaries] = useState(null);
+  const [summaries, setSummaries] = useState([]);
   const [questions, setQuestions] = useState([]);
-  const [freeFormQuestion, setFreeFormQuestion] = useState([]);
+  const [freeFormQuestion, setFreeFormQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [error, setError] = useState(null);
+
+  // Only logged in users can chat with AI
+  const canChatWithAi = !!user;
+  // const canChatWithAi = false;
 
   const quizToken = match.params.quizToken;
 
@@ -36,11 +42,16 @@ const QuizSummary = ({match}) => {
     } catch (error) {
       // setError(error);
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
   const onAskFreeFormQuestionClick = async () => {
+    if (!canChatWithAi) {
+      setIsLoginModalOpen(true)
+      return
+    }
+
     try {
       const originalQuestions = questions.slice(0);
       // setIsLoading(true);
@@ -77,17 +88,45 @@ const QuizSummary = ({match}) => {
   const onFreeFormQuestionKeyDown = async (event) => {
     if (event.key === 'Enter' || event.keyCode === 13) {
       event.preventDefault();
-      setFreeFormQuestion(null);
+      if (canChatWithAi) {
+        setFreeFormQuestion('');
+      }
       await onAskFreeFormQuestionClick();
     }
   }
 
-  if (!summaries) {
-    return null;
+  if (isLoading) {
+    return (
+      <div className="fullscreen-div">
+        <div className="fullscreen-div-center">
+          <LoadingOutlined className="loading-icon"/>
+        </div>
+      </div>
+    );
   }
 
-  // Only logged in users can chat with AI
-  const isLoggedIn = !!user;
+  if (!isLoading && !summaries.length) {
+    return (
+      <div className="fullscreen-div">
+        <div className="fullscreen-div-center">
+          <div className="quiz-container quiz-container-summary">
+            <div className="free-form-answer-container">
+              Анкета ще не заповнена!
+            </div>
+            <Button
+              className="cta-button-2"
+              size='large'
+              onClick={() => history.replace(`/quiz/${quizToken}`)}
+            >
+              Продовжити анкетування
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  console.log('freeFormQuestion', freeFormQuestion)
 
   return (
     <>
@@ -134,49 +173,67 @@ const QuizSummary = ({match}) => {
               }
             </div>
 
-            {isLoggedIn ? (
-              <div style={{height: 100}}/>
-            ) : null}
+            <div style={{height: 100}}/>
           </Col>
         </Row>
 
-        {isLoggedIn ? (
-          <div className="free-form-question-input-container">
-            <div className="free-form-question-input-container-fade"/>
-            <div className="free-form-question-input-container-white">
-              <Row>
-                <Col span={24} offset={0}>
-                  <Text className="free-form-question-input-label">
-                    Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
-                  </Text>
-                </Col>
-              </Row>
-              <Row style={{marginTop: 6}}>
-                <Col span={20} offset={0}>
-                  {/*<Input*/}
-                  <TextArea rows={2}
-                            className="free-form-question-input"
-                            placeholder="Як мотивуваті цього респондента?"
-                            value={freeFormQuestion}
-                            onChange={(e) => setFreeFormQuestion(e.target.value)}
-                            onKeyDown={onFreeFormQuestionKeyDown}
-                  />
-                </Col>
-                <Col span={4}>
-                  <Button
-                    className="free-form-question-button"
-                    size='large'
-                    disabled={!freeFormQuestion}
-                    onClick={onAskFreeFormQuestionClick}
-                  >
-                    Спитати
-                  </Button>
-                </Col>
-              </Row>
-            </div>
+        <div className="free-form-question-input-container">
+          <div className="free-form-question-input-container-fade"/>
+          <div className="free-form-question-input-container-white">
+            <Row>
+              <Col span={24} offset={0}>
+                <Text className="free-form-question-input-label">
+                  Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{marginTop: 6}}>
+              <Col span={20} offset={0}>
+                {/*<Input*/}
+                <TextArea rows={2}
+                          className="free-form-question-input"
+                          placeholder="Як мотивуваті цього респондента?"
+                          value={freeFormQuestion}
+                          onChange={(e) => setFreeFormQuestion(e.target.value)}
+                          onKeyDown={onFreeFormQuestionKeyDown}
+                />
+              </Col>
+              <Col span={4}>
+                <Button
+                  className="free-form-question-button"
+                  size='large'
+                  disabled={!freeFormQuestion}
+                  onClick={onAskFreeFormQuestionClick}
+                >
+                  Спитати
+                </Button>
+              </Col>
+            </Row>
           </div>
-        ) : null}
+        </div>
       </div>
+      <Modal
+        title="Щоб продовжити, зареєструйтесь!"
+        visible={isLoginModalOpen}
+        onCancel={() => setIsLoginModalOpen(false)}
+        footer={[]}
+      >
+        <a href={`${getBaseUrl()}/api/users/google-login`}>
+          <Button
+            size='large'
+            className="cta-button-2"
+          >
+            РЕЄСТРАЦІЯ
+          </Button>
+        </a>
+        <a href={`${getBaseUrl()}/api/users/google-login`}>
+          <Button
+            size='large'
+          >
+            УВІЙТИ
+          </Button>
+        </a>
+      </Modal>
     </>
   )
     ;
