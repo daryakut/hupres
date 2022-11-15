@@ -1,6 +1,7 @@
 from __future__ import annotations
 from __future__ import annotations
 
+import json
 from typing import Dict, List
 
 from sqlalchemy import ForeignKey, Column, Integer
@@ -11,7 +12,7 @@ from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
 from models.quiz_models import QuizProfileSummary, QuizSummary
 
-EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
+# EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 SHORT_FORM_PROFILES = {13, 14, 21}
 
 
@@ -24,7 +25,7 @@ class DbQuizSummary(DbBase):
     quiz = relationship('DbQuiz', back_populates='quiz_summaries', lazy='select')
 
     def to_model(self) -> QuizSummary:
-        # print('summaries', self.chart_summary)
+        # print('summaries', json.dumps(self.chart_summary))
 
         summaries = []
         for profile in self.chart_summary:
