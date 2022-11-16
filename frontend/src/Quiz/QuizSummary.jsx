@@ -151,6 +151,7 @@ const QuizSummary = ({match}) => {
         <QuizContainer>
           <div className="quiz-container quiz-container-summary">
             <div className="copy-to-clipboard-button-container">
+              <h2 className="quiz-summary-title">Результати</h2>
               <Button className="copy-to-clipboard-button" onClick={onCopyToClipboardClick}><CopyOutlined/></Button>
             </div>
             {

@@ -51,7 +51,7 @@ const SigninDropdown = () => {
 
   const userName = user ? user.email_address.split("@")[0] : '';
   return (
-    <Dropdown overlay={menu} placement="bottomCenter">
+    <Dropdown overlay={menu} placement="bottomRight">
       <div className="user-profile-dropdown">
         <div className="user-profile">{userName}</div>
         <UserOutlined key="profile" style={{fontSize: '26px', color: '#ddd'}}/>
