@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import {Dropdown, Icon, Menu} from 'antd';
-import {UserOutlined} from '@ant-design/icons';
+import {MenuOutlined, UserOutlined} from '@ant-design/icons';
 import {Link, useHistory} from "react-router-dom";
 import {getBaseUrl} from "../api/server";
 import {useUser} from "../User/UserProvider";
@@ -30,7 +30,7 @@ const menuVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: {duration: 0.5}
+    transition: {duration: 0.3}
   }
 };
 
@@ -150,13 +150,14 @@ const Header = () => {
         {/*{!isMobile ? (*/}
         {isMobile ? (
           <>
-            {/*<motion.div*/}
-            {/*  initial="hidden"*/}
-            {/*  animate={mobileMenuVisible ? "visible" : "hidden"}*/}
-            {/*  variants={menuVariants}*/}
-            {/*>*/}
+            <motion.div
+              className="menu-mobile-drawn-container"
+              initial="hidden"
+              animate={mobileMenuVisible ? "visible" : "hidden"}
+              variants={menuVariants}
+            >
               {/*{menu}*/}
-            {mobileMenuVisible ? (
+            {/*{mobileMenuVisible ? (*/}
               <div className="menu-mobile-drawn">
                 <div key="home" className="menu-mobile-drawn-item">
                   ЩО ТАКЕ HUPRES
@@ -171,13 +172,17 @@ const Header = () => {
                   СТРАТЕГІЯ РОЗВИТКУ
                 </div>
               </div>
-              ) : null}
-            {/*</motion.div>*/}
-            <Icon
-              className="nav-phone-icon"
-              type="menu"
+              {/*) : null}*/}
+            </motion.div>
+            <MenuOutlined
+              className="mobile-menu-show-icon"
               onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
             />
+            {/*<Icon*/}
+            {/*  className="nav-phone-icon"*/}
+            {/*  type="menu"*/}
+            {/*  onClick={() => setMobileMenuVisible(!mobileMenuVisible)}*/}
+            {/*/>*/}
           </>
         ) : (
           <>
