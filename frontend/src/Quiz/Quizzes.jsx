@@ -56,6 +56,7 @@ const Quizzes = ({match}) => {
   return (
     <>
       <Header key="header"/>
+      <div className="fullscreen-div"/>
       <div className="fullscreen-div-scrollable">
         <QuizContainer>
           <div className="your-quizzes-title quiz-font-xl">Ваші анкети</div>

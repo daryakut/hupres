@@ -147,6 +147,7 @@ const QuizSummary = ({match}) => {
     <>
       <Header key="header"/>
       {/*<div style={{height: 80}}/>*/}
+      <div className="fullscreen-div"/>
       <div className="fullscreen-div-scrollable">
         <QuizContainer>
           <div className="quiz-container quiz-container-summary">
