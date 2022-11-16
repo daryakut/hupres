@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from gettext import gettext as _
+from main.translations import _
 from typing import Tuple, List, Optional
 
 from pydantic import BaseModel
@@ -501,7 +501,6 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             lambda: answer_option_scores is not None,
             f"Could not find answers for question {question_to_ask.question_name}",
         )
-
         available_answers = [AvailableAnswer(answer_name=a, answer_display_name=_(a)) for a in answer_option_scores.keys()]
         return GetNextQuizQuestionResponse(
             quiz_question=db_quiz_question.to_model(),
