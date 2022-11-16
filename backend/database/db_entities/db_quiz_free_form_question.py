@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
-from models.quiz_models import QuizProfileSummary, QuizSummary, QuizFreeFormQuestion
+from models.quiz_models import QuizFreeFormQuestion
 
 EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 

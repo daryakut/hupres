@@ -7,14 +7,9 @@ from models.sign import Sign
 from quizzes.question_database import QuestionName
 
 
-class QuizProfileSummary(BaseModel):
-    title: str
-    summary: str
-
-
 class QuizSummary(BaseModel):
     """Textual representation of the DB object"""
-    summaries: List[QuizProfileSummary]
+    summaries: List[str]
 
 
 class QuizFreeFormQuestion(BaseModel):

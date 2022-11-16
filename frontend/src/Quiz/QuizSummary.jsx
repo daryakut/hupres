@@ -87,7 +87,7 @@ const QuizSummary = ({match}) => {
   };
 
   const onCopyToClipboardClick = async () => {
-    const summariesStringList = summaries.map((summary) => `${summary.title}: ${summary.summary}`)
+    const summariesStringList = summaries.join('\n');
     const chatsStringList = questions.map((question) => ` - ${question.question} \n - ${question.answer}`)
     const clipboard = summariesStringList.join('\n\n') + '\n\n---\n\n' + chatsStringList.join('\n\n---\n\n')
     await navigator.clipboard.writeText(clipboard)
@@ -157,8 +157,7 @@ const QuizSummary = ({match}) => {
               summaries.map((summary, index) => (
                 <Row key={`summary-${index}`} justify="center">
                   <Col span={24}>
-                    <h2 className="quiz-summary-title">{summary.title}</h2>
-                    <h5 className="quiz-summary-content">{summary.summary}</h5>
+                    <h5 className="quiz-summary-content">{summary}</h5>
                   </Col>
                 </Row>
               ))
@@ -199,7 +198,7 @@ const QuizSummary = ({match}) => {
             <Row>
               <Col span={24} offset={0}>
                 <Text className="free-form-question-input-label">
-                  Ви також можете запитати що вас цікавить стосовно респондента у нашого AI помічника
+                  Спитайте що вас цікавить у нашого AI помічника, який має набагато більше даних про респондента!
                 </Text>
               </Col>
             </Row>
