@@ -21,3 +21,5 @@ msgstr "Привiт!"
 #: app.py:19
 msgid "That's gonna be a 'no' from me."
 msgstr "Ні."
+
+
