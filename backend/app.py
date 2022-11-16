@@ -1,10 +1,26 @@
+from gettext import gettext as _
+import gettext
+import os
 from fastapi.responses import HTMLResponse
 from sqlalchemy import func
-from gettext import gettext as _
 
 from common.env import env
 from database.transaction import transaction
 from main.fast_api_app import app
+
+
+def set_locale(language):
+    locale_path = os.path.join(os.getcwd(), 'locales')
+    gettext.install('messages', localedir=locale_path, names=['ngettext'])
+    lang = gettext.translation('messages', locale_path, languages=[language])
+    lang.install()
+    _ = lang.gettext
+    return _
+
+
+# Example usage
+_ = set_locale('uk')  # Set to Ukrainian
+print(_('Hello world!'))  # Replace with a string from your .pot file
 
 
 @app.get("/")

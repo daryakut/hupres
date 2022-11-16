@@ -1,2 +1,4 @@
 __pycache__
 connect_prod_db.sh
+.DS_Store
+*.mo
