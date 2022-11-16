@@ -1,10 +1,11 @@
-from main.translations import _
 from fastapi.responses import HTMLResponse
 from sqlalchemy import func
 
 from common.env import env
+from common.translations import _
 from database.transaction import transaction
 from main.fast_api_app import app
+
 
 @app.get("/")
 async def home():

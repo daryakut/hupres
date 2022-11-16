@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from main.translations import _
+from common.translations import _
 from typing import List
 
 from sqlalchemy import ForeignKey, Column, Integer
