@@ -11,7 +11,7 @@ export default function Page1({ isMobile }) {
       <QueueAnim
         type={isMobile ? 'bottom' : 'right'}
         className="text-wrapper"
-        key="text"
+        key="text1"
         leaveReverse
       >
         <hr key="hr" className="landing-hr"/>
@@ -29,7 +29,7 @@ export default function Page1({ isMobile }) {
       <QueueAnim
         type={isMobile ? 'bottom' : 'right'}
         className="text-wrapper"
-        key="text"
+        key="text2"
         leaveReverse
       >
         <hr key="hr" className="landing-hr"/>

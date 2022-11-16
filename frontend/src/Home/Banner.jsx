@@ -16,7 +16,7 @@ function typeFunc(a) {
   return 'right';
 }
 
-export default function Banner({ onEnterChange }) {
+const Banner = ({ onEnterChange }) => {
   return (
     <section className="page banner-wrapper">
       <ScrollElement
@@ -38,6 +38,5 @@ export default function Banner({ onEnterChange }) {
     </section>
   );
 }
-Banner.propTypes = {
-  onEnterChange: PropTypes.func,
-};
+
+export default Banner;

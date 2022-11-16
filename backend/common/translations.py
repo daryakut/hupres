@@ -19,6 +19,7 @@ def set_locale(language):
 def get_real_gettext():
     _ = set_locale('uk')  # Set to Ukrainian
     print(_("ERROR: Localization is not working!"))  # If this translates well, the message would be different
+    return _
 
 
 _ = get_real_gettext() if env.is_not_test() else get_fake_gettext()

@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {Col, Dropdown, Icon, Menu, Popover, Row} from 'antd';
+import {Dropdown, Menu} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {Link, useHistory} from "react-router-dom";
 import {getBaseUrl} from "../api/server";
 import {useUser} from "../User/UserProvider";
 import {getCurrentUser, logout} from "../api/users_api";
+import {useMediaQuery} from "react-responsive";
 
 const searchEngine = 'Google';
 
@@ -60,110 +60,77 @@ const SigninDropdown = () => {
   );
 };
 
-export default class Header extends React.Component {
-  static propTypes = {
-    isFirstScreen: PropTypes.bool,
-    isMoblie: PropTypes.bool,
-    isLandingPage: PropTypes.bool,
-  }
-  state = {
-    menuVisible: false,
-  };
-  onMenuVisibleChange = (visible) => {
-    this.setState({
-      menuVisible: visible,
-    });
-  }
-  handleShowMenu = () => {
-    this.setState({
-      menuVisible: true,
-    });
-  }
+const Header = () => {
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+  const menuMode = isMobile ? 'inline' : 'horizontal';
 
-  handleHideMenu = () => {
-    this.setState({
-      menuVisible: false,
-    });
-  }
+  const isLandingPage = window.location.pathname === '/';
 
-  handleSelectFilter = (value, option) => {
-    const optionValue = option.props['data-label'];
-    return optionValue === searchEngine ||
-      optionValue.indexOf(value.toLowerCase()) > -1;
-  }
+  const headerClassName = classNames({
+    'home-nav-main': true,
+    'home-nav-black': !isLandingPage,
+  });
 
-  render() {
-    const {isFirstScreen, isMoblie} = this.props;
-    const {menuVisible} = this.state;
-    const menuMode = isMoblie ? 'inline' : 'horizontal';
+  const menu = [
+    // <Button className="header-lang-button" ghost size="small" key="lang">
+    //   English
+    // </Button>,
+    <Menu mode={menuMode} defaultSelectedKeys={['home']} id="nav" key="nav">
+      <Menu.Item key="home">
+        ЩО ТАКЕ HUPRES
+      </Menu.Item>
+      <Menu.Item key="docs/spec">
+        ПРАКТИЧНЕ ВИКОРИСТАННЯ
+      </Menu.Item>
+      <Menu.Item key="docs/pattern">
+        ПРОДУКТИ
+      </Menu.Item>
+      <Menu.Item key="docs/react">
+        СТРАТЕГІЯ РОЗВИТКУ
+      </Menu.Item>
+    </Menu>,
+  ];
 
-    const isLandingPage = window.location.pathname === '/';
-    const headerClassName = classNames({
-      'home-nav-main': true,
-      // clearfix: true,
-      'home-nav-white': !isFirstScreen && isLandingPage,
-      'home-nav-black': !isLandingPage,
-    });
-
-    const menu = [
-      // <Button className="header-lang-button" ghost size="small" key="lang">
-      //   English
-      // </Button>,
-      <Menu mode={menuMode} defaultSelectedKeys={['home']} id="nav" key="nav">
-        <Menu.Item key="home">
-          ЩО ТАКЕ HUPRES
-        </Menu.Item>
-        <Menu.Item key="docs/spec">
-          ПРАКТИЧНЕ ВИКОРИСТАННЯ
-        </Menu.Item>
-        <Menu.Item key="docs/pattern">
-          ПРОДУКТИ
-        </Menu.Item>
-        <Menu.Item key="docs/react">
-          СТРАТЕГІЯ РОЗВИТКУ
-        </Menu.Item>
-      </Menu>,
-    ];
-
-    return (
-      <>
-        <header id="header" className={headerClassName}>
-          {/*{menuMode === 'inline' ? (*/}
-          {/*  <Popover*/}
-          {/*    overlayClassName="popover-menu"*/}
-          {/*    placement="bottomRight"*/}
-          {/*    content={menu}*/}
-          {/*    trigger="click"*/}
-          {/*    visible={menuVisible}*/}
-          {/*    arrowPointAtCenter*/}
-          {/*    onVisibleChange={this.onMenuVisibleChange}*/}
-          {/*  >*/}
-          {/*    <Icon*/}
-          {/*      className="nav-phone-icon"*/}
-          {/*      type="menu"*/}
-          {/*      onClick={this.handleShowMenu}*/}
-          {/*    />*/}
-          {/*  </Popover>*/}
-          {/*) : null}*/}
-            {/*<Col lg={4} md={5} sm={22} xs={22}>*/}
-            <div className="home-nav-logo">
-              <a id="logo" href='/'>
-                <img alt="logo" src="https://hupres.com/image/catalog/logo.svg"/>
-              </a>
-            </div>
-            {/*<Col lg={18} md={17} sm={0} xs={0}>*/}
-            {/*  {menuMode === 'horizontal' ? menu : null}*/}
-            {/*</Col>*/}
-            {/*<Col lg={2} md={2} sm={2} xs={2}>*/}
-            <div className="home-nav-profile">
-              {/*<UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 25, cursor: "pointer" }}/>*/}
-              <SigninDropdown/>
-            </div>
-        </header>
-        {!isLandingPage ? (
-          <div style={{height: 80}}/>
-        ) : null}
-      </>
-    );
-  }
+  return (
+    <>
+      <header id="header" className={headerClassName}>
+        {/*{menuMode === 'inline' ? (*/}
+        {/*  <Popover*/}
+        {/*    overlayClassName="popover-menu"*/}
+        {/*    placement="bottomRight"*/}
+        {/*    content={menu}*/}
+        {/*    trigger="click"*/}
+        {/*    visible={menuVisible}*/}
+        {/*    arrowPointAtCenter*/}
+        {/*    onVisibleChange={this.onMenuVisibleChange}*/}
+        {/*  >*/}
+        {/*    <Icon*/}
+        {/*      className="nav-phone-icon"*/}
+        {/*      type="menu"*/}
+        {/*      onClick={this.handleShowMenu}*/}
+        {/*    />*/}
+        {/*  </Popover>*/}
+        {/*) : null}*/}
+        {/*<Col lg={4} md={5} sm={22} xs={22}>*/}
+        <div className="home-nav-logo">
+          <a id="logo" href='/'>
+            <img alt="logo" src="https://hupres.com/image/catalog/logo.svg"/>
+          </a>
+        </div>
+        {/*<Col lg={18} md={17} sm={0} xs={0}>*/}
+        {/*  {menuMode === 'horizontal' ? menu : null}*/}
+        {/*</Col>*/}
+        {/*<Col lg={2} md={2} sm={2} xs={2}>*/}
+        <div className="home-nav-profile">
+          {/*<UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 25, cursor: "pointer" }}/>*/}
+          <SigninDropdown/>
+        </div>
+      </header>
+      {!isLandingPage ? (
+        <div style={{height: 80}}/>
+      ) : null}
+    </>
+  );
 }
+
+export default Header;
