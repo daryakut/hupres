@@ -6,6 +6,7 @@ import Quiz from "./Quiz/Quiz";
 import QuizSummary from "./Quiz/QuizSummary";
 import {UserProvider} from "./User/UserProvider";
 import Quizzes from "./Quiz/Quizzes";
+import { createRoot } from 'react-dom/client';
 
 const App = () => {
   return (
@@ -25,4 +26,8 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+// ReactDOM.render(<App/>, document.getElementById('root'));
+// Assuming your HTML has a div with id 'root'
+const container = document.getElementById('root');
+const root = createRoot(container); // create a root
+root.render(<App />); // use the render method on the root
