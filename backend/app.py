@@ -20,7 +20,7 @@ def set_locale(language):
 
 # Example usage
 _ = set_locale('uk')  # Set to Ukrainian
-print(_('Hello world!'))  # Replace with a string from your .pot file
+print(_("ERROR: Localization is not working!"))  # If this translates well, the message would be different
 
 
 @app.get("/")

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+pushd backend
+
+Echo "Compiling translations..."
+./compile_translations.sh
+
+popd
+
 HUPRES_ENV="production"
 
 # Docker repository and tag name
