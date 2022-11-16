@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {Dropdown, Icon, Menu} from 'antd';
+import {Dropdown, Menu} from 'antd';
 import {MenuOutlined, UserOutlined} from '@ant-design/icons';
 import {Link, useHistory} from "react-router-dom";
 import {getBaseUrl} from "../api/server";
@@ -8,8 +8,6 @@ import {useUser} from "../User/UserProvider";
 import {getCurrentUser, logout} from "../api/users_api";
 import {useMediaQuery} from "react-responsive";
 import {motion} from 'framer-motion';
-
-const searchEngine = 'Google';
 
 const loggedOutMenu = (
   <Menu>
@@ -76,8 +74,7 @@ const SigninDropdown = () => {
 const Header = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = React.useState(false);
 
-  const isMobile = useMediaQuery({query: '(max-width: 768px)'})
-  const menuMode = isMobile ? 'inline' : 'horizontal';
+  const isMobile = useMediaQuery({query: '(max-width: 992px)'})
 
   const isLandingPage = window.location.pathname === '/';
 
@@ -86,68 +83,28 @@ const Header = () => {
     'home-nav-black': !isLandingPage,
   });
 
-  const menuClassName = classNames({
-    'main-menu': true,
-    'main-menu-mobile': isMobile,
-  });
-
   const menu = (
-    <Menu className={menuClassName} mode={menuMode} defaultSelectedKeys={['home']} id="nav" key="nav">
-      <Menu.Item key="home">
-        ЩО ТАКЕ HUPRES
-      </Menu.Item>
-      <Menu.Item key="docs/spec">
-        ПРАКТИЧНЕ ВИКОРИСТАННЯ
-      </Menu.Item>
-      <Menu.Item key="docs/pattern">
-        ПРОДУКТИ
-      </Menu.Item>
-      <Menu.Item key="docs/react">
-        СТРАТЕГІЯ РОЗВИТКУ
-      </Menu.Item>
-    </Menu>
+    <div className="custom-menu">
+      <div key="practice" className="menu-item">
+        ПРАКТИЧНЕ ЗАСТОСУВАННЯ
+      </div>
+      <div key="how-it-works" className="menu-item">
+        ЯК ЦЕ ПРАЦЮЄ
+      </div>
+      <div key="future" className="menu-item">
+        МАЙБУТНЄ
+      </div>
+    </div>
   );
 
   return (
     <>
       <header id="header" className={headerClassName}>
-        {/*{mobileMenuVisible ? (*/}
-        {/*  <div className="menu-mobile-drawn">*/}
-        {/*    <div key="home" className="menu-mobile-drawn-item">*/}
-        {/*      ЩО ТАКЕ HUPRES*/}
-        {/*    </div>*/}
-        {/*    <div key="docs/spec" className="menu-mobile-drawn-item">*/}
-        {/*      ПРАКТИЧНЕ ВИКОРИСТАННЯ*/}
-        {/*    </div>*/}
-        {/*    <div key="docs/pattern" className="menu-mobile-drawn-item">*/}
-        {/*      ПРОДУКТИ*/}
-        {/*    </div>*/}
-        {/*    <div key="docs/react" className="menu-mobile-drawn-item">*/}
-        {/*      СТРАТЕГІЯ РОЗВИТКУ*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*) : null}*/}
-        {/*<Col lg={4} md={5} sm={22} xs={22}>*/}
-        {/*      <TweenOne*/}
-        {/*        animation={{*/}
-        {/*          x: 80,*/}
-        {/*          scale: 0.5,*/}
-        {/*          rotate: 120,*/}
-        {/*          yoyo: true, // demo 演示需要*/}
-        {/*          repeat: -1, // demo 演示需要*/}
-        {/*          duration: 1000*/}
-        {/*        }}*/}
-        {/*        paused={props.paused}*/}
-        {/*        style={{ transform: 'translateX(-80px)' }}*/}
-        {/*        className="code-box-shape"*/}
-        {/*      />*/}
         <div className="home-nav-logo">
           <a id="logo" href='/'>
             <img alt="logo" src="https://hupres.com/image/catalog/logo.svg"/>
           </a>
         </div>
-        {/*<Col lg={18} md={17} sm={0} xs={0}>*/}
-        {/*{!isMobile ? (*/}
         {isMobile ? (
           <>
             <motion.div
@@ -156,44 +113,31 @@ const Header = () => {
               animate={mobileMenuVisible ? "visible" : "hidden"}
               variants={menuVariants}
             >
-              {/*{menu}*/}
-            {/*{mobileMenuVisible ? (*/}
               <div className="menu-mobile-drawn">
-                <div key="home" className="menu-mobile-drawn-item">
-                  ЩО ТАКЕ HUPRES
+                <div key="practice" className="menu-mobile-drawn-item">
+                  ПРАКТИЧНЕ ЗАСТОСУВАННЯ
                 </div>
-                <div key="docs/spec" className="menu-mobile-drawn-item">
-                  ПРАКТИЧНЕ ВИКОРИСТАННЯ
+                <div key="how-it-works" className="menu-mobile-drawn-item">
+                  ЯК ЦЕ ПРАЦЮЄ
                 </div>
-                <div key="docs/pattern" className="menu-mobile-drawn-item">
-                  ПРОДУКТИ
-                </div>
-                <div key="docs/react" className="menu-mobile-drawn-item">
-                  СТРАТЕГІЯ РОЗВИТКУ
+                <div key="future" className="menu-mobile-drawn-item">
+                  МАЙБУТНЄ
                 </div>
               </div>
-              {/*) : null}*/}
             </motion.div>
             <MenuOutlined
               className="mobile-menu-show-icon"
               onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
             />
-            {/*<Icon*/}
-            {/*  className="nav-phone-icon"*/}
-            {/*  type="menu"*/}
-            {/*  onClick={() => setMobileMenuVisible(!mobileMenuVisible)}*/}
-            {/*/>*/}
           </>
         ) : (
           <>
             {menu}
             <div className="home-nav-profile">
-              {/*<UserOutlined key="profile" style={{ fontSize: '26px', color: '#ddd', margin: 25, cursor: "pointer" }}/>*/}
               <SigninDropdown/>
             </div>
           </>
         )}
-        {/*) : null}*/}
       </header>
       {!isLandingPage ? (
         <div style={{height: 80}}/>

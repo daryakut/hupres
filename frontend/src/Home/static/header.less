@@ -253,6 +253,13 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+.mobile-menu-show-icon {
+  color: #fff;
+  padding: 28px;
+  font-size: 24px;
+  z-index: 1000;
+}
+
 .main-menu-mobile {
   margin: 0;
   padding: 80px 0 0 0;
@@ -260,9 +267,27 @@
   position: fixed;
 }
 
-.mobile-menu-show-icon {
-  color: #fff;
-  padding: 28px;
-  font-size: 24px;
-  z-index: 1000;
+.custom-menu {
+  display: flex;
+  //background: #f0f2f5; /* Ant Design default background */
+  padding: 0 24px; /* Add padding as needed */
 }
+
+.menu-item {
+  color: #fff;
+  font-size: 16px;
+  padding: 30px 20px; /* Ant Design menu item padding */
+  //margin: 16px 0 0 0; /* Remove any default margins */
+  white-space: nowrap; /* Ensure text stays on one line */
+  cursor: pointer; /* Change cursor to indicate clickability */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.menu-item.selected {
+  border-bottom: 3px solid #1890ff; /* Ant Design default color */
+}
+
+.menu-item:hover {
+  border-bottom: 3px solid #1890ff; /* Ant Design default color */
+}
+
