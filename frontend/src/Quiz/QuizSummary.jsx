@@ -60,6 +60,7 @@ const QuizSummary = ({match}) => {
       return
     }
 
+    setFreeFormQuestion('');
     try {
       const originalQuestions = questions.slice(0);
       // setIsLoading(true);
@@ -96,9 +97,6 @@ const QuizSummary = ({match}) => {
   const onFreeFormQuestionKeyDown = async (event) => {
     if (event.key === 'Enter' || event.keyCode === 13) {
       event.preventDefault();
-      if (canChatWithAi) {
-        setFreeFormQuestion('');
-      }
       await onAskFreeFormQuestionClick();
     }
   }
