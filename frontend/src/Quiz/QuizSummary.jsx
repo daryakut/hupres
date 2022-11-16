@@ -87,9 +87,9 @@ const QuizSummary = ({match}) => {
   };
 
   const onCopyToClipboardClick = async () => {
-    const summariesStringList = summaries.join('\n');
+    const summariesStringList = summaries.join('\n\n');
     const chatsStringList = questions.map((question) => ` - ${question.question} \n - ${question.answer}`)
-    const clipboard = summariesStringList.join('\n\n') + '\n\n---\n\n' + chatsStringList.join('\n\n---\n\n')
+    const clipboard = summariesStringList + '\n\n---\n\n' + chatsStringList.join('\n\n---\n\n')
     await navigator.clipboard.writeText(clipboard)
   };
 
