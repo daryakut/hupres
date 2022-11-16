@@ -12,6 +12,7 @@ from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from models.quiz_models import QuizSummary
 
 K_SYMBOL_REGEX = r" К[1-5]"  # Some names have that, this is cyrillic
@@ -91,7 +92,7 @@ def sanitize_name(name: str) -> str:
 
 
 def build_qualities_gpt_prompt(chart_summary: dict) -> str:
-    print('GPT summaries', json.dumps(chart_summary))
+    # print('GPT summaries', json.dumps(chart_summary))
 
     qualities = []
     for profile in chart_summary:
@@ -136,7 +137,7 @@ def build_qualities_gpt_prompt(chart_summary: dict) -> str:
     return "\n".join(qualities)
 
 
-class DbQuizSummary(DbBase):
+class DbQuizSummary(DbTimestampedEntity, DbBase):
     __tablename__ = 'quiz_summaries'
     id = Column(Integer, primary_key=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
@@ -148,7 +149,7 @@ class DbQuizSummary(DbBase):
         return build_qualities_gpt_prompt(self.chart_summary)
 
     def to_model(self) -> QuizSummary:
-        print('Book summaries', json.dumps(self.chart_summary))
+        # print('Book summaries', json.dumps(self.chart_summary))
 
         summaries = []
         for profile in self.chart_summary:

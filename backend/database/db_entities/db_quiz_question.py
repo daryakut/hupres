@@ -9,6 +9,7 @@ from sqlalchemy.orm import relationship
 from common.utils import first_or_none
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from database.db_types.json_enum_list_db_type import JsonEnumListDbType
 from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
@@ -19,7 +20,7 @@ from quizzes.question_database import QuestionName
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 
 
-class DbQuizQuestion(DbBase):
+class DbQuizQuestion(DbTimestampedEntity, DbBase):
     __tablename__ = 'quiz_questions'
     id = Column(Integer, primary_key=True)
     token = Column(TokenDbType, unique=True)

@@ -6,6 +6,7 @@ from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
+from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from database.db_entities.db_user import DbUser
 from database.db_types.string_enum_db_type import StringEnumDbType
 from database.db_types.token_db_type import TokenDbType
@@ -15,7 +16,7 @@ from models.quiz_models import Quiz
 from models.pronounce import Pronounce
 
 
-class DbQuiz(DbBase):
+class DbQuiz(DbTimestampedEntity, DbBase):
     __tablename__ = 'quizzes'
     id = Column(Integer, primary_key=True)
     token = Column(TokenDbType, unique=True)

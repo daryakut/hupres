@@ -7,10 +7,10 @@ from tests.common.fake_clock import get_fake_clock
 class Clock:
 
     def now(self) -> datetime:
-        return datetime.now()
+        return datetime.utcnow()
 
     def now_ms(self) -> int:
-        return int(datetime.now().timestamp() * 1000)
+        return int(self.now().timestamp() * 1000)
 
 
 clock = Clock() if env.is_not_test() else get_fake_clock()

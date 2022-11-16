@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy import JSON
 from sqlalchemy.orm import relationship
 
+from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from database.db_types.json_enum_list_db_type import JsonEnumListDbType
 from models.quiz_models import QuizAnswer
 from database.connection import DbBase, Session
@@ -18,7 +19,7 @@ from models.token import Token
 from models.sign import Sign
 
 
-class DbQuizAnswer(DbBase):
+class DbQuizAnswer(DbTimestampedEntity, DbBase):
     __tablename__ = 'quiz_answers'
     id = Column(Integer, primary_key=True)
     token = Column(TokenDbType, unique=True)

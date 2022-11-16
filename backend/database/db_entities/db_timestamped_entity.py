@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from sqlalchemy import Column, DateTime
 
-from database.connection import DbBase
+from common.clock import clock
 
 
-class DbTimestampedEntity(DbBase):
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+class DbTimestampedEntity:
+    created_at = Column(DateTime, default=clock.now)
+    updated_at = Column(DateTime, default=clock.now, onupdate=clock.now)

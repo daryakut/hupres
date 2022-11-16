@@ -8,12 +8,13 @@ from sqlalchemy.orm import relationship
 
 from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
+from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from models.quiz_models import QuizFreeFormQuestion
 
 EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 
 
-class DbQuizFreeFormQuestion(DbBase):
+class DbQuizFreeFormQuestion(DbTimestampedEntity, DbBase):
     __tablename__ = 'quiz_free_form_questions'
     id = Column(Integer, primary_key=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
