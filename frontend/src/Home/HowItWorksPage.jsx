@@ -1,6 +1,5 @@
 import React from 'react';
-import {Col, Row} from "antd";
-import {BulbOutlined, CheckCircleOutlined, FireOutlined, KeyOutlined, SmileOutlined} from "@ant-design/icons";
+import {BulbOutlined, FireOutlined, KeyOutlined, SmileOutlined} from "@ant-design/icons";
 
 const SingleBulletPoint = ({children}) => (
   <div className="how-it-works-bullet-point-container">
@@ -17,6 +16,7 @@ export default function HowItWorksPage() {
         <div className="person-model-image"/>
         <hr key="hr2" className="landing-hr"/>
         <h2 key="h2.2" className="landing-font-xl text-align-center full-width">ЯК ЦЕ ПРАЦЮЄ</h2>
+        <div className="box-md"/>
         <div className="how-it-works-top-text-container">
           <p key="p2.1" className="landing-font-md landing-font-width-sm">
             Наші вчені, спираючись на наукові знання про конституцію людини, розробили унікальний метод

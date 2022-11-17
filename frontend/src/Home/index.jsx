@@ -6,6 +6,7 @@ import './static/style';
 import PracticePage from "./PracticePage";
 import HowItWorksPage from "./HowItWorksPage";
 import QualitiesPage from "./QualitiesPage";
+import FuturePage from "./FuturePage";
 
 
 const Home = () => {
@@ -26,9 +27,10 @@ const Home = () => {
     [
       <Header key="header"/>,
       <Banner key="banner" onEnterChange={onEnterChange}/>,
-      <PracticePage key="page1" isMobile={false} />,
-      <QualitiesPage key="page3" isMobile={false} />,
-      <HowItWorksPage key="page2" isMobile={false} />,
+      <PracticePage key="page1"/>,
+      <QualitiesPage key="page3"/>,
+      <HowItWorksPage key="page2"/>,
+      <FuturePage key="page4"/>,
       // <Page2 key="page2" />,
       // <Page3 key="page3" isMobile={this.state.isMobile} />,
       // <Page4 key="page4" />,
