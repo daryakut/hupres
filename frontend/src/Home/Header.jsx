@@ -8,7 +8,7 @@ import {useUser} from "../User/UserProvider";
 import {getCurrentUser, logout} from "../api/users_api";
 import {useMediaQuery} from "react-responsive";
 import {motion} from 'framer-motion';
-import { Link as ScrollLink, animateScroll, scroller } from 'react-scroll';
+import {Link as ScrollLink, scroller} from 'react-scroll';
 
 const LinkOrScrollLink = (props) => {
   const isLandingPage = window.location.pathname === '/';
@@ -65,9 +65,6 @@ const SigninDropdown = () => {
   if (user) {
     menu = (
       <Menu>
-        {/*<Menu.Item>*/}
-        {/*  <Link key="button" to="/quiz">ПРОФІЛЬ</Link>*/}
-        {/*</Menu.Item>*/}
         <Menu.Item>
           <Link key="button" to="/quizzes">МОЇ АНКЕТИ</Link>
         </Menu.Item>
@@ -91,20 +88,16 @@ const SigninDropdown = () => {
 
 const Header = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = React.useState(false);
+  const {user, setUser} = useUser();
+  const isLoggedIn = !!user;
 
-  // use effect
-  useEffect(() => {
-    // TODO: Fix this as it jumps back to the top after the page loads, maybe use HashRouter
-    if (window.location.hash && window.location.hash.length > 1) {
-      const elementId = window.location.hash.substring(1); // Removes the first two characters '/#'
-      console.log("NAVIGATING", elementId)
-      scroller.scrollTo(elementId, {
-        duration: 300,
-        delay: 0,
-        smooth: 'easeInOutQuart'
-      });
-    }
-  }, [])
+  // TODO: duplicate logoutAndRedirect, refactor
+  const logoutAndRedirect = async () => {
+    await logout();
+    const user = await getCurrentUser();
+    setUser(user)
+    history.push('/')
+  }
 
   const isMobile = useMediaQuery({query: '(max-width: 992px)'})
 
@@ -114,20 +107,6 @@ const Header = () => {
     'home-nav-main': true,
     'home-nav-black': !isLandingPage,
   });
-
-  const menu = (
-    <div className="custom-menu">
-      <LinkOrScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
-        ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-      </LinkOrScrollLink>
-      <LinkOrScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works" className="menu-item">
-        ЯК ЦЕ ПРАЦЮЄ
-      </LinkOrScrollLink>
-      <LinkOrScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
-        МАЙБУТНЄ
-      </LinkOrScrollLink>
-    </div>
-  );
 
   return (
     <>
@@ -173,6 +152,29 @@ const Header = () => {
                 >
                   МАЙБУТНЄ
                 </LinkOrScrollLink>
+                {isMobile ? (
+                  <>
+                    {isLoggedIn ? (
+                      <>
+                        <Link className="menu-mobile-drawn-item" key="button" to="/quizzes">МОЇ АНКЕТИ</Link>
+                        <a className="menu-mobile-drawn-item" onClick={logoutAndRedirect}>ВИЙТИ</a>
+                      </>
+                    ) : (
+                      <>
+                        <a className="menu-mobile-drawn-item"
+                           href={`${getBaseUrl()}/api/users/google-login`}>
+                          <UserOutlined style={{fontSize: '26px', marginRight: 10, color: '#ddd'}}/>
+                          РЕЄСТРАЦІЯ
+                        </a>
+                        <a className="menu-mobile-drawn-item"
+                           href={`${getBaseUrl()}/api/users/google-login`}>
+                          <UserOutlined style={{fontSize: '26px', marginRight: 10, color: '#ddd'}}/>
+                          УВІЙТИ
+                        </a>
+                      </>
+                    )}
+                  </>
+                ) : null}
               </div>
             </motion.div>
             <MenuOutlined
@@ -182,7 +184,18 @@ const Header = () => {
           </>
         ) : (
           <>
-            {menu}
+            <div className="custom-menu">
+              <LinkOrScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
+                ПРАКТИЧНЕ ЗАСТОСУВАННЯ
+              </LinkOrScrollLink>
+              <LinkOrScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works"
+                                className="menu-item">
+                ЯК ЦЕ ПРАЦЮЄ
+              </LinkOrScrollLink>
+              <LinkOrScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
+                МАЙБУТНЄ
+              </LinkOrScrollLink>
+            </div>
             <div className="home-nav-profile">
               <SigninDropdown/>
             </div>

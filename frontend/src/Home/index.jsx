@@ -7,6 +7,7 @@ import PracticePage from "./PracticePage";
 import HowItWorksPage from "./HowItWorksPage";
 import QualitiesPage from "./QualitiesPage";
 import FuturePage from "./FuturePage";
+import {Link as ScrollLink, scroller} from 'react-scroll';
 
 
 const Home = () => {
@@ -17,7 +18,20 @@ const Home = () => {
       localStorage.removeItem('redirectUrl');
       window.location.href = redirectUrl;
     }
-  }, []);
+
+    // TODO: Fix this as it jumps back to the top after the page loads, maybe use HashRouter
+    if (window.location.hash && window.location.hash.length > 1) {
+      const elementId = window.location.hash.substring(1); // Removes the first two characters '/#'
+      console.log("NAVIGATING", elementId)
+      scroller.scrollTo(elementId, {
+        duration: 300,
+        delay: 0,
+        smooth: 'easeInOutQuart'
+      });
+      window.location.hash = '';
+    }
+  }, [])
+
 
   const onEnterChange = (e) => {
     console.log("Scrolling!", e)
