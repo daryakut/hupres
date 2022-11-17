@@ -26,11 +26,16 @@ const Banner = ({ onEnterChange }) => {
         playScale={0.9}
       >
         <QueueAnim className="banner-text-wrapper" type={typeFunc} delay={300} key="banner">
-          <h2 key="h2">РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ</h2>
-          {/*<hr />*/}
+          <h2 key="h2" className="landing-font-lg text-align-center">
+            РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ
+          </h2>
           <hr key="hr" className="landing-hr"/>
-          <h5 key="h5.1">ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ</h5>
-          <h5 key="h5.2">НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА</h5>
+          <h5 key="h5.1" className="landing-font-md text-align-center">
+            ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ
+          </h5>
+          <h5 key="h5.2" className="landing-font-md text-align-center">
+            НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА
+          </h5>
           <Link key="button" to="/quiz"><Button className="start-test-button">ПРОЙТИ ТЕСТ<RightOutlined /></Button></Link>
         </QueueAnim>
         <Icon type="down" className="down" />

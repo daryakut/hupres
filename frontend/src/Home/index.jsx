@@ -24,7 +24,7 @@ const Home = () => {
     [
       <Header key="header"/>,
       <Banner key="banner" onEnterChange={onEnterChange}/>,
-      // <Page1 key="page1" isMobile={false} />,
+      <Page1 key="page1" isMobile={false} />,
       // <Page2 key="page2" />,
       // <Page3 key="page3" isMobile={this.state.isMobile} />,
       // <Page4 key="page4" />,

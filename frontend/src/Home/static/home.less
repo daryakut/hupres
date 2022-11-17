@@ -21,18 +21,26 @@
   margin-top: 40px;
   margin-bottom: 40px;
 }
-.banner-text-wrapper h2 {
-  font-family: Lato, @font-family;
+.text-align-center {
   text-align: center;
+}
+.landing-font-lg {
+  font-family: Lato, @font-family;
   font-size: 46px;
   font-weight: normal;
   width: 50%;
   color: #fff;
   margin-bottom: 8px;
 }
-.banner-text-wrapper h5 {
+.landing-font-sm {
   font-family: Lato, @font-family;
-  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.landing-font-md {
+  font-family: Lato, @font-family;
   font-size: 26px;
   font-weight: normal;
   width: 40%;
@@ -51,12 +59,18 @@
   background: #007bff;
 }
 #page1 {
+  //min-height: 300px;
+  //height: 300px;
+  min-height: 700px;
+  height: 100vh;
+
   display: flex;
   width: 100%;
   flex-direction: row;
   //align-items: center;
+  background: linear-gradient(135deg, #009BDB, #005678);
 }
-//.banner-text-wrapper h2 p {
+//.landing-font-lg p {
 //  color: #ff3171;
 //  display: inline-block;
 //  margin: 0;
@@ -153,9 +167,9 @@
   }
   .text-wrapper h2,
   .text-wrapper-bottom h2 {
-    font-size: 32px;
-    color: @text-color;
-    font-weight: normal;
+    //font-size: 32px;
+    //color: @text-color;
+    //font-weight: normal;
     white-space: nowrap;
   }
   .text-wrapper p {
@@ -206,22 +220,43 @@
   color: #999;
 }
 
+#page1 {
+  position: relative;
+}
+.page1-content {
+  width: 60%;
+  margin: 4%;
+  //display: flex;
+  //flex-direction: row;
+}
+.page1-image {
+  background-image: url("https://hupres.com/catalog/view/theme/default/image/people.svg");
+  //background-color: red;
+  position: absolute;
+  right: 0;
+  //top: 0;
+  background-repeat: no-repeat;
+  //background-size: cover;
+  width: 600px;
+  height: 600px;
+  margin: 100px;
+}
+
 @keyframes upDownMove {
   to {
     transform: translateY(10px);
   }
 }
 
-
 @media (max-width: 576px) {
   .banner-text-wrapper {
     //top: 30%;
   }
-  .banner-text-wrapper h2 {
+  .landing-font-lg {
     font-size: 26px;
     width: 90%;
   }
-  .banner-text-wrapper h5 {
+  .landing-font-md {
     font-size: 14px;
     width: 90%;
   }
@@ -234,11 +269,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .banner-text-wrapper h2 {
+  .landing-font-lg {
     font-size: 30px;
     width: 80%;
   }
-  .banner-text-wrapper h5 {
+  .landing-font-md {
     font-size: 16px;
     width: 80%;
   }
@@ -248,11 +283,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .banner-text-wrapper h2 {
+  .landing-font-lg {
     font-size: 35px;
     width: 70%;
   }
-  .banner-text-wrapper h5 {
+  .landing-font-md {
     font-size: 18px;
     width: 70%;
   }
@@ -262,11 +297,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .banner-text-wrapper h2 {
+  .landing-font-lg {
     font-size: 40px;
     width: 60%;
   }
-  .banner-text-wrapper h5 {
+  .landing-font-md {
     font-size: 20px;
     width: 60%;
   }
@@ -276,11 +311,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .banner-text-wrapper h2 {
+  .landing-font-lg {
     font-size: 46px;
     width: 50%;
   }
-  .banner-text-wrapper h5 {
+  .landing-font-md {
     font-size: 22px;
     width: 50%;
   }
