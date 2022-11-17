@@ -57,7 +57,7 @@
 
 .landing-font-sm {
   font-family: Lato, @font-family;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   color: #fff;
   margin-bottom: 8px;
@@ -206,13 +206,6 @@
   //flex-direction: row;
 }
 
-.qualities-page {
-  //width: 40%;
-  //margin: 4%;
-  //display: flex;
-  //flex-direction: row;
-}
-
 .page1-image {
   background-image: url("https://hupres.com/catalog/view/theme/default/image/people.svg");
   //background-color: red;
@@ -249,14 +242,14 @@
 
 .qualities-page {
   width: 100%;
-  height: 100vh;
+  height: 540px;
   //min-height: 700px;
-  //display: flex;
+  display: flex;
   //position: relative;
-  //align-items: center;
+  align-items: center;
   //display: flex;
   //flex-direction: row;
-  //flex-direction: column;
+  flex-direction: column;
 
   background-image: url("https://hupres.com/catalog/view/theme/default/image/fon_icons.jpg");
   background-size: cover;
@@ -266,14 +259,17 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 .qualities-icon-pair-container {
-  width: 800px;
+  width: 100%;
+  //width: 600px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
 }
 
 .qualities-single-icon-container {
@@ -283,9 +279,18 @@
   flex-direction: column;
   align-items: center;
   padding: 0;
+  margin-bottom: 36px;
+}
+
+.qualities-page-title {
+  margin: 30px;
+  width: 90%;
 }
 
 @media (max-width: 768px) {
+  .qualities-page {
+    height: 1700px;
+  }
   .qualities-four-icons-container {
     flex-direction: column;
   }
@@ -295,6 +300,9 @@
 }
 
 @media (min-width: 768px) {
+  .qualities-page {
+    height: 900px;
+  }
   .qualities-four-icons-container {
     flex-direction: column;
   }
@@ -304,6 +312,9 @@
 }
 
 @media (min-width: 1200px) {
+  .qualities-page {
+    height: 540px;
+  }
   .qualities-four-icons-container {
     flex-direction: row;
   }
@@ -354,12 +365,20 @@
 
   .landing-font-xl {
     font-size: 26px;
+  }
+  .landing-font-width-xl {
     width: 90%;
   }
 
   .landing-font-lg {
-    font-size: 14px;
+    font-size: 18px;
+  }
+  .landing-font-width-lg {
     width: 90%;
+  }
+
+  .landing-font-md {
+    font-size: 16px;
   }
 
   .banner-wrapper {
@@ -374,12 +393,20 @@
 
   .landing-font-xl {
     font-size: 30px;
+  }
+  .landing-font-width-xl {
     width: 80%;
   }
 
   .landing-font-lg {
-    font-size: 16px;
+    font-size: 20px;
+  }
+  .landing-font-width-lg {
     width: 80%;
+  }
+
+  .landing-font-md {
+    font-size: 17px;
   }
 }
 
@@ -390,12 +417,20 @@
 
   .landing-font-xl {
     font-size: 35px;
+  }
+  .landing-font-width-xl {
     width: 70%;
   }
 
   .landing-font-lg {
-    font-size: 18px;
+    font-size: 22px;
+  }
+  .landing-font-width-lg {
     width: 70%;
+  }
+
+  .landing-font-md {
+    font-size: 19px;
   }
 }
 
@@ -406,12 +441,20 @@
 
   .landing-font-xl {
     font-size: 40px;
+  }
+  .landing-font-width-xl {
     width: 60%;
   }
 
   .landing-font-lg {
-    font-size: 20px;
+    font-size: 24px;
+  }
+  .landing-font-width-lg {
     width: 60%;
+  }
+
+  .landing-font-md {
+    font-size: 20px;
   }
 }
 
@@ -422,11 +465,19 @@
 
   .landing-font-xl {
     font-size: 46px;
+  }
+  .landing-font-width-xl {
     width: 50%;
   }
 
   .landing-font-lg {
-    font-size: 22px;
+    font-size: 26px;
+  }
+  .landing-font-width-lg {
     width: 50%;
+  }
+
+  .landing-font-md {
+    font-size: 21px;
   }
 }

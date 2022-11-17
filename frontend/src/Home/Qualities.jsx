@@ -1,8 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
-import QueueAnim from 'rc-queue-anim';
-import {Col, Row} from "antd";
 
 const BackgroundIcon = ({className, caption, description}) => (
   <div className="qualities-single-icon-container">
@@ -16,18 +12,13 @@ const BackgroundIcon = ({className, caption, description}) => (
   </div>
 );
 
-export default function Qualities({isMobile}) {
+export default function Qualities() {
   return (
     <>
       <div className="qualities-page">
-        <Row>
-          <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
-          <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-            <h5 key="p.2" className="landing-font-lg color-blue">
-              НА ОСНОВІ СОМАТИЧНИХ (ТІЛЕСНИХ) ОЗНАК МЕТОДИКА ВИЗНАЧАЄ:
-            </h5>
-          </Col>
-        </Row>
+        <h5 key="p.2" className="qualities-page-title landing-font-lg color-blue text-align-center">
+          НА ОСНОВІ СОМАТИЧНИХ (ТІЛЕСНИХ) ОЗНАК МЕТОДИКА ВИЗНАЧАЄ:
+        </h5>
         <div className="qualities-four-icons-container">
           <div className="qualities-icon-pair-container">
             <BackgroundIcon
@@ -61,6 +52,3 @@ export default function Qualities({isMobile}) {
     </>
   );
 }
-Qualities.propTypes = {
-  isMobile: PropTypes.bool,
-};
