@@ -24,11 +24,26 @@
 .text-align-center {
   text-align: center;
 }
-.landing-font-lg {
+.landing-font-xl {
   font-family: Lato, @font-family;
   font-size: 46px;
   font-weight: normal;
   width: 50%;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.landing-font-lg {
+  font-family: Lato, @font-family;
+  font-size: 26px;
+  font-weight: normal;
+  width: 40%;
+  color: #fff;
+  margin-bottom: 30px;
+}
+.landing-font-md {
+  font-family: Lato, @font-family;
+  font-size: 20px;
+  font-weight: normal;
   color: #fff;
   margin-bottom: 8px;
 }
@@ -39,14 +54,7 @@
   color: #fff;
   margin-bottom: 8px;
 }
-.landing-font-md {
-  font-family: Lato, @font-family;
-  font-size: 26px;
-  font-weight: normal;
-  width: 40%;
-  color: #fff;
-  margin-bottom: 30px;
-}
+
 .start-test-button {
   font-size: 22px;
   height: 60px;
@@ -70,63 +78,6 @@
   //align-items: center;
   background: linear-gradient(135deg, #009BDB, #005678);
 }
-//.landing-font-lg p {
-//  color: #ff3171;
-//  display: inline-block;
-//  margin: 0;
-//}
-//.banner-text-wrapper .line {
-//  width: 0.8px;
-//  height: 76px;
-//  position: absolute;
-//  background: rgba(255, 255, 255, .44);
-//  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-//  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-//  background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-//  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.03));
-//  top: 16px;
-//  right: -25px;
-//}
-//.banner-text-wrapper > p {
-//  margin: 10px auto 24px;
-//  font-size: 16px;
-//}
-//
-//.banner-text-wrapper .start-button {
-//  @start-button-color: tint(@primary-color, 20%);
-//  margin-bottom: 24px;
-//  text-align: right;
-//  > a {
-//    display: inline-block;
-//    height: 40px;
-//    padding: 0 16px;
-//    font-weight: 500;
-//    border-radius: @border-radius-base;
-//    border: 1px solid @start-button-color;
-//    text-decoration: none;
-//    color: #0ae;
-//    font-size: 15px;
-//    background: transparent;
-//    transition: all .45s;
-//    text-align: center;
-//    line-height: 36px;
-//    margin-left: 8px;
-//    &:hover {
-//      color: #fff;
-//      background: @start-button-color;
-//    }
-//  }
-//}
-//
-//.banner-text-wrapper .github-btn {
-//  float: right;
-//  line-height: 14px;
-//  text-align: left;
-//
-//  a:hover {
-//    color: #333;
-//  }
-//}
 
 .down {
   text-align: center;
@@ -222,10 +173,16 @@
 
 #page1 {
   position: relative;
+  display: flex;
+    flex-direction: column;
+}
+.page1-content-1 {
+  //display: flex;
+  //flex-direction: row;
 }
 .page1-content {
-  width: 40%;
-  margin: 4%;
+  //width: 40%;
+  //margin: 4%;
   //display: flex;
   //flex-direction: row;
 }
@@ -234,12 +191,20 @@
   //background-color: red;
   position: absolute;
   right: 0;
-  //top: 0;
+  top: 300px;
   background-repeat: no-repeat;
   //background-size: cover;
   width: 600px;
   height: 600px;
   margin: 100px;
+}
+
+.how-it-works-ul-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  //margin-top: 100px;
+  //margin-bottom: 100px;
 }
 
 @keyframes upDownMove {
@@ -252,11 +217,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .landing-font-lg {
+  .landing-font-xl {
     font-size: 26px;
     width: 90%;
   }
-  .landing-font-md {
+  .landing-font-lg {
     font-size: 14px;
     width: 90%;
   }
@@ -269,11 +234,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .landing-font-lg {
+  .landing-font-xl {
     font-size: 30px;
     width: 80%;
   }
-  .landing-font-md {
+  .landing-font-lg {
     font-size: 16px;
     width: 80%;
   }
@@ -283,11 +248,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .landing-font-lg {
+  .landing-font-xl {
     font-size: 35px;
     width: 70%;
   }
-  .landing-font-md {
+  .landing-font-lg {
     font-size: 18px;
     width: 70%;
   }
@@ -297,11 +262,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .landing-font-lg {
+  .landing-font-xl {
     font-size: 40px;
     width: 60%;
   }
-  .landing-font-md {
+  .landing-font-lg {
     font-size: 20px;
     width: 60%;
   }
@@ -311,11 +276,11 @@
   .banner-text-wrapper {
     //top: 30%;
   }
-  .landing-font-lg {
+  .landing-font-xl {
     font-size: 46px;
     width: 50%;
   }
-  .landing-font-md {
+  .landing-font-lg {
     font-size: 22px;
     width: 50%;
   }
