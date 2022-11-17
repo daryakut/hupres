@@ -8,17 +8,18 @@ export default function Qualities({isMobile}) {
   return (
     <>
       <div className="my-page">
-        <ScrollOverPack>
+        {/*<ScrollOverPack>*/}
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-              <QueueAnim
-                // type={isMobile ? 'bottom' : 'right'}
-                type={'left'}
-                className="text-wrapper page1-content-1"
-                key="text1"
-                leaveReverse
-              >
+              <div className="text-wrapper page1-content">
+              {/*<QueueAnim*/}
+              {/*  // type={isMobile ? 'bottom' : 'right'}*/}
+              {/*  type={'left'}*/}
+              {/*  className="text-wrapper page1-content-1"*/}
+              {/*  key="text1"*/}
+              {/*  leaveReverse*/}
+              {/*>*/}
                 <hr key="hr1" className="landing-hr"/>
                 <p key="p1.1" className="landing-font-md">
                   Консультант-психолог за допомогою штучного інтелекту на основі технології HUPRES дає вам змогу
@@ -29,22 +30,24 @@ export default function Qualities({isMobile}) {
                   Для отримання вірної інформації про характер людини технологія HUPRES використовує лише ваші
                   знання про її зовнішній вигляд.
                 </p>
-              </QueueAnim>
+              {/*</QueueAnim>*/}
+                </div>
             </Col>
           </Row>
-        </ScrollOverPack>
-        <ScrollOverPack>
+        {/*</ScrollOverPack>*/}
+        {/*<ScrollOverPack>*/}
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
 
-              <QueueAnim
-                // type={isMobile ? 'bottom' : 'right'}
-                type={'left'}
-                className="text-wrapper page1-content"
-                key="text1"
-                leaveReverse
-              >
+              {/*<QueueAnim*/}
+              {/*  // type={isMobile ? 'bottom' : 'right'}*/}
+              {/*  type={'left'}*/}
+              {/*  className="text-wrapper page1-content"*/}
+              {/*  key="text1"*/}
+              {/*  leaveReverse*/}
+              {/*>*/}
+              <div className="text-wrapper page1-content">
                 <hr key="hr2" className="landing-hr"/>
                 <h2 key="h2.2" className="landing-font-xl">ПРАКТИЧНЕ ЗАСТОСУВАННЯ</h2>
                 <div key="p2.2" className="how-it-works-ul-wrapper">
@@ -64,10 +67,11 @@ export default function Qualities({isMobile}) {
                     Аналіз HUPRES дає конкретний та чіткий мануал дій, що оберігає від помилок.
                   </p>
                 </div>
-              </QueueAnim>
+                </div>
+              {/*</QueueAnim>*/}
             </Col>
           </Row>
-        </ScrollOverPack>
+        {/*</ScrollOverPack>*/}
       </div>
     </>
   );

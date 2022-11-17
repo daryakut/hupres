@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+// {/*import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';*/}
 import QueueAnim from 'rc-queue-anim';
 import {Col, Row} from "antd";
 
@@ -9,18 +9,18 @@ export default function HowItWorks({isMobile}) {
     <>
       <div className="my-page">
         <div className="page1-image"/>
-        <ScrollOverPack>
+        {/*<ScrollOverPack>*/}
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-
-              <QueueAnim
-                // type={isMobile ? 'bottom' : 'right'}
-                type={'left'}
-                className="text-wrapper page1-content"
-                key="text1"
-                leaveReverse
-              >
+              <div className="text-wrapper page1-content">
+              {/*<QueueAnim*/}
+              {/*  // type={isMobile ? 'bottom' : 'right'}*/}
+              {/*  type={'left'}*/}
+              {/*  className="text-wrapper page1-content"*/}
+              {/*  key="text1"*/}
+              {/*  leaveReverse*/}
+              {/*>*/}
                 <hr key="hr2" className="landing-hr"/>
                 <h2 key="h2.2" className="landing-font-xl">ЯК ЦЕ ПРАЦЮЄ</h2>
                 <p key="p2.1" className="landing-font-sm">
@@ -48,22 +48,23 @@ export default function HowItWorks({isMobile}) {
                   міру агресивності. Саме сукупність тілесних ознак (загальний образ) відображає індивідуальну
                   конституцію і відповідну сукупність рис характеру цієї людини.
                 </p>
-              </QueueAnim>
+              {/*</QueueAnim>*/}
+              </div>
             </Col>
           </Row>
-          {/*</ScrollOverPack>*/}
-          {/*<ScrollOverPack>*/}
+          {/*/!*</ScrollOverPack>*!/*/}
+          {/*/!*<ScrollOverPack>*!/*/}
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-
-              <QueueAnim
-                // type={isMobile ? 'bottom' : 'right'}
-                type={'left'}
-                className="text-wrapper page1-content"
-                key="text1"
-                leaveReverse
-              >
+              <div className="text-wrapper page1-content">
+              {/*<QueueAnim*/}
+              {/*  // type={isMobile ? 'bottom' : 'right'}*/}
+              {/*  type={'left'}*/}
+              {/*  className="text-wrapper page1-content"*/}
+              {/*  key="text1"*/}
+              {/*  leaveReverse*/}
+              {/*>*/}
                 {/*<hr key="hr2" className="landing-hr"/>*/}
                 {/*<h2 key="h2.2" className="landing-font-xl">ЯК ЦЕ ПРАЦЮЄ</h2>*/}
                 <p key="p2.1" className="landing-font-sm">
@@ -92,10 +93,11 @@ export default function HowItWorks({isMobile}) {
                   взаємодії з іншими людьми. Це робить життя більш зрозумілим і комфортним без емоційних і
                   матеріальних втрат.
                 </p>
-              </QueueAnim>
+              </div>
+              {/*</QueueAnim>*/}
             </Col>
           </Row>
-        </ScrollOverPack>
+        {/*</ScrollOverPack>*/}
       </div>
     </>
   );
