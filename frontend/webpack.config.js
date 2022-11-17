@@ -6,11 +6,11 @@ module.exports = (env, argv) => {
   console.log(`Building frontend for environment ${process.env.HUPRES_ENV} at ${process.env.HUPRES_PROD_HOSTNAME}:${process.env.HUPRES_APP_PORT}`);
 
   return {
-    mode: 'development',
+    mode: argv.mode === 'production' ? 'production' : 'development',
     entry: './src/index.js', // update the entry path if necessary
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.js',
+      filename: 'bundle.[contenthash].js', // Add contenthash to refresh cache when content changes
       publicPath: '/',
     },
     devServer: {
