@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import classNames from 'classnames';
 import {Dropdown, Menu} from 'antd';
 import {MenuOutlined, UserOutlined} from '@ant-design/icons';
@@ -8,7 +8,24 @@ import {useUser} from "../User/UserProvider";
 import {getCurrentUser, logout} from "../api/users_api";
 import {useMediaQuery} from "react-responsive";
 import {motion} from 'framer-motion';
-import { Link as ScrollLink } from 'react-scroll';
+import { Link as ScrollLink, animateScroll, scroller } from 'react-scroll';
+
+const LinkOrScrollLink = (props) => {
+  const isLandingPage = window.location.pathname === '/';
+
+  const {
+    to,
+    smooth,
+    duration,
+    ...rest
+  } = props;
+
+  return isLandingPage ? (
+    <ScrollLink to={to} smooth={smooth} duration={duration} {...rest} />
+  ) : (
+    <a href={`/#${to}`} {...rest} />
+  )
+}
 
 const loggedOutMenu = (
   <Menu>
@@ -75,6 +92,20 @@ const SigninDropdown = () => {
 const Header = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = React.useState(false);
 
+  // use effect
+  useEffect(() => {
+    // TODO: Fix this as it jumps back to the top after the page loads, maybe use HashRouter
+    if (window.location.hash && window.location.hash.length > 1) {
+      const elementId = window.location.hash.substring(1); // Removes the first two characters '/#'
+      console.log("NAVIGATING", elementId)
+      scroller.scrollTo(elementId, {
+        duration: 300,
+        delay: 0,
+        smooth: 'easeInOutQuart'
+      });
+    }
+  }, [])
+
   const isMobile = useMediaQuery({query: '(max-width: 992px)'})
 
   const isLandingPage = window.location.pathname === '/';
@@ -86,15 +117,15 @@ const Header = () => {
 
   const menu = (
     <div className="custom-menu">
-      <ScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
+      <LinkOrScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
         ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-      </ScrollLink>
-      <ScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works" className="menu-item">
+      </LinkOrScrollLink>
+      <LinkOrScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works" className="menu-item">
         ЯК ЦЕ ПРАЦЮЄ
-      </ScrollLink>
-      <ScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
+      </LinkOrScrollLink>
+      <LinkOrScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
         МАЙБУТНЄ
-      </ScrollLink>
+      </LinkOrScrollLink>
     </div>
   );
 
@@ -115,7 +146,7 @@ const Header = () => {
               variants={menuVariants}
             >
               <div className="menu-mobile-drawn">
-                <ScrollLink
+                <LinkOrScrollLink
                   to="practice-page"
                   smooth={true}
                   duration={300}
@@ -123,8 +154,8 @@ const Header = () => {
                   onClick={() => setMobileMenuVisible(false)}
                 >
                   ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-                </ScrollLink>
-                <ScrollLink
+                </LinkOrScrollLink>
+                <LinkOrScrollLink
                   to="how-it-works-page"
                   smooth={true}
                   duration={600}
@@ -132,8 +163,8 @@ const Header = () => {
                   onClick={() => setMobileMenuVisible(false)}
                 >
                   ЯК ЦЕ ПРАЦЮЄ
-                </ScrollLink>
-                <ScrollLink
+                </LinkOrScrollLink>
+                <LinkOrScrollLink
                   to="future-page"
                   smooth={true}
                   duration={900}
@@ -141,7 +172,7 @@ const Header = () => {
                   onClick={() => setMobileMenuVisible(false)}
                 >
                   МАЙБУТНЄ
-                </ScrollLink>
+                </LinkOrScrollLink>
               </div>
             </motion.div>
             <MenuOutlined
