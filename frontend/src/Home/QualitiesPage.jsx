@@ -12,7 +12,7 @@ const BackgroundIcon = ({className, caption, description}) => (
   </div>
 );
 
-export default function Qualities() {
+export default function QualitiesPage() {
   return (
     <>
       <div className="qualities-page">

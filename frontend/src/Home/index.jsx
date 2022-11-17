@@ -4,8 +4,8 @@ import Header from './Header';
 import Banner from './Banner';
 import './static/style';
 import PracticePage from "./PracticePage";
-import HowItWorks from "./HowItWorks";
-import Qualities from "./Qualities";
+import HowItWorksPage from "./HowItWorksPage";
+import QualitiesPage from "./QualitiesPage";
 
 
 const Home = () => {
@@ -27,8 +27,8 @@ const Home = () => {
       <Header key="header"/>,
       <Banner key="banner" onEnterChange={onEnterChange}/>,
       <PracticePage key="page1" isMobile={false} />,
-      <Qualities key="page3" isMobile={false} />,
-      <HowItWorks key="page2" isMobile={false} />,
+      <QualitiesPage key="page3" isMobile={false} />,
+      <HowItWorksPage key="page2" isMobile={false} />,
       // <Page2 key="page2" />,
       // <Page3 key="page3" isMobile={this.state.isMobile} />,
       // <Page4 key="page4" />,
