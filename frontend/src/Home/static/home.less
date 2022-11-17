@@ -1,10 +1,12 @@
 @import "./../../static/default.less";
+
 .banner-wrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
   background: url("https://hupres.com/image/catalog/top_image1.jpg") no-repeat center / cover;
 }
+
 .banner-text-wrapper {
   display: flex;
   top: 28%;
@@ -13,6 +15,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .landing-hr {
   width: 100px;
   height: 5px;
@@ -21,9 +24,11 @@
   margin-top: 40px;
   margin-bottom: 40px;
 }
+
 .text-align-center {
   text-align: center;
 }
+
 .landing-font-xl {
   font-family: Lato, @font-family;
   font-size: 46px;
@@ -32,6 +37,7 @@
   color: #fff;
   margin-bottom: 8px;
 }
+
 .landing-font-lg {
   font-family: Lato, @font-family;
   font-size: 26px;
@@ -40,6 +46,7 @@
   color: #fff;
   margin-bottom: 30px;
 }
+
 .landing-font-md {
   font-family: Lato, @font-family;
   font-size: 20px;
@@ -47,6 +54,7 @@
   color: #fff;
   margin-bottom: 8px;
 }
+
 .landing-font-sm {
   font-family: Lato, @font-family;
   font-size: 16px;
@@ -63,9 +71,11 @@
   background: #ff8f3c;
   color: #eee;
 }
+
 .start-test-button:hover {
   background: #007bff;
 }
+
 #page1 {
   //min-height: 300px;
   //height: 300px;
@@ -116,6 +126,7 @@
     font-family: Lato, @font-family;
     z-index: 1;
   }
+
   .text-wrapper h2,
   .text-wrapper-bottom h2 {
     //font-size: 32px;
@@ -123,12 +134,14 @@
     //font-weight: normal;
     white-space: nowrap;
   }
+
   .text-wrapper p {
     margin: 10px 0 20px;
     font-size: 16px;
     line-height: 28px;
     color: #999;
   }
+
   .left-text {
     padding-left: 10%;
   }
@@ -140,12 +153,14 @@
   top: 50%;
   margin-top: -256px;
 }
+
 .image2 {
   background: url("https://t.alipayobjects.com/images/T1r5RkXotXXXXXXXXX.png") no-repeat left / 800px;
   height: 474px;
   top: 50%;
   margin-top: -266px;
 }
+
 .image3 {
   padding-right: 10%;
   background: url("https://t.alipayobjects.com/images/T1nx0kXdFfXXXXXXXX.png") no-repeat right / 639px;
@@ -154,6 +169,7 @@
   top: 50%;
   margin-top: -250px;
 }
+
 .image4 {
   background: url("https://t.alipayobjects.com/images/T1lyJkXg4aXXXXXXXX.png") no-repeat center / 615px;
   height: 364px;
@@ -164,6 +180,7 @@
   text-align: center;
   margin: 10% auto 40px;
 }
+
 .text-wrapper-bottom p {
   margin: 20px auto;
   font-size: 16px;
@@ -176,16 +193,26 @@
   display: flex;
   flex-direction: column;
 }
+
 .page1-content-1 {
   //display: flex;
   //flex-direction: row;
 }
+
 .page1-content {
   //width: 40%;
   //margin: 4%;
   //display: flex;
   //flex-direction: row;
 }
+
+.qualities-page {
+  //width: 40%;
+  //margin: 4%;
+  //display: flex;
+  //flex-direction: row;
+}
+
 .page1-image {
   background-image: url("https://hupres.com/catalog/view/theme/default/image/people.svg");
   //background-color: red;
@@ -216,6 +243,95 @@
   background: linear-gradient(135deg, #009BDB, #005678);
 }
 
+.color-blue {
+  color: #005678;
+}
+
+.qualities-page {
+  width: 100%;
+  height: 100vh;
+  //min-height: 700px;
+  //display: flex;
+  //position: relative;
+  //align-items: center;
+  //display: flex;
+  //flex-direction: row;
+  //flex-direction: column;
+
+  background-image: url("https://hupres.com/catalog/view/theme/default/image/fon_icons.jpg");
+  background-size: cover;
+}
+
+.qualities-four-icons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.qualities-icon-pair-container {
+  width: 800px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.qualities-single-icon-container {
+  width: 300px;
+  //width: 386px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .qualities-four-icons-container {
+    flex-direction: column;
+  }
+  .qualities-icon-pair-container {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .qualities-four-icons-container {
+    flex-direction: column;
+  }
+  .qualities-icon-pair-container {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1200px) {
+  .qualities-four-icons-container {
+    flex-direction: row;
+  }
+  .qualities-icon-pair-container {
+    flex-direction: row;
+  }
+}
+
+.qualities-bg-icon {
+  width: 195px;
+  height: 195px;
+}
+
+.bg-emoticon_06 {
+  background: url(https://hupres.com/catalog/view/theme/default/image/css_sprites.png) -10px -10px;
+}
+
+.bg-mozg_13 {
+  background: url(https://hupres.com/catalog/view/theme/default/image/css_sprites.png) -225px -10px;
+}
+
+.bg-pazzle_14 {
+  background: url(https://hupres.com/catalog/view/theme/default/image/css_sprites.png) -10px -225px;
+}
+
+.bg-people_15 {
+  background: url(https://hupres.com/catalog/view/theme/default/image/css_sprites.png) -225px -225px;
+}
 
 .how-it-works-ul-wrapper {
   display: flex;
@@ -235,14 +351,17 @@
   .banner-text-wrapper {
     //top: 30%;
   }
+
   .landing-font-xl {
     font-size: 26px;
     width: 90%;
   }
+
   .landing-font-lg {
     font-size: 14px;
     width: 90%;
   }
+
   .banner-wrapper {
     background: url("../../../public/images/top_image2.jpg") no-repeat center / cover;
   }
@@ -252,10 +371,12 @@
   .banner-text-wrapper {
     //top: 30%;
   }
+
   .landing-font-xl {
     font-size: 30px;
     width: 80%;
   }
+
   .landing-font-lg {
     font-size: 16px;
     width: 80%;
@@ -266,10 +387,12 @@
   .banner-text-wrapper {
     //top: 30%;
   }
+
   .landing-font-xl {
     font-size: 35px;
     width: 70%;
   }
+
   .landing-font-lg {
     font-size: 18px;
     width: 70%;
@@ -280,10 +403,12 @@
   .banner-text-wrapper {
     //top: 30%;
   }
+
   .landing-font-xl {
     font-size: 40px;
     width: 60%;
   }
+
   .landing-font-lg {
     font-size: 20px;
     width: 60%;
@@ -294,10 +419,12 @@
   .banner-text-wrapper {
     //top: 30%;
   }
+
   .landing-font-xl {
     font-size: 46px;
     width: 50%;
   }
+
   .landing-font-lg {
     font-size: 22px;
     width: 50%;
