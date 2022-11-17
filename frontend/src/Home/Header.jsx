@@ -89,6 +89,7 @@ const SigninDropdown = () => {
 const Header = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = React.useState(false);
   const {user, setUser} = useUser();
+  let history = useHistory();
   const isLoggedIn = !!user;
 
   // TODO: duplicate logoutAndRedirect, refactor
