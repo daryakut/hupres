@@ -7,6 +7,7 @@ import QuizSummary from "./Quiz/QuizSummary";
 import {UserProvider} from "./User/UserProvider";
 import Quizzes from "./Quiz/Quizzes";
 import { createRoot } from 'react-dom/client';
+import Disclaimer from "./Home/Disclaimer";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/quiz/:quizToken" component={Quiz}/>
             <Route path="/quiz"><Quiz/></Route>
             <Route path="/quizzes"><Quizzes/></Route>
+            <Route path="/disclaimer"><Disclaimer/></Route>
           </Switch>
         </div>
       </UserProvider>
