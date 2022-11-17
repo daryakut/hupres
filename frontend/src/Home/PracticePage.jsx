@@ -14,7 +14,7 @@ const SingleBulletPoint = ({children}) => (
 export default function PracticePage() {
   return (
     <>
-      <div className="practice-page">
+      <div id="practice-page" className="practice-page">
         <div className="practice-page-top-header">
           <p key="p1.1" className="landing-font-md landing-font-width-xl text-align-center">
             Консультант-психолог за допомогою штучного інтелекту на основі технології HUPRES дає вам змогу

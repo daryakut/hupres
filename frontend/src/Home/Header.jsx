@@ -8,6 +8,7 @@ import {useUser} from "../User/UserProvider";
 import {getCurrentUser, logout} from "../api/users_api";
 import {useMediaQuery} from "react-responsive";
 import {motion} from 'framer-motion';
+import { Link as ScrollLink } from 'react-scroll';
 
 const loggedOutMenu = (
   <Menu>
@@ -85,15 +86,15 @@ const Header = () => {
 
   const menu = (
     <div className="custom-menu">
-      <div key="practice" className="menu-item">
+      <ScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
         ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-      </div>
-      <div key="how-it-works" className="menu-item">
+      </ScrollLink>
+      <ScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works" className="menu-item">
         ЯК ЦЕ ПРАЦЮЄ
-      </div>
-      <div key="future" className="menu-item">
+      </ScrollLink>
+      <ScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
         МАЙБУТНЄ
-      </div>
+      </ScrollLink>
     </div>
   );
 
@@ -114,15 +115,33 @@ const Header = () => {
               variants={menuVariants}
             >
               <div className="menu-mobile-drawn">
-                <div key="practice" className="menu-mobile-drawn-item">
+                <ScrollLink
+                  to="practice-page"
+                  smooth={true}
+                  duration={300}
+                  className="menu-mobile-drawn-item"
+                  onClick={() => setMobileMenuVisible(false)}
+                >
                   ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-                </div>
-                <div key="how-it-works" className="menu-mobile-drawn-item">
+                </ScrollLink>
+                <ScrollLink
+                  to="how-it-works-page"
+                  smooth={true}
+                  duration={600}
+                  className="menu-mobile-drawn-item"
+                  onClick={() => setMobileMenuVisible(false)}
+                >
                   ЯК ЦЕ ПРАЦЮЄ
-                </div>
-                <div key="future" className="menu-mobile-drawn-item">
+                </ScrollLink>
+                <ScrollLink
+                  to="future-page"
+                  smooth={true}
+                  duration={900}
+                  className="menu-mobile-drawn-item"
+                  onClick={() => setMobileMenuVisible(false)}
+                >
                   МАЙБУТНЄ
-                </div>
+                </ScrollLink>
               </div>
             </motion.div>
             <MenuOutlined

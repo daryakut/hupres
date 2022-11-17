@@ -12,7 +12,7 @@ const SingleBulletPoint = ({children}) => (
 export default function HowItWorksPage() {
   return (
     <>
-      <div className="how-it-works-page">
+      <div id="how-it-works-page" className="how-it-works-page">
         <div className="person-model-image"/>
         <hr key="hr2" className="landing-hr"/>
         <h2 key="h2.2" className="landing-font-xl text-align-center full-width">ЯК ЦЕ ПРАЦЮЄ</h2>
@@ -43,7 +43,7 @@ export default function HowItWorksPage() {
             міру агресивності. Саме сукупність тілесних ознак (загальний образ) відображає індивідуальну
             конституцію і відповідну сукупність рис характеру цієї людини.
           </p>
-          <p key="p2.1" className="landing-font-md landing-font-width-sm">
+          <p key="p2.7" className="landing-font-md landing-font-width-sm">
             У процесі розробки цього методу ми спеціально зробили акцент на те, щоб його застосування було
             простим і легким для будь-якого користувача. Вам достатньо знати, як людина виглядає, а про решту
             подбають наш метод і сучасні технології. Використовуючи HUPRES ви зможете:

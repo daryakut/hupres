@@ -1,19 +1,9 @@
 import React from 'react';
-import {Col, Row} from "antd";
-import {BulbOutlined, CheckCircleOutlined, FireOutlined, KeyOutlined, SmileOutlined} from "@ant-design/icons";
-
-const SingleBulletPoint = ({children}) => (
-  <div className="how-it-works-bullet-point-container">
-    <p className="landing-font-md how-it-works-bullet-point">
-      {children}
-    </p>
-  </div>
-);
 
 export default function FuturePage() {
   return (
     <>
-      <div className="future-page">
+      <div id="future-page" className="future-page">
         <hr key="hr2" className="landing-hr"/>
         <h2 key="h2.2" className="landing-font-xl text-align-center full-width">ЯК МИ БАЧИМО МАЙБУТНЄ</h2>
         <div className="box-md"/>
@@ -34,7 +24,7 @@ export default function FuturePage() {
           автоматизацією відповідей на ваші запитання із допомогою штучного інтелекту.
         </p>
         <div className="box-md"/>
-        <h2 key="h2.2" className="landing-font-lg text-align-center full-width">
+        <h2 key="h2.5" className="landing-font-lg text-align-center full-width">
           СЕРЕД МАЙБУТНІХ НАШИХ ПРОДУКТІВ МИ БАЧИМО ТАКІ:
         </h2>
 
