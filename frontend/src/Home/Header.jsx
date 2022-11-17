@@ -102,7 +102,7 @@ const Header = () => {
     <>
       <header id="header" className={headerClassName}>
         <div className="home-nav-logo">
-          <a id="logo" href='/'>
+          <a className="main-logo" href='/'>
             <img alt="logo" src="https://hupres.com/image/catalog/logo.svg"/>
           </a>
         </div>

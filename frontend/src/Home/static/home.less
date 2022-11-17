@@ -203,13 +203,32 @@
 
   display: flex;
   flex-direction: column;
+}
 
-  padding: 30px;
+.future-page-content {
+  padding: 30px 12px;
+}
+
+.future-page-footer-social-link {
+  padding: 24px 12px;
+}
+
+.future-page-footer-email-link {
+  padding: 24px 12px;
+}
+
+.future-page-footer-copyright {
+  padding: 30px 12px;
 }
 
 .box-md {
   width: 20px;
   height: 20px;
+}
+
+.box-lg {
+  width: 60px;
+  height: 60px;
 }
 
 .page1-content-1 {
@@ -473,6 +492,34 @@
   margin: 30px;
 }
 
+.future-page-footer {
+  border-top: 2px solid #eee;
+  width: 100%;
+  //height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
+}
+
+.future-page-footer-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.future-page-footer-nav-item {
+  font-size: 18px;
+  color: #fff;
+  margin: 2px;
+  padding: 26px;
+  cursor: pointer;
+}
+
+.future-page-footer-nav-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .practice-page-checkmark {
   color: #aedfff;
   width: 38px;
@@ -519,7 +566,7 @@
     padding: 10px;
   }
 
-  .future-page {
+  .future-page-content {
     padding: 10px;
   }
 
@@ -579,7 +626,7 @@
     padding: 15px 20px;
   }
 
-  .future-page {
+  .future-page-content {
     padding: 15px 20px;
   }
 
