@@ -13,7 +13,7 @@ export default function HowItWorks({isMobile}) {
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-              <div className="text-wrapper page1-content">
+              <div className="text-wrapper practice-page-top-header">
               {/*<QueueAnim*/}
               {/*  // type={isMobile ? 'bottom' : 'right'}*/}
               {/*  type={'left'}*/}
@@ -57,7 +57,7 @@ export default function HowItWorks({isMobile}) {
           <Row>
             <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
             <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-              <div className="text-wrapper page1-content">
+              <div className="text-wrapper practice-page-top-header">
               {/*<QueueAnim*/}
               {/*  // type={isMobile ? 'bottom' : 'right'}*/}
               {/*  type={'left'}*/}
