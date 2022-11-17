@@ -23,6 +23,7 @@ class QuizQueries:
             .filter(DbQuiz.session_token == session_token) \
             .filter(DbQuiz.user_id == None) \
             .filter(DbQuiz.deleted_at == None) \
+            .order_by(DbQuiz.id.desc()) \
             .all()
 
     @staticmethod
@@ -31,5 +32,7 @@ class QuizQueries:
         return session.query(DbQuiz) \
             .join(DbUser) \
             .filter(DbUser.token == user_token) \
+            .filter(DbQuiz.user_id != None) \
             .filter(DbQuiz.deleted_at == None) \
+            .order_by(DbQuiz.id.desc()) \
             .all()

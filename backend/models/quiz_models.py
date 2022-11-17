@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -21,6 +22,7 @@ class QuizFreeFormQuestion(BaseModel):
 class Quiz(BaseModel):
     """Representation of the DB object, whatever the Frontend might need to know about it"""
     token: str
+    created_at: Optional[str]  # When quiz is just created, this would be null due to how SqlAlchemy works
     # created_at: str
     user_token: Optional[str]
     subject_name: Optional[str]

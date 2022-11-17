@@ -39,6 +39,7 @@ class DbQuiz(DbTimestampedEntity, DbBase):
     def to_model(self) -> Quiz:
         return Quiz(
             token=self.token.value,
+            created_at=str(self.created_at) + "Z" if self.created_at else None,
             user_token=self.user.token.value if self.user else None,
             subject_name=self.subject_name,
             pronounce=self.pronounce,
