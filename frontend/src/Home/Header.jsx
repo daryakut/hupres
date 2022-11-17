@@ -102,11 +102,12 @@ const Header = () => {
 
   const isMobile = useMediaQuery({query: '(max-width: 992px)'})
 
-  const isLandingPage = window.location.pathname === '/';
+  const isLandingPageOrDisclaimer = window.location.pathname === '/'
+    || window.location.pathname === '/disclaimer';
 
   const headerClassName = classNames({
     'home-nav-main': true,
-    'home-nav-black': !isLandingPage,
+    'home-nav-black': !isLandingPageOrDisclaimer,
   });
 
   return (
@@ -126,33 +127,37 @@ const Header = () => {
               variants={menuVariants}
             >
               <div className="menu-mobile-drawn">
-                <LinkOrScrollLink
-                  to="practice-page"
-                  smooth={true}
-                  duration={300}
-                  className="menu-mobile-drawn-item"
-                  onClick={() => setMobileMenuVisible(false)}
-                >
-                  ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-                </LinkOrScrollLink>
-                <LinkOrScrollLink
-                  to="how-it-works-page"
-                  smooth={true}
-                  duration={600}
-                  className="menu-mobile-drawn-item"
-                  onClick={() => setMobileMenuVisible(false)}
-                >
-                  ЯК ЦЕ ПРАЦЮЄ
-                </LinkOrScrollLink>
-                <LinkOrScrollLink
-                  to="future-page"
-                  smooth={true}
-                  duration={900}
-                  className="menu-mobile-drawn-item"
-                  onClick={() => setMobileMenuVisible(false)}
-                >
-                  МАЙБУТНЄ
-                </LinkOrScrollLink>
+                {isLandingPageOrDisclaimer ? (
+                  <>
+                    <LinkOrScrollLink
+                      to="practice-page"
+                      smooth={true}
+                      duration={300}
+                      className="menu-mobile-drawn-item"
+                      onClick={() => setMobileMenuVisible(false)}
+                    >
+                      ПРАКТИЧНЕ ЗАСТОСУВАННЯ
+                    </LinkOrScrollLink>
+                    <LinkOrScrollLink
+                      to="how-it-works-page"
+                      smooth={true}
+                      duration={600}
+                      className="menu-mobile-drawn-item"
+                      onClick={() => setMobileMenuVisible(false)}
+                    >
+                      ЯК ЦЕ ПРАЦЮЄ
+                    </LinkOrScrollLink>
+                    <LinkOrScrollLink
+                      to="future-page"
+                      smooth={true}
+                      duration={900}
+                      className="menu-mobile-drawn-item"
+                      onClick={() => setMobileMenuVisible(false)}
+                    >
+                      МАЙБУТНЄ
+                    </LinkOrScrollLink>
+                  </>
+                ) : null}
                 {isMobile ? (
                   <>
                     {isLoggedIn ? (
@@ -185,25 +190,27 @@ const Header = () => {
           </>
         ) : (
           <>
-            <div className="custom-menu">
-              <LinkOrScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
-                ПРАКТИЧНЕ ЗАСТОСУВАННЯ
-              </LinkOrScrollLink>
-              <LinkOrScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works"
-                                className="menu-item">
-                ЯК ЦЕ ПРАЦЮЄ
-              </LinkOrScrollLink>
-              <LinkOrScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
-                МАЙБУТНЄ
-              </LinkOrScrollLink>
-            </div>
+            {isLandingPageOrDisclaimer ? (
+              <div className="custom-menu">
+                <LinkOrScrollLink to="practice-page" smooth={true} duration={300} key="practice" className="menu-item">
+                  ПРАКТИЧНЕ ЗАСТОСУВАННЯ
+                </LinkOrScrollLink>
+                <LinkOrScrollLink to="how-it-works-page" smooth={true} duration={600} key="how-it-works"
+                                  className="menu-item">
+                  ЯК ЦЕ ПРАЦЮЄ
+                </LinkOrScrollLink>
+                <LinkOrScrollLink to="future-page" smooth={true} duration={900} key="future" className="menu-item">
+                  МАЙБУТНЄ
+                </LinkOrScrollLink>
+              </div>
+            ) : null}
             <div className="home-nav-profile">
               <SigninDropdown/>
             </div>
           </>
         )}
       </header>
-      {!isLandingPage ? (
+      {!isLandingPageOrDisclaimer ? (
         <div style={{height: 80}}/>
       ) : null}
     </>
