@@ -3,7 +3,9 @@ import DocumentTitle from 'react-document-title';
 import Header from './Header';
 import Banner from './Banner';
 import './static/style';
-import Page1 from "./Page1";
+import PracticalApplication from "./PracticalApplication";
+import HowItWorks from "./HowItWorks";
+import Qualities from "./Qualities";
 
 
 const Home = () => {
@@ -24,7 +26,9 @@ const Home = () => {
     [
       <Header key="header"/>,
       <Banner key="banner" onEnterChange={onEnterChange}/>,
-      <Page1 key="page1" isMobile={false} />,
+      <PracticalApplication key="page1" isMobile={false} />,
+      <Qualities key="page3" isMobile={false} />,
+      <HowItWorks key="page2" isMobile={false} />,
       // <Page2 key="page2" />,
       // <Page3 key="page3" isMobile={this.state.isMobile} />,
       // <Page4 key="page4" />,

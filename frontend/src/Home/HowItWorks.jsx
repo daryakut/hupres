@@ -4,35 +4,10 @@ import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import QueueAnim from 'rc-queue-anim';
 import {Col, Row} from "antd";
 
-export default function Page1({isMobile}) {
+export default function HowItWorks({isMobile}) {
   return (
     <>
-      <div id="page1">
-        <ScrollOverPack>
-          <Row>
-            <Col xs={1} sm={2} md={4} lg={6} xl={7}/>
-            <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-              <QueueAnim
-                // type={isMobile ? 'bottom' : 'right'}
-                type={'left'}
-                className="text-wrapper page1-content-1"
-                key="text1"
-                leaveReverse
-              >
-                <hr key="hr1" className="landing-hr"/>
-                <p key="p1.1" className="landing-font-md">
-                  Консультант-психолог за допомогою штучного інтелекту на основі технології HUPRES дає вам змогу
-                  без проходження психологічних тестів отримати в режимі чату психологічну консультацію про себе та
-                  інших людей з будь-яких питань.
-                </p>
-                <p key="p.2" className="landing-font-md">
-                  Для отримання вірної інформації про характер людини технологія HUPRES використовує лише ваші
-                  знання про її зовнішній вигляд.
-                </p>
-              </QueueAnim>
-            </Col>
-          </Row>
-        </ScrollOverPack>
+      <div className="my-page">
         <div className="page1-image"/>
         <ScrollOverPack>
           <Row>
@@ -125,6 +100,6 @@ export default function Page1({isMobile}) {
     </>
   );
 }
-Page1.propTypes = {
+HowItWorks.propTypes = {
   isMobile: PropTypes.bool,
 };
