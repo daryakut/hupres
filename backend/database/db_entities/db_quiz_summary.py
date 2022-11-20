@@ -21,7 +21,23 @@ K_SYMBOL_REGEX = r" К[1-5]"  # Some names have that, this is cyrillic
 MN_POSTFIX = " (MH)"  # Some names have that too, this is cyrillic
 # KN_POSTFIX = " (КН)"  # Some names have that too, this is cyrillic
 
-BOOK_SUMMARY_PROFILES = {44, 45, 46, 48}
+BOOK_SUMMARY_PROFILES = {
+    44: {
+        1, 195, 196,
+    },
+    11: {
+        11,
+    },
+    45: {
+        56, 198, 199, 200,
+    },
+    46: {
+        201, 202, 203, 204, 205, 206, 207, 208,
+    },
+    48: {
+        75, 209, 211, 213,
+    },
+}
 TEXTUAL_GPT_SUMMARY_QUALITIES = {
     # Тип эмоциональности
     11: {
@@ -157,11 +173,16 @@ class DbQuizSummary(DbTimestampedEntity, DbBase):
         subject_name = self.quiz.subject_name
         summaries = []
         for profile in self.chart_summary:
-            if profile['id'] not in BOOK_SUMMARY_PROFILES:
+            profile_id = profile['id']
+            eligible_property_ids = BOOK_SUMMARY_PROFILES.get(profile_id)
+            if not eligible_property_ids:
                 continue
 
             profile_summaries = []
             for prop in profile.get('properties', []):
+                if not prop.get('id') in eligible_property_ids:
+                    continue
+
                 name = sanitize_name(prop.get('name', ''))
                 text = prop.get('text')
                 if not name or not text:
@@ -170,10 +191,12 @@ class DbQuizSummary(DbTimestampedEntity, DbBase):
                 # We first translate, and then we replace ZZZ with the respondent name
                 text = _(text)
                 text = text.replace(NAME_PLACEHOLDER, subject_name)
+
                 # We only want to show the text without the name
                 profile_summaries.append(f"{text}")
 
-            summaries.append(" ".join(profile_summaries))
+            if len(profile_summaries):
+                summaries.append(" ".join(profile_summaries))
 
         print('Summaries', summaries)
         return QuizSummary(
