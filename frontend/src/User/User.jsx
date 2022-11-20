@@ -171,7 +171,7 @@ const User = ({match}) => {
           </div>
           {
             displayAnswers.map((answer, index) => (
-              <div key={`answer-${index}`} className="quiz-answer" onClick={() => onAnswerClick(answer.answer_name)}>
+              <div key={`answer-${index}`} className="quiz-answer quiz-font-md" onClick={() => onAnswerClick(answer.answer_name)}>
                 {answer.answer_display_name}
               </div>
             ))

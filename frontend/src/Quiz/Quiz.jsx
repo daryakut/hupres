@@ -24,6 +24,8 @@ const Quiz = ({match}) => {
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
 
+  const selectedAnswersList = Object.keys(selectedAnswers).filter(answer => selectedAnswers[answer]);
+
   const quizToken = match?.params?.quizToken;
   const quizQuestionToken = question?.token
 
@@ -98,19 +100,24 @@ const Quiz = ({match}) => {
   }
 
   const onSingleChoiceAnswerClick = async (answerName) => {
+    setSelectedAnswers({[answerName]: true});
     await submitAnswersAndFetchNext([answerName]);
   }
 
   const onMultipleChoiceAnswerClick = async (answerName) => {
     if (answerName === HARD_TO_SAY_ANSWER_NAME) {
-      setSelectedAnswers({[HARD_TO_SAY_ANSWER_NAME]: true});
+      setSelectedAnswers({[HARD_TO_SAY_ANSWER_NAME]: !selectedAnswers[HARD_TO_SAY_ANSWER_NAME]});
     } else {
-      setSelectedAnswers({...selectedAnswers, [answerName]: !selectedAnswers[answerName]});
+      setSelectedAnswers({
+        ...selectedAnswers,
+        [answerName]: !selectedAnswers[answerName],
+        [HARD_TO_SAY_ANSWER_NAME]: false,
+      });
     }
   }
 
   const onMultipleChoiceSubmitAnswersClick = async () => {
-    await submitAnswersAndFetchNext(Object.keys(selectedAnswers));
+    await submitAnswersAndFetchNext(selectedAnswersList);
   }
 
   if (error) {
@@ -142,17 +149,17 @@ const Quiz = ({match}) => {
           <QuizContainer>
             <div className="quiz-container quiz-container-summary" style={{marginTop: 300}}>
               <div className="quiz-input-container">
-                <Text className="quiz-input-label quiz-font">Імʼя чи нікнейм респондента</Text>
+                <Text className="quiz-input-label quiz-font-md">Імʼя чи нікнейм респондента</Text>
                 <Input
-                  className="quiz-input quiz-font"
+                  className="quiz-input quiz-font-md"
                   placeholder="Імʼя респондента"
                   onChange={(e) => setRespondentName(e.target.value)}
                   value={respondentName}
                 />
-                <Text className="quiz-input-label quiz-font">Стать чи гендер респондента</Text>
+                <Text className="quiz-input-label quiz-font-md">Стать чи гендер респондента</Text>
                 <Select
                   placeholder="Стать респондента"
-                  className="quiz-input quiz-font"
+                  className="quiz-input quiz-font-md"
                   onChange={setPronounce}
                 >
                   <Select.Option value="HE_HIM">Чоловічий</Select.Option>
@@ -177,69 +184,71 @@ const Quiz = ({match}) => {
   }
 
   const displayQuestion = question?.question_display_name;
+  const selectedAnswer = selectedAnswersList.length > 0 ? selectedAnswersList[0] : null
 
   return (
     <>
       <Header/>
       <div className="fullscreen-div">
         <QuizContainer>
-          {/*<Card className="quiz-card" title="Card title" bordered={false}>*/}
-          {/*  <p>Card content</p>*/}
-          {/*  <p>Card content</p>*/}
-          {/*  <p>Card content</p>*/}
-          {/*</Card>*/}
           <div className="quiz-container" style={{marginTop}}>
             <QueueAnim
               type="left"
               delay={300}
-              // enterAnim={[
-              //   { opacity: [1, 0], translateY: [0, 50] },
-              //   { height: [200, 0], duration: [500, 0] }
-              // ]}
-              // leaveAnim={[
-              //   { opacity: [0, 1], translateY: [50, 0] },
-              //   { height: 0 }
-              // ]}
             >
-              <div key="question">
-                <h2 className="quiz-question">{displayQuestion}</h2>
+              <div key="question" className="quiz-question-container">
+                <h2 className="quiz-question quiz-font-lg">{displayQuestion}</h2>
+                <h5 className="quiz-font-md text-align-center quiz-question-clarification">
+                  { isMultipleChoice ? "Виберіть всі що підходять" : "Виберіть один варіант" }
+                </h5>
                 <hr className="quiz-hr"/>
               </div>
               {isMultipleChoice ? (
-                <>
+                <QueueAnim
+                  type="left"
+                  delay={300}
+                >
                   {
                     answers.map((answer, index) => (
                       <Checkbox
                         key={`answer-${index}`}
-                        className="quiz-answer"
+                        className="quiz-answer quiz-font-md"
                         checked={!!selectedAnswers[answer.answer_name]}
                         onChange={() => onMultipleChoiceAnswerClick(answer.answer_name)}>
                         {answer.answer_display_name}
                       </Checkbox>
                     ))
                   }
+                  <div className="box-md" />
                   <Button
-                    className="quiz-get-summary-button"
+                    key="button"
+                    className="quiz-get-summary-button quiz-font-md"
                     size='large'
-                    disabled={!respondentName || !pronounce}
+                    disabled={selectedAnswersList.length === 0}
                     onClick={onMultipleChoiceSubmitAnswersClick}
                   >
                     Наступне питання
                   </Button>
-                </>
+                </QueueAnim>
               ) : (
-                <Radio.Group onChange={onSingleChoiceAnswerClick} value={value}>
+                <Radio.Group value={selectedAnswer}>
+                  <QueueAnim
+                    type="left"
+                    delay={300}
+                  >
                   {
                     answers.map((answer, index) => (
                       <Radio
                         key={`answer-${index}`}
-                        className="quiz-answer"
+                        className="quiz-answer quiz-font-md"
                         value={answer.answer_name}
-                        onChange={() => onSingleChoiceAnswerClick(answer.answer_name)}>
+                        onChange={() => onSingleChoiceAnswerClick(answer.answer_name)}
+                      >
                         {answer.answer_display_name}
                       </Radio>
                     ))
                   }
+                  </QueueAnim>
                 </Radio.Group>
               )}
             </QueueAnim>
