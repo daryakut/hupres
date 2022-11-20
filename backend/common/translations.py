@@ -19,7 +19,15 @@ def set_locale(language):
 def get_real_gettext():
     _ = set_locale('uk')  # Set to Ukrainian
     print(_("ERROR: Localization is not working!"))  # If this translates well, the message would be different
-    return _
+
+    def gettext_with_log(message):
+        translated_message = _(message)
+        if translated_message == message:
+            # TODO: this is a hack to find missing translations, fix with a better approach
+            print(f"ERROR: Translation for '{message}' is missing")
+        return translated_message
+
+    return gettext_with_log
 
 
 _ = get_real_gettext() if env.is_not_test() else get_fake_gettext()

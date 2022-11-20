@@ -14,6 +14,8 @@ from database.connection import DbBase, Session
 from database.db_entities.db_quiz import DbQuiz
 from database.db_entities.db_timestamped_entity import DbTimestampedEntity
 from models.quiz_models import QuizSummary
+from quizzes.charts.charts import NAME_PLACEHOLDER
+from common.translations import _
 
 K_SYMBOL_REGEX = r" К[1-5]"  # Some names have that, this is cyrillic
 MN_POSTFIX = " (MH)"  # Some names have that too, this is cyrillic
@@ -91,7 +93,7 @@ def sanitize_name(name: str) -> str:
             .replace("*", ""))
 
 
-def build_qualities_gpt_prompt(chart_summary: dict) -> str:
+def build_qualities_gpt_prompt(chart_summary: dict, subject_name: str) -> str:
     # print('GPT summaries', json.dumps(chart_summary))
 
     qualities = []
@@ -112,6 +114,7 @@ def build_qualities_gpt_prompt(chart_summary: dict) -> str:
             if profile_id in TEXTUAL_GPT_SUMMARY_QUALITIES.keys():
                 # Text should already contain textual representation of the quality
                 text = prop.get('text')
+                text = text.replace(NAME_PLACEHOLDER, subject_name)
                 if not text:
                     print("ERROR: GPT property text is empty", prop.get('id'), sanitized_name)
                     continue
@@ -119,6 +122,7 @@ def build_qualities_gpt_prompt(chart_summary: dict) -> str:
             elif profile_id in TEXTUAL_GPT_SUMMARY_QUALITIES_WITH_K.keys():
                 # With K1-K5 profiles, name is repeated and so it's unnecessary to include it
                 quality_text = prop.get('text')
+                quality_text = quality_text.replace(NAME_PLACEHOLDER, subject_name)
             else:
                 # The quality is rated on a scale of 1 to 5, 1 being lowest and 5 being highest
                 prop_value = prop.get('value')
@@ -146,11 +150,11 @@ class DbQuizSummary(DbTimestampedEntity, DbBase):
     quiz = relationship('DbQuiz', back_populates='quiz_summaries', lazy='select')
 
     def to_model_gpt_profile(self) -> str:
-        return build_qualities_gpt_prompt(self.chart_summary)
+        return build_qualities_gpt_prompt(self.chart_summary, subject_name=self.quiz.subject_name)
 
-    def to_model(self) -> QuizSummary:
+    def to_model_book_profile(self) -> QuizSummary:
         # print('Book summaries', json.dumps(self.chart_summary))
-
+        subject_name = self.quiz.subject_name
         summaries = []
         for profile in self.chart_summary:
             if profile['id'] not in BOOK_SUMMARY_PROFILES:
@@ -163,6 +167,9 @@ class DbQuizSummary(DbTimestampedEntity, DbBase):
                 if not name or not text:
                     continue
 
+                # We first translate, and then we replace ZZZ with the respondent name
+                text = _(text)
+                text = text.replace(NAME_PLACEHOLDER, subject_name)
                 # We only want to show the text without the name
                 profile_summaries.append(f"{text}")
 

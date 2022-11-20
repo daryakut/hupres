@@ -10,6 +10,7 @@ from models.pronounce import Pronounce
 from models.quiz_models import Quiz, QuizSummary
 from models.token import Token
 from quizzes.charts import get_chart_info, Gender, export_chart_info
+from quizzes.charts.charts import NAME_PLACEHOLDER
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 
 PRODUCT_ID = 11
@@ -21,7 +22,7 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> QuizSummary:
         db_quiz = QuizQueries.find_by_token(session, quiz_token)
         quiz_summaries = db_quiz.quiz_summaries
         if len(quiz_summaries):
-            return quiz_summaries[-1].to_model()
+            return quiz_summaries[-1].to_model_book_profile()
 
         db_last_answer = QuizAnswerQueries.find_last_for_quiz(session, quiz_token)
         check_not_none(db_last_answer, "Cannot find last answer for quiz")
@@ -47,7 +48,7 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> QuizSummary:
     chart_info = get_chart_info(
         product_id=PRODUCT_ID,
         soma_type=last_sign_scores,
-        respondent_name=respondent_name,
+        respondent_name=NAME_PLACEHOLDER,  # We want to have ZZZ in the original texts to be able to translate them
         gender=gender,
     )
     chart_summary = export_chart_info(chart_info)
@@ -60,4 +61,4 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> QuizSummary:
             db_quiz=db_quiz,
             chart_summary=chart_summary,
         )
-        return db_quiz_summary.to_model()
+        return db_quiz_summary.to_model_book_profile()

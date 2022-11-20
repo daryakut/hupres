@@ -22,6 +22,7 @@ class EServerError(Exception):
 
 DEFAULT_GENDER = Gender.NONE
 
+# ZZZ is important because that's what is used in localization files
 NAME_PLACEHOLDER = 'ZZZ'
 
 URL_DATA = 'http://diag.ho.ua/calc'
