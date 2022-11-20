@@ -525,3 +525,170 @@ MULTIPLE_CHOICE_QUESTIONS = {
     QuestionName.HAIR_FEATURES,
     QuestionName.FEATURES_OF_SKIN,
 }
+
+HEIGHT_CLARIFICATION = "Ця ознака не вимагає спеціального вимірювання. Достатньо позначити як виглядає людина виглядає лише на погляд і у співставленні з іншими - високою чи низькою."
+
+ANSWER_CLARIFICATIONS = {
+    QuestionName.HEIGHT: {
+        AnswerName.HEIGHT_SHORT.value: HEIGHT_CLARIFICATION,
+        AnswerName.HEIGHT_AVERAGE.value: HEIGHT_CLARIFICATION,
+        AnswerName.HEIGHT_TALL.value: HEIGHT_CLARIFICATION,
+    },
+    QuestionName.BODY_SCHEME: {
+        AnswerName.SHAPE_SMALL_RECTANGLE.value: "Плечі та стегна рівні між собою та відносно вузькі при малому зрості.",
+        AnswerName.SHAPE_NARROW_RECTANGLE.value: "Плечі та стегна вузькі та рівні між собою при високому зрості.",
+        AnswerName.SHAPE_LARGE_WIDE_RECTANGLE.value: "І стегна, і плечі широкі. Зазвичай форма тіла наближається до квадрата або широкого прямокутника.",
+        AnswerName.SHAPE_BROAD_SHOULDERS.value: "Плечі хоча б трохи ширше за стегна. Форма тіла виглядає атлетично, як перекинута трапеція.",
+        AnswerName.SHAPE_BROAD_HIPS.value: "Стегна хоча б трохи ширше за плечі незалежно від зросту. Ширина стегон визначається на рівні кісточок стегнових кісток.",
+    },
+    QuestionName.BODY_FEATURES: {
+        AnswerName.BODY_DRY.value: "Тіло виглядає сухим, схудлим, з невеликим об’ємом м’яких тканин. Особливо гарно це помітно на руках у вигляді міжкісткових проміжків та сухих пальців. Проглядаються сухожилля та інколи тонкі м’язи.",
+        AnswerName.BODY_VOLUMINOUS.value: "Тіло із значною кількістю м’яких тканин – м’язів, жирової клітковини. Схильність до повноти. Кістки та суглоби майже не помітні.",
+    },
+    QuestionName.WAIST: {
+        AnswerName.WAIST_DEFINED.value: "Чітко виражена талія, незалежно від кількості жирової клітковини.",
+        AnswerName.WAIST_SMOOTHED.value: "Талія майже відсутня, незалежно від кількості жирової клітковини.",
+    },
+    QuestionName.FAT_TISSUE: {
+        AnswerName.FAT_TISSUE_WEAK.value: "",
+        AnswerName.FAT_TISSUE_STRONG.value: "",
+    },
+    QuestionName.EYE_COLOR: {
+        AnswerName.EYES_BLUE.value: "",
+        AnswerName.EYES_GRAY.value: "",
+        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: "",
+        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: "",
+        AnswerName.EYES_BLACK.value: "",
+        AnswerName.EYES_BROWN.value: "",
+        AnswerName.EYES_GREEN.value: "",
+        AnswerName.EYES_YELLOW_GREEN.value: "",
+        AnswerName.EYES_HETEROCHROMATIC.value: "",
+    },
+    QuestionName.THICKNESS_OF_HAIR: {
+        AnswerName.HAIR_THIN.value: "Таке волосся м’яке, легке, погано тримає зачіску. Густота не має значення.",
+        AnswerName.HAIR_MEDIUM_THICKNESS.value: "Волосся не схоже ні на надто легке, ні на надто пружне.",
+        AnswerName.HAIR_THICK.value: "Жорстке, пружне волосся.",
+    },
+    QuestionName.HAIR_DENSITY: {
+        AnswerName.HAIR_SPARSE.value: "",
+        AnswerName.HAIR_DENSE.value: "",
+    },
+    QuestionName.STRUCTURE_OF_HAIR: {
+        AnswerName.HAIR_STRAIGHT.value: "",
+        AnswerName.HAIR_WAVY.value: "",
+        AnswerName.HAIR_CURLY.value: "",
+    },
+    QuestionName.HAIR_COLOR: {
+        AnswerName.HAIR_RED.value: "",
+        AnswerName.HAIR_CHESTNUT.value: "",
+        AnswerName.HAIR_BLACK.value: "",
+        AnswerName.HAIR_DARK_BLONDE.value: "",
+        AnswerName.HAIR_BLONDE.value: "",
+        AnswerName.HAIR_LIGHT.value: "",
+    },
+    QuestionName.HAIR_FEATURES: {
+        AnswerName.HAIR_COARSE.value: "",
+        AnswerName.HAIR_EARLY_GRAYING.value: "",
+        AnswerName.HAIR_EARLY_BALDING.value: "",
+    },
+    QuestionName.FACE_SHAPE: {
+        AnswerName.FACE_ROUND.value: "За рахунок значної кількості м’яких тканин обличчя виглядає майже круглим, з помітними пухкими щоками.",
+        AnswerName.FACE_LONG_RECTANGLE.value: "При погляді анфас добре помітні широко розсунуті кути нижньої щелепи. Разом з верхніми вилицями вони створюють чіткі вершини витягнутого зверху донизу прямокутника.",
+        AnswerName.FACE_LARGE_TRIANGLE.value: "Великий трикутник формується між вираженими верхніми вилицями та чітко видним міцним підборіддям, Підборіддя часто з ямочкою, але це не обов’язково. Обличчя досить велике. Дивитися треба прямо анфас.",
+        AnswerName.FACE_SMALL_TRIANGLE.value: "Малий трикутник формується між добре помітними верхніми вилицями та вузьким підборіддям, як нижньою вершиною перевернутого трикутника. Дивитися треба прямо анфас.",
+        AnswerName.FACE_BROAD_RECTANGLE_SQUARE.value: "При погляді анфас добре помітні широко розсунуті кути нижньої щелепи. Разом з верхніми вилицями вони створюють чіткі вершини широкого прямокутника, близького до квадрату.",
+    },
+    QuestionName.SIZE_OF_NOSE: {
+        AnswerName.NOSE_SMALL.value: "Ніс виглядає малим (порівняно з іншими людьми або з розміром обличчя в цілому) незалежно від його форми та особливостей.",
+        AnswerName.NOSE_LARGE.value: "Ніс виглядає великим (порівняно з іншими людьми або з розміром обличчя в цілому) незалежно від його форми та особливостей.",
+    },
+    QuestionName.NOSE_SHAPE: {
+        AnswerName.NOSE_HUMP.value: "Ніс в цілому прямий, але в районі перенісся чітко помітна горбина. Якщо це можливо, уточніть, чи не є це наслідком травми носа в минулому.",
+        AnswerName.NOSE_HOOKED.value: "Ніс має форму гачка з трохи нависаючим над верхньою губою кінчиком. Це добре помітно з боків.",
+        AnswerName.NOSE_STRAIGHT.value: "Перенісся пряме і гладке.",
+    },
+    QuestionName.NOSTRILS: {
+        AnswerName.NOSTRILS_WIDE.value: "Крила носа, утворюючі ніздрі, виглядають широкими та об’ємними.",
+        AnswerName.NOSTRILS_NARROW.value: "Крила носа невеликі за розміром, тому ніздрі виглядають вузькими.",
+    },
+    QuestionName.NOSE_TIP: {
+        AnswerName.NOSE_SHARP_TIP.value: "Самий кінчик носу виглядає загостреним, тонким.",
+        AnswerName.NOSE_ROUND_TIP.value: "Кінчик носу виділяється над переніссям та крилами носу і має круглу об’ємну форму.",
+        AnswerName.NOSE_TURNED_UP_TIP.value: "Кінчик носу наче задертий вгору. Помітно в анфас і в профіль.",
+        AnswerName.NOSE_DUCKLIKE.value: "Кінчик носу наче приплесканий. Це добре видно з боків, а не анфас.",
+    },
+    QuestionName.BACK_OF_NOSE: {
+        AnswerName.NOSE_LONG_BACK.value: "Спинка носу подовжена в порівнянні з невеликим кінчиком та крилами носа. В цілому ніс нагадує носи на стародавніх іконах.",
+        AnswerName.NOSE_SHORT_BACK.value: "Спинка носу укорочена порівняно з кінчиком та крилами носа.",
+    },
+    QuestionName.WIDTH_OF_BACK_OF_NOSE: {
+        AnswerName.NOSE_WIDE_BACK.value: "Перенісся має розлогу спинку по всій довжині носа.",
+        AnswerName.NOSE_THIN_BACK.value: "Перенісся гостре, наче ніс корабля.",
+    },
+    QuestionName.LENGTH_OF_NECK: {
+        AnswerName.NECK_LONG.value: "Шия витягнута і добре помітна. Часто тонка.",
+        AnswerName.NECK_AVERAGE_LENGTH.value: "Шия не схожа ні на надто витягнуту, ні на надто коротку.",
+        AnswerName.NECK_SHORT.value: "Шия коротка, наче голова лежить прямо на плечах.",
+    },
+    QuestionName.THICKNESS_OF_NECK: {
+        AnswerName.NECK_THICK.value: "Шия широка, на рівні верхніх вилиць або, навіть, ширше. Не обов’язково коротка.",
+        AnswerName.NECK_AVERAGE_THICKNESS.value: "Шия не схожа ні на надто широку, ні на надто тоншу.",
+        AnswerName.NECK_THIN.value: "Шия помітно тонше верхніх вилиць, часто довга або такою виглядає.",
+    },
+    QuestionName.SIZE_OF_PALMS: {
+        AnswerName.HANDS_LARGE.value: "Долоні виглядають великими в порівнянні з іншими людьми, або відносно своєї руки в цілому.",
+        AnswerName.HANDS_SMALL.value: "Долоні відносно невеликого розміру в порівнянні з іншими людьми.",
+    },
+    QuestionName.PALM_SHAPE: {
+        AnswerName.HAND_SHAPE_SQUARE.value: "Ширина та довжина долоні майже однакові. Розмір значення не має.",
+        AnswerName.HAND_SHAPE_RECTANGLE.value: "Долоня має чітко прямокутну форму, а розмір середній або великий.",
+        AnswerName.HAND_SHAPE_SMALL_RECTANGLE.value: "Долоня від зап’ястя до пальців довша за її ж ширину. Але долоня в цілому мала.",
+        AnswerName.HAND_SHAPE_NARROW_LONG_RECTANGLE.value: "Довжина долоні (без пальців) суттєво більша за її ширину. Тому виглядає витягнутою вздовж руки.",
+        AnswerName.HAND_SHAPE_PADDLE.value: "Долоня разом з пальцями виглядає непропорційно великою порівняно з тонкими кістками передпліччя та зап’ястя.",
+    },
+    QuestionName.FEATURES_OF_BRUSHES: {
+        AnswerName.HANDS_SOFT_LOOSE.value: "Ця ознака пов’язана з об’ємними та м’якими м’язами. Найкраще виявляється на дотик. Але в деяких випадках це видно наочно.",
+        AnswerName.HANDS_FULL_FIRM.value: "У людей з об’ємним тілом і пружними «гумовими» м’язами часто буває і ця ознака. Їх долоні також «налиті» і міцні, що добре відчувається на дотик.",
+        AnswerName.HANDS_DRY.value: "Наочно видно сухість кисті у вигляді глибоких міжкісткових проміжків, тонких пальців. ",
+    },
+    QuestionName.FINGER_LENGTH: {
+        AnswerName.FINGERS_LONG.value: "Пальці виглядають подовженими. Часто такі називають \"музичними пальцями\".",
+        AnswerName.FINGERS_AVERAGE_LENGTH.value: "Пальці не схожі ні на надто подовжени, ні на надто короткі.",
+        AnswerName.FINGERS_SHORT.value: "Пальці виглядають короткими у порівнянні з долонею та рукою в цілому.",
+    },
+    QuestionName.FINGER_SHAPE: {
+        AnswerName.FINGERS_STRAIGHT.value: "Палець має майже однакову товщину по всій довжині і без будь-яких викривлень.",
+        AnswerName.FINGERS_CONICAL.value: "Кінцеві фаланги пальців виглядають більш тонкими, ніж середні та перші. Палець наче виточується до кінчика.",
+        AnswerName.FINGERS_CROOKED.value: "Деякі пальці мають викривлену форму. Частіше за все в сторону середнього пальця.",
+    },
+    QuestionName.FEATURES_OF_FINGERS: {
+        AnswerName.FINGERS_KNOTTY.value: "За рахунок збільшених суглобів пальці виглядають наче бамбукова паличка. Якщо це можливо, уточніть, чи не є це наслідком артриту, який може давати набряки та викривлення суглобів. В такому разі ця ознака не достовірна.",
+        AnswerName.FINGERS_DRY.value: "М’яких тканин на пальці мало. Тому він виглядає сухо, під шкірою гарно видно кістки та сухожилля.",
+        AnswerName.FINGERS_FLESHY.value: "Пальці об’ємні за рахунок значної кількості м’яких тканин. В області суглобів в інколи можуть виникати невеличкі заглиблення.",
+    },
+    QuestionName.NAIL_SHAPE: {
+        AnswerName.SHAPE_LONG_RECTANGLE.value: "Зверху виглядає витягнутим і прямокутним до самого кінчика пальця",
+        AnswerName.SHAPE_SHORT_TRAPEZOID.value: "Ніготь розширюється в сторону кінчика пальця і має форму короткої трапеції, яка не доходить до кінчика пальця. Виглядає невеликим і коротким. Часто нігтьовий валик добре виражений і нависає над нігтем.",
+        AnswerName.SHAPE_LONG_TRAPEZOID.value: "Ніготь розширюється в сторону кінчика пальця. Має форму довгої трапеції. Виглядає крупним.",
+        AnswerName.NAILS_COIN_LIKE.value: "Ніготь має майже круглу форму, як монетка, і лежить зазвичай на самому кінчику пальця, прикриваючи його.",
+        AnswerName.NAILS_OVAL.value: "Зверху ніготь має овальну форма, доходить майже до самого кінчика пальця.",
+    },
+    QuestionName.CONVEXITY_OF_NAILS: {
+        AnswerName.NAILS_CROSS_CURVED_CONVEX.value: "Опуклість одночасно в двох напрямках: вздовж пальця від кореня до кінчика та впоперек пальця. Тому загальна форма нігтя нагадує шкарлупку мигдалю. Часто поєднується з овальною формою нігтя.",
+        AnswerName.NAILS_CROSS_CURVED.value: "Ніготь вздовж пальця прямий і опуклий тільки впоперек пальця. Це найчастіший варіант. ",
+        AnswerName.NAILS_FLAT.value: "Ніготь плоский, майже без опуклості. Часто поєднується з монетоподібною формою.",
+    },
+    QuestionName.MUSCLE_VOLUME: {
+        AnswerName.MUSCLES_THIN.value: "М’язи за об’ємом невеликі навіть після довгих тренувань. На дотик міцні і перекочуються під пальцем.",
+        AnswerName.MUSCLES_VOLUMINOUS.value: "М’язи відносно великі за об’ємом навіть без тренувань. Можуть бути і пружними, і м’якими на дотик.",
+    },
+    QuestionName.MUSCLE_DENSITY: {
+        AnswerName.MUSCLES_SOFT_LOOSE.value: "М’язи пухкі на дотик, а також виглядають такими при рухах (наче холодець). Проте їх сила залежить тільки від тренованості.",
+        AnswerName.MUSCLES_FIRM_RUBBERY.value: "М’язи дуже пружні, міцні на дотик, наче з литої гуми. Часто об’ємні, але вираженого рельєфу  не мають. Знаходяться в пружному стані навіть коли людина розслаблена.",
+    },
+    QuestionName.FEATURES_OF_SKIN: {
+        AnswerName.SKIN_LARGE_PORES.value: "Пори на обличчі глибокі та широкі, краще помітні на носі та щоках довкола носа.",
+        AnswerName.SKIN_EASILY_REDDENS.value: "Навіть при невеликому збудженні обличчя та зона декольте червоніє швидше та сильніше ніж у інших.",
+        AnswerName.SKIN_FRECKLES.value: "Веснянки можуть бути сезонними, або постійними, або проходити з віком, на обличчі, або по тілу. Важливо позначити будь-який прояв веснянок.",
+    },
+}
