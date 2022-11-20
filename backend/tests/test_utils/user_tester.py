@@ -78,7 +78,7 @@ class QuizAnswerTester:
     quiz_question_token: str
     quiz_answer_token: str
     quiz_token: str
-    answer_name: str
+    answer_names: List[str]
     is_all_zeros: bool
     current_sign_scores: List[int]
     original_sign_scores: List[int]
@@ -97,7 +97,7 @@ class QuizAnswerTester:
             assert db_answer.token.value == self.quiz_answer_token
 
             self.quiz_token = db_answer.quiz.token.value
-            self.answer_name = db_answer.answer_name
+            self.answer_names = db_answer.answer_names
             self.is_all_zeros = db_answer.is_all_zeros
             self.current_sign_scores = db_answer.current_sign_scores
             self.original_sign_scores = db_answer.original_sign_scores
@@ -134,7 +134,11 @@ class UserTester:
         )
 
     async def submit_quiz_answer(self, quiz_question_token: str, answer_name: str) -> QuizAnswerTester:
-        response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_name=answer_name))
+        response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_names=[answer_name]))
+        return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer.token)
+
+    async def submit_quiz_answers(self, quiz_question_token: str, answer_names: List[str]) -> QuizAnswerTester:
+        response = await submit_quiz_answer(quiz_question_token, SubmitQuizAnswerRequest(answer_names=answer_names))
         return QuizAnswerTester(quiz_question_token=quiz_question_token, quiz_answer_token=response.quiz_answer.token)
 
     async def generate_quiz_summary(self, quiz_token: str) -> QuizSummary:

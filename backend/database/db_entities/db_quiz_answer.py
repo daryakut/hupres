@@ -25,7 +25,6 @@ class DbQuizAnswer(DbTimestampedEntity, DbBase):
     token = Column(TokenDbType, unique=True)
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     quiz_question_id = Column(Integer, ForeignKey('quiz_questions.id'))
-    answer_name = Column(String(50))
     answer_names = Column(JSON)
     is_all_zeros = Column(Boolean)
     current_sign_scores = Column(JSON)

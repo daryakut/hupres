@@ -50,7 +50,7 @@ async def test_can_respond_to_first_question():
 
     answer_tester = await user_tester.submit_quiz_answer(question_tester.quiz_question.token, 'Рост низкий')
     assert answer_tester.quiz_token == quiz.token
-    assert answer_tester.answer_name == 'Рост низкий'
+    assert answer_tester.answer_names == ['Рост низкий']
     assert answer_tester.is_all_zeros is False
     assert answer_tester.current_sign_scores == [15, 6, -5, -3, -3]
     assert answer_tester.original_sign_scores == []
@@ -115,7 +115,7 @@ async def test_can_get_first_four_tablet_questions():
     }
 
     answer1 = await user_tester.submit_quiz_answer(question1.quiz_question.token, 'Рост низкий')
-    assert answer1.answer_name == 'Рост низкий'
+    assert answer1.answer_names == ['Рост низкий']
     assert answer1.is_all_zeros is False
     assert answer1.current_sign_scores == [15, 6, -5, -3, -3]
     assert answer1.original_sign_scores == []
@@ -142,7 +142,7 @@ async def test_can_get_first_four_tablet_questions():
     assert question2_refetched.quiz_question.question_name == QuestionName.BODY_SCHEME
     assert question2_refetched.quiz_question.token == question2.quiz_question.token
     answer2 = await user_tester.submit_quiz_answer(question2.quiz_question.token, 'Малый прямоугольник')
-    assert answer2.answer_name == 'Малый прямоугольник'
+    assert answer2.answer_names == ['Малый прямоугольник']
     assert answer2.is_all_zeros is False
     assert answer2.current_sign_scores == [30, 6, -5, -8, -8]  # added [15, 0, 0, -5, -5]
     assert answer2.original_sign_scores == []
@@ -173,7 +173,7 @@ async def test_can_get_first_four_tablet_questions():
     assert question3_refetched.quiz_question.question_name == QuestionName.EYE_COLOR
     assert question3_refetched.quiz_question.token == question3.quiz_question.token
     answer3 = await user_tester.submit_quiz_answer(question3.quiz_question.token, 'Затрудняюсь ответить')
-    assert answer3.answer_name == 'Затрудняюсь ответить'
+    assert answer3.answer_names == ['Затрудняюсь ответить']
     assert answer3.is_all_zeros is True
     assert answer3.current_sign_scores == [30, 6, -5, -8, -8]  # same as before as all were 0
     assert answer3.original_sign_scores == []
@@ -201,7 +201,7 @@ async def test_can_get_first_four_tablet_questions():
     assert question4_refetched.quiz_question.question_name == QuestionName.HAIR_COLOR
     assert question4_refetched.quiz_question.token == question4.quiz_question.token
     answer4 = await user_tester.submit_quiz_answer(question4.quiz_question.token, 'Русые волосы')
-    assert answer4.answer_name == 'Русые волосы'
+    assert answer4.answer_names == ['Русые волосы']
     assert answer4.is_all_zeros is False
     assert answer4.current_sign_scores == [30, 6, -5, 2, -3]  # added [0, 0, 0, 10, 5]
     assert answer4.original_sign_scores == []
