@@ -43,8 +43,10 @@ msgstr "Структура волосся"
 msgid "Особенности кожи"
 msgstr "Особливості шкіри"
 
+# Adding a space after translation in cases when it matches the original string is a hack to avoid
+# log line about missing translations
 msgid "Спинка носа"
-msgstr "Спинка носа"
+msgstr "Спинка носа "
 
 msgid "Размер носа"
 msgstr "Розмір носа"
@@ -53,7 +55,7 @@ msgid "Форма лица"
 msgstr "Форма обличчя"
 
 msgid "Форма носа"
-msgstr "Форма носа"
+msgstr "Форма носа "
 
 msgid "Выпуклость ногтей"
 msgstr "Опуклість нігтів"
@@ -83,7 +85,7 @@ msgid "Форма ладони"
 msgstr "Форма долоні"
 
 msgid "Ширина спинки носа"
-msgstr "Ширина спинки носа"
+msgstr "Ширина спинки носа "
 
 msgid "Объем мышц"
 msgstr "Об'ем м'язів"
@@ -110,7 +112,7 @@ msgid "Длина шеи"
 msgstr "Довжина шиї"
 
 msgid "Толщина шеи"
-msgstr "ТИовщина шиї"
+msgstr "Товщина шиї"
 
 msgid "Особенности волос"
 msgstr "Особливості волосся"
@@ -355,7 +357,7 @@ msgid "Узкий вытян прямоугольник"
 msgstr "Вузький витягнутий прямокутник"
 
 msgid "\"Весло\""
-msgstr "\"Весло\""
+msgstr "\"Весло\" "
 
 msgid "Мягкие рыхлые ладони"
 msgstr "М'які пухкі долоні"
