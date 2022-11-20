@@ -74,10 +74,10 @@ export async function getNextQuizQuestion(quizToken) {
   }
 }
 
-export async function submitQuizAnswer(quizQuestionToken, answerName) {
+export async function submitQuizAnswer(quizQuestionToken, answerNames) {
   try {
     const response = await axiosInstance.post(`/quiz-questions/${quizQuestionToken}/submit-answer`, {
-      answer_name: answerName,
+      answer_names: answerNames,
     });
     return response.data;
   } catch (error) {
