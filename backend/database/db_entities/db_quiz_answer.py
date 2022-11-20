@@ -26,6 +26,7 @@ class DbQuizAnswer(DbTimestampedEntity, DbBase):
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     quiz_question_id = Column(Integer, ForeignKey('quiz_questions.id'))
     answer_name = Column(String(50))
+    answer_names = Column(JSON)
     is_all_zeros = Column(Boolean)
     current_sign_scores = Column(JSON)
     original_sign_scores = Column(JSON)
@@ -44,7 +45,7 @@ class DbQuizAnswer(DbTimestampedEntity, DbBase):
             session: Session,
             db_quiz: DbQuiz,
             db_quiz_question: DbQuizQuestion,
-            answer_name: str,
+            answer_names: List[str],
             is_all_zeros: bool,
             current_sign_scores: List[int],
             signs_for_next_questions: List[Sign],
@@ -57,7 +58,7 @@ class DbQuizAnswer(DbTimestampedEntity, DbBase):
             quiz_question_id=db_quiz_question.id,
             quiz_question=db_quiz_question,
 
-            answer_name=answer_name,
+            answer_names=answer_names,
             is_all_zeros=is_all_zeros,
             current_sign_scores=current_sign_scores,
             original_sign_scores=[],

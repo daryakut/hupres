@@ -19,7 +19,7 @@ from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz, QuizAnswer
 from models.sign import Sign
 from models.token import Token
 from quizzes.quiz_steps import QuizStep, QuizSubStep
-from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName
+from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName, MULTIPLE_CHOICE_QUESTIONS
 from users.sessions import session_data_provider
 
 
@@ -466,6 +466,7 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
 class GetNextQuizQuestionResponse(BaseModel):
     quiz_question: Optional[QuizQuestion]
     available_answers: List[AvailableAnswer]
+    is_multiple_choice: bool
 
 
 def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionResponse:
@@ -481,6 +482,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             return GetNextQuizQuestionResponse(
                 quiz_question=None,
                 available_answers=[],
+                is_multiple_choice=False,
             )
 
         if question_to_ask.quiz_question_token is not None:
@@ -505,6 +507,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
         return GetNextQuizQuestionResponse(
             quiz_question=db_quiz_question.to_model(),
             available_answers=available_answers,
+            is_multiple_choice=question_to_ask.question_name in MULTIPLE_CHOICE_QUESTIONS
         )
 
 
@@ -512,7 +515,7 @@ class SubmitAnswerResponse(BaseModel):
     quiz_answer: QuizAnswer
 
 
-def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str) -> SubmitAnswerResponse:
+def api_submit_answers(quiz_question_token: Token[QuizQuestion], answer_names: List[str]) -> SubmitAnswerResponse:
     with transaction() as session:
         db_quiz_question = QuizQuestionQueries.find_by_token(session, quiz_question_token)
         db_quiz: DbQuiz = db_quiz_question.quiz
@@ -532,8 +535,11 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
             f"Could not find answers for question {db_quiz_question.question_name}",
         )
 
-        answer_scores = answer_option_scores.get(answer_name)
-        check(lambda: answer_scores is not None, f"Invalid answer name {answer_scores}")
+        answer_scores = [0, 0, 0, 0, 0]
+        for answer_name in answer_names:
+            current_answer_scores = answer_option_scores.get(answer_name)
+            check(lambda: current_answer_scores is not None, f"Invalid answer name {answer_scores}")
+            answer_scores = [sum(x) for x in zip(answer_scores, current_answer_scores)]
 
         db_last_answer = QuizAnswerQueries.find_last_for_quiz(session, db_quiz.token)
         last_sign_scores = db_last_answer.current_sign_scores if db_last_answer else [0, 0, 0, 0, 0]
@@ -546,7 +552,7 @@ def api_submit_answer(quiz_question_token: Token[QuizQuestion], answer_name: str
             session=session,
             db_quiz=db_quiz,
             db_quiz_question=db_quiz_question,
-            answer_name=answer_name,
+            answer_names=answer_names,
             is_all_zeros=is_all_zeros,
             current_sign_scores=current_sign_scores,
             signs_for_next_questions=db_quiz_question.followup_question_signs,

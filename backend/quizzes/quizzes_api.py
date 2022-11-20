@@ -13,7 +13,7 @@ from models.pronounce import Pronounce
 from models.quiz_models import Quiz, QuizFreeFormQuestion
 from models.token import Token
 from quizzes.free_form.free_form_question_service import api_ask_free_form_question, api_get_free_form_questions
-from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answer, \
+from quizzes.quiz_algorithm import api_get_next_question, GetNextQuizQuestionResponse, api_submit_answers, \
     SubmitAnswerResponse
 from quizzes.quiz_summary import api_generate_quiz_summary, QuizSummary
 from users.sessions import session_data_provider
@@ -118,7 +118,7 @@ async def get_next_quiz_question(quiz_token: str) -> GetNextQuizQuestionResponse
 
 
 class SubmitQuizAnswerRequest(BaseModel):
-    answer_name: str
+    answer_names: List[str]
 
 
 @router.post("/api/quiz-questions/{quiz_question_token}/submit-answer")
@@ -127,7 +127,7 @@ async def submit_quiz_answer(
         request: SubmitQuizAnswerRequest,
 ) -> SubmitAnswerResponse:
     # TODO: check access rights
-    return api_submit_answer(Token.of(quiz_question_token), request.answer_name)
+    return api_submit_answers(Token.of(quiz_question_token), request.answer_names)
 
 
 @router.post("/api/quizzes/{quiz_token}/generate-summary")

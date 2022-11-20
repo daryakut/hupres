@@ -516,3 +516,12 @@ ANSWER_SCORES = {
         AnswerName.HARD_TO_SAY.value: [0, 0, 0, 0, 0],
     },
 }
+
+MULTIPLE_CHOICE_QUESTIONS = {
+    QuestionName.FINGER_SHAPE,
+    QuestionName.FEATURES_OF_FINGERS,
+    QuestionName.NAIL_SHAPE,
+    QuestionName.CONVEXITY_OF_NAILS,
+    QuestionName.HAIR_FEATURES,
+    QuestionName.FEATURES_OF_SKIN,
+}
