@@ -184,6 +184,17 @@ QUESTION_NAMES_FOR_SIGNS = {
         QuestionName.WIDTH_OF_BACK_OF_NOSE,
         QuestionName.MUSCLE_VOLUME,
         QuestionName.FAT_TISSUE,
+
+        # Rest of the questions just in case
+        QuestionName.THICKNESS_OF_HAIR,
+        QuestionName.HAIR_DENSITY,
+        QuestionName.FINGER_LENGTH,
+        QuestionName.FEATURES_OF_BRUSHES,
+        QuestionName.MUSCLE_DENSITY,
+        QuestionName.LENGTH_OF_NECK,
+        QuestionName.THICKNESS_OF_NECK,
+        QuestionName.HAIR_FEATURES,
+        QuestionName.FEATURES_OF_FINGERS,
     ],
     Sign.EARTH.value: [
         QuestionName.BODY_FEATURES,
@@ -207,6 +218,14 @@ QUESTION_NAMES_FOR_SIGNS = {
         QuestionName.FEATURES_OF_BRUSHES,
         QuestionName.FEATURES_OF_FINGERS,
         QuestionName.SIZE_OF_PALMS,
+
+        # Rest of the questions just in case
+        QuestionName.SIZE_OF_NOSE,
+        QuestionName.NOSE_SHAPE,
+        QuestionName.CONVEXITY_OF_NAILS,
+        QuestionName.LENGTH_OF_NECK,
+        QuestionName.THICKNESS_OF_NECK,
+        QuestionName.HAIR_FEATURES,
     ],
     Sign.METAL.value: [
         QuestionName.BODY_FEATURES,
@@ -232,6 +251,13 @@ QUESTION_NAMES_FOR_SIGNS = {
         QuestionName.FEATURES_OF_FINGERS,
         QuestionName.CONVEXITY_OF_NAILS,
         QuestionName.MUSCLE_VOLUME,
+
+        # Rest of the questions just in case
+        QuestionName.FEATURES_OF_SKIN,
+        QuestionName.WAIST,
+        QuestionName.NOSE_TIP,
+        QuestionName.MUSCLE_DENSITY,
+        QuestionName.HAIR_FEATURES,
     ],
     Sign.WATER.value: [
         QuestionName.BODY_FEATURES,
@@ -254,6 +280,15 @@ QUESTION_NAMES_FOR_SIGNS = {
         QuestionName.FINGER_LENGTH,
         QuestionName.WAIST,
         QuestionName.FEATURES_OF_BRUSHES,
+
+        # Rest of the questions just in case
+        QuestionName.STRUCTURE_OF_HAIR,
+        QuestionName.FEATURES_OF_SKIN,
+        QuestionName.BACK_OF_NOSE,
+        QuestionName.NOSE_SHAPE,
+        QuestionName.CONVEXITY_OF_NAILS,
+        QuestionName.NAIL_SHAPE,
+        QuestionName.FEATURES_OF_FINGERS,
     ],
     Sign.WOOD.value: [
         QuestionName.NOSE_SHAPE,
@@ -271,6 +306,19 @@ QUESTION_NAMES_FOR_SIGNS = {
         QuestionName.BACK_OF_NOSE,
         QuestionName.FINGER_LENGTH,
         QuestionName.MUSCLE_DENSITY,
+
+        # Rest of the questions just in case
+        QuestionName.FEATURES_OF_SKIN,
+        QuestionName.CONVEXITY_OF_NAILS,
+        QuestionName.WAIST,
+        QuestionName.NOSE_TIP,
+        QuestionName.NOSTRILS,
+        QuestionName.FAT_TISSUE,
+        QuestionName.THICKNESS_OF_HAIR,
+        QuestionName.FEATURES_OF_BRUSHES,
+        QuestionName.LENGTH_OF_NECK,
+        QuestionName.THICKNESS_OF_NECK,
+        QuestionName.HAIR_FEATURES,
     ],
 }
 
