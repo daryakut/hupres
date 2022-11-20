@@ -96,6 +96,7 @@ const Quiz = ({match}) => {
 
   const submitAnswersAndFetchNext = async (answerNames) => {
     await submitQuizAnswer(quizQuestionToken, answerNames);
+    setSelectedAnswers({})
     await fetchNextQuestion();
   }
 
@@ -170,7 +171,7 @@ const Quiz = ({match}) => {
                 <Button
                   className="quiz-get-summary-button quiz-font-lg"
                   size='large'
-                  disabled={!respondentName || !pronounce}
+                  disabled={!respondentName || !respondentName.trim() || !pronounce}
                   onClick={onGetResultsClick}
                 >
                   Отримати Результат<RightOutlined/>
