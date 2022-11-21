@@ -79,8 +79,16 @@ async def get_current_user() -> GetCurrentUserResponse:
         return GetCurrentUserResponse(user=None)
 
     with transaction() as session:
-        db_user = session.query(DbUser).filter(DbUser.token == user_token).one()
-        return GetCurrentUserResponse(user=db_user.to_model())
+        db_users = session.query(DbUser).filter(DbUser.token == user_token).all()
+        if len(db_users) == 0:
+            # User not found, let's sign out. This is for cases when user is deleted from the database
+            # Should not be happening, but this is a temporary measure during release when we nuke the prod DB
+            # We logout the user so that they can login again with new user
+            session_data_provider.update_current_session(user_token=None, user_role=None)
+            return GetCurrentUserResponse(user=None)
+
+        assert len(db_users) == 1
+        return GetCurrentUserResponse(user=db_users[0].to_model())
 
 
 @router.get("/api/users/logout")
