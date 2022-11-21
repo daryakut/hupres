@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './static/style';
-import {Button, Checkbox, Input, Radio, Row, Select} from "antd";
+import {Button, Checkbox, Input, Modal, Radio, Row, Select} from "antd";
 import QueueAnim from "rc-queue-anim";
 import {useHistory} from 'react-router-dom';
 import {createQuiz, getNextQuizQuestion, getQuiz, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
@@ -8,11 +8,13 @@ import Text from "antd/es/typography/Text";
 import {QuestionOutlined, RightOutlined} from "@ant-design/icons";
 import Header from "../Home/Header";
 import QuizContainer from "./QuizContainer";
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
+import {getBaseUrl} from "../api/server";
 
 const HARD_TO_SAY_ANSWER_NAME = 'Затрудняюсь ответить'
 
-const QuizAnswerWithIcon = ({children, answerImageLink, answerExplanation, onClick }) => {
+const QuizAnswerWithIcon = ({children, answerImageLink, answerDisplayName, answerExplanation, onIconClick}) => {
+  const onClick = () => onIconClick({answerDisplayName, answerExplanation, answerImageLink})
   return (
     <div className="quiz-answer-with-icon">
       {answerImageLink ? (
@@ -21,9 +23,9 @@ const QuizAnswerWithIcon = ({children, answerImageLink, answerExplanation, onCli
           alt="Натисніть для пояснення"
           className="quiz-answer-icon"
           onClick={onClick}
-          initial={{ x: -40, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{x: -40, opacity: 0}}
+          animate={{x: 0, opacity: 1}}
+          transition={{duration: 0.5}}
         />
       ) : answerExplanation ? (
         // <motion.img
@@ -35,7 +37,7 @@ const QuizAnswerWithIcon = ({children, answerImageLink, answerExplanation, onCli
         //   animate={{ x: 0, opacity: 1 }}
         //   transition={{ duration: 0.5 }}
         // />
-        <QuestionOutlined className="quiz-answer-icon-question" />
+        <QuestionOutlined className="quiz-answer-icon-question" onClick={onClick}/>
       ) : (
         <div className="quiz-answer-icon-empty-box"/>
       )}
@@ -56,6 +58,7 @@ const Quiz = ({match}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [explanationModalContent, setExplanationModalContent] = useState(null);
 
   const selectedAnswersList = Object.keys(selectedAnswers).filter(answer => selectedAnswers[answer]);
 
@@ -154,6 +157,10 @@ const Quiz = ({match}) => {
     await submitAnswersAndFetchNext(selectedAnswersList);
   }
 
+  const onExplanationIconClick = async ({answerDisplayName, answerExplanation, answerImageLink}) => {
+    setExplanationModalContent({answerDisplayName, answerExplanation, answerImageLink});
+  }
+
   if (error) {
     return (
       <div>Error: {error}</div>
@@ -246,8 +253,10 @@ const Quiz = ({match}) => {
                     answers.map((answer, index) => (
                       <QuizAnswerWithIcon
                         key={`answer-${index}`}
+                        answerDisplayName={answer.answer_display_name}
                         answerExplanation={answer.answer_explanation}
                         answerImageLink={answer.answer_image_link}
+                        onIconClick={onExplanationIconClick}
                       >
                         <Checkbox
                           className="quiz-answer quiz-font-md"
@@ -279,8 +288,10 @@ const Quiz = ({match}) => {
                       answers.map((answer, index) => (
                         <QuizAnswerWithIcon
                           key={`answer-${index}`}
+                          answerDisplayName={answer.answer_display_name}
                           answerExplanation={answer.answer_explanation}
                           answerImageLink={answer.answer_image_link}
+                          onIconClick={onExplanationIconClick}
                         >
                           <Radio
                             className="quiz-answer quiz-font-md"
@@ -299,6 +310,30 @@ const Quiz = ({match}) => {
           </div>
         </QuizContainer>
       </div>
+      <Modal
+        title={explanationModalContent?.answerDisplayName}
+        visible={!!explanationModalContent}
+        onCancel={() => setExplanationModalContent(null)}
+        footer={[
+          <Button key="back" onClick={() => setExplanationModalContent(null)}>
+            Ясно
+          </Button>,
+        ]}
+        centered
+      >
+        <div className="quiz-answer-explanation-modal-content">
+          {explanationModalContent?.answerImageLink ? (
+            <img
+              src={explanationModalContent?.answerImageLink}
+              alt={explanationModalContent?.answerDisplayName}
+              className="quiz-answer-explanation-modal-image"
+            />
+          ) : null}
+          {explanationModalContent?.answerExplanation ? (
+            <div className="quiz-answer-explanation">{explanationModalContent?.answerExplanation}</div>
+          ) : null}
+        </div>
+      </Modal>
     </>
   );
 };
