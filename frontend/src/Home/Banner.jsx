@@ -27,12 +27,9 @@ const Banner = ({ onEnterChange }) => {
       >
         <QueueAnim className="banner-text-wrapper" type={typeFunc} delay={300} key="banner">
           <h2 key="h2" className="landing-font-xl landing-font-width-xl text-align-center">
-            РОЗУМІННЯ СЕБЕ ТА ІНШИХ РОБИТЬ ЖИТТЯ ПРОСТІШИМ ТА БІЛЬШ КОМФОРТНИМ
+            ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ
           </h2>
           <hr key="hr" className="landing-hr"/>
-          <h5 key="h5.1" className="landing-font-lg landing-font-width-lg text-align-center">
-            ШТУЧНИЙ КОНСУЛЬТАНТ-ПСИХОЛОГ, ЩО ЗАВЖДИ У ВАС ПІД РУКОЮ
-          </h5>
           <h5 key="h5.2" className="landing-font-lg landing-font-width-lg text-align-center">
             НАШ УНІКАЛЬНИЙ МЕТОД ВИЗНАЧАЄ ХАРАКТЕР ЛЮДИНИ НА ОСНОВІ БУДОВИ ТІЛА
           </h5>

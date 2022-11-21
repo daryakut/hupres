@@ -13,6 +13,7 @@ from quizzes.charts import get_chart_info, Gender, export_chart_info
 from quizzes.charts.charts import NAME_PLACEHOLDER
 from quizzes.quiz_steps import QuizStep, QuizSubStep
 
+# This product ID does not exist. Whatever we put here will be excluded from the result, so let's not have anything real
 PRODUCT_ID = 11
 EXCLUDE_PROFILES = {1, 27, 37, 44, 45, 46, 48}
 
