@@ -526,13 +526,13 @@ MULTIPLE_CHOICE_QUESTIONS = {
     QuestionName.FEATURES_OF_SKIN,
 }
 
-HEIGHT_CLARIFICATION = "Ця ознака не вимагає спеціального вимірювання. Достатньо позначити як виглядає людина виглядає лише на погляд і у співставленні з іншими - високою чи низькою."
+HEIGHT_EXPLANATION = "Ця ознака не вимагає спеціального вимірювання. Достатньо позначити як виглядає людина виглядає лише на погляд і у співставленні з іншими - високою чи низькою."
 
-ANSWER_CLARIFICATIONS = {
+ANSWER_EXPLANATIONS = {
     QuestionName.HEIGHT: {
-        AnswerName.HEIGHT_SHORT.value: HEIGHT_CLARIFICATION,
-        AnswerName.HEIGHT_AVERAGE.value: HEIGHT_CLARIFICATION,
-        AnswerName.HEIGHT_TALL.value: HEIGHT_CLARIFICATION,
+        AnswerName.HEIGHT_SHORT.value: HEIGHT_EXPLANATION,
+        AnswerName.HEIGHT_AVERAGE.value: HEIGHT_EXPLANATION,
+        AnswerName.HEIGHT_TALL.value: HEIGHT_EXPLANATION,
     },
     QuestionName.BODY_SCHEME: {
         AnswerName.SHAPE_SMALL_RECTANGLE.value: "Плечі та стегна рівні між собою та відносно вузькі при малому зрості.",
@@ -550,19 +550,19 @@ ANSWER_CLARIFICATIONS = {
         AnswerName.WAIST_SMOOTHED.value: "Талія майже відсутня, незалежно від кількості жирової клітковини.",
     },
     QuestionName.FAT_TISSUE: {
-        AnswerName.FAT_TISSUE_WEAK.value: "",
-        AnswerName.FAT_TISSUE_STRONG.value: "",
+        AnswerName.FAT_TISSUE_WEAK.value: None,
+        AnswerName.FAT_TISSUE_STRONG.value: None,
     },
     QuestionName.EYE_COLOR: {
-        AnswerName.EYES_BLUE.value: "",
-        AnswerName.EYES_GRAY.value: "",
-        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: "",
-        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: "",
-        AnswerName.EYES_BLACK.value: "",
-        AnswerName.EYES_BROWN.value: "",
-        AnswerName.EYES_GREEN.value: "",
-        AnswerName.EYES_YELLOW_GREEN.value: "",
-        AnswerName.EYES_HETEROCHROMATIC.value: "",
+        AnswerName.EYES_BLUE.value: None,
+        AnswerName.EYES_GRAY.value: None,
+        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: None,
+        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: None,
+        AnswerName.EYES_BLACK.value: None,
+        AnswerName.EYES_BROWN.value: None,
+        AnswerName.EYES_GREEN.value: None,
+        AnswerName.EYES_YELLOW_GREEN.value: None,
+        AnswerName.EYES_HETEROCHROMATIC.value: None,
     },
     QuestionName.THICKNESS_OF_HAIR: {
         AnswerName.HAIR_THIN.value: "Таке волосся м’яке, легке, погано тримає зачіску. Густота не має значення.",
@@ -570,26 +570,26 @@ ANSWER_CLARIFICATIONS = {
         AnswerName.HAIR_THICK.value: "Жорстке, пружне волосся.",
     },
     QuestionName.HAIR_DENSITY: {
-        AnswerName.HAIR_SPARSE.value: "",
-        AnswerName.HAIR_DENSE.value: "",
+        AnswerName.HAIR_SPARSE.value: None,
+        AnswerName.HAIR_DENSE.value: None,
     },
     QuestionName.STRUCTURE_OF_HAIR: {
-        AnswerName.HAIR_STRAIGHT.value: "",
-        AnswerName.HAIR_WAVY.value: "",
-        AnswerName.HAIR_CURLY.value: "",
+        AnswerName.HAIR_STRAIGHT.value: None,
+        AnswerName.HAIR_WAVY.value: None,
+        AnswerName.HAIR_CURLY.value: None,
     },
     QuestionName.HAIR_COLOR: {
-        AnswerName.HAIR_RED.value: "",
-        AnswerName.HAIR_CHESTNUT.value: "",
-        AnswerName.HAIR_BLACK.value: "",
-        AnswerName.HAIR_DARK_BLONDE.value: "",
-        AnswerName.HAIR_BLONDE.value: "",
-        AnswerName.HAIR_LIGHT.value: "",
+        AnswerName.HAIR_RED.value: None,
+        AnswerName.HAIR_CHESTNUT.value: None,
+        AnswerName.HAIR_BLACK.value: None,
+        AnswerName.HAIR_DARK_BLONDE.value: None,
+        AnswerName.HAIR_BLONDE.value: None,
+        AnswerName.HAIR_LIGHT.value: None,
     },
     QuestionName.HAIR_FEATURES: {
-        AnswerName.HAIR_COARSE.value: "",
-        AnswerName.HAIR_EARLY_GRAYING.value: "",
-        AnswerName.HAIR_EARLY_BALDING.value: "",
+        AnswerName.HAIR_COARSE.value: None,
+        AnswerName.HAIR_EARLY_GRAYING.value: None,
+        AnswerName.HAIR_EARLY_BALDING.value: None,
     },
     QuestionName.FACE_SHAPE: {
         AnswerName.FACE_ROUND.value: "За рахунок значної кількості м’яких тканин обличчя виглядає майже круглим, з помітними пухкими щоками.",
@@ -702,9 +702,9 @@ def _get_image(image_name: str) -> str:
 
 ANSWER_IMAGE_LINKS = {
     QuestionName.HEIGHT: {
-        AnswerName.HEIGHT_SHORT.value: "",
-        AnswerName.HEIGHT_AVERAGE.value: "",
-        AnswerName.HEIGHT_TALL.value: "",
+        AnswerName.HEIGHT_SHORT.value: None,
+        AnswerName.HEIGHT_AVERAGE.value: None,
+        AnswerName.HEIGHT_TALL.value: None,
     },
     QuestionName.BODY_SCHEME: {
         AnswerName.SHAPE_SMALL_RECTANGLE.value: _get_image("telo3"),
@@ -722,46 +722,46 @@ ANSWER_IMAGE_LINKS = {
         AnswerName.WAIST_SMOOTHED.value: _get_image("telo_fw2"),
     },
     QuestionName.FAT_TISSUE: {
-        AnswerName.FAT_TISSUE_WEAK.value: "",
-        AnswerName.FAT_TISSUE_STRONG.value: "",
+        AnswerName.FAT_TISSUE_WEAK.value: None,
+        AnswerName.FAT_TISSUE_STRONG.value: None,
     },
     QuestionName.EYE_COLOR: {
-        AnswerName.EYES_BLUE.value: "",
-        AnswerName.EYES_GRAY.value: "",
-        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: "",
-        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: "",
-        AnswerName.EYES_BLACK.value: "",
-        AnswerName.EYES_BROWN.value: "",
-        AnswerName.EYES_GREEN.value: "",
-        AnswerName.EYES_YELLOW_GREEN.value: "",
-        AnswerName.EYES_HETEROCHROMATIC.value: "",
+        AnswerName.EYES_BLUE.value: None,
+        AnswerName.EYES_GRAY.value: None,
+        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: None,
+        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: None,
+        AnswerName.EYES_BLACK.value: None,
+        AnswerName.EYES_BROWN.value: None,
+        AnswerName.EYES_GREEN.value: None,
+        AnswerName.EYES_YELLOW_GREEN.value: None,
+        AnswerName.EYES_HETEROCHROMATIC.value: None,
     },
     QuestionName.THICKNESS_OF_HAIR: {
-        AnswerName.HAIR_THIN.value: "",
-        AnswerName.HAIR_MEDIUM_THICKNESS.value: "",
-        AnswerName.HAIR_THICK.value: "",
+        AnswerName.HAIR_THIN.value: None,
+        AnswerName.HAIR_MEDIUM_THICKNESS.value: None,
+        AnswerName.HAIR_THICK.value: None,
     },
     QuestionName.HAIR_DENSITY: {
-        AnswerName.HAIR_SPARSE.value: "",
-        AnswerName.HAIR_DENSE.value: "",
+        AnswerName.HAIR_SPARSE.value: None,
+        AnswerName.HAIR_DENSE.value: None,
     },
     QuestionName.STRUCTURE_OF_HAIR: {
-        AnswerName.HAIR_STRAIGHT.value: "",
-        AnswerName.HAIR_WAVY.value: "",
-        AnswerName.HAIR_CURLY.value: "",
+        AnswerName.HAIR_STRAIGHT.value: None,
+        AnswerName.HAIR_WAVY.value: None,
+        AnswerName.HAIR_CURLY.value: None,
     },
     QuestionName.HAIR_COLOR: {
-        AnswerName.HAIR_RED.value: "",
-        AnswerName.HAIR_CHESTNUT.value: "",
-        AnswerName.HAIR_BLACK.value: "",
-        AnswerName.HAIR_DARK_BLONDE.value: "",
-        AnswerName.HAIR_BLONDE.value: "",
-        AnswerName.HAIR_LIGHT.value: "",
+        AnswerName.HAIR_RED.value: None,
+        AnswerName.HAIR_CHESTNUT.value: None,
+        AnswerName.HAIR_BLACK.value: None,
+        AnswerName.HAIR_DARK_BLONDE.value: None,
+        AnswerName.HAIR_BLONDE.value: None,
+        AnswerName.HAIR_LIGHT.value: None,
     },
     QuestionName.HAIR_FEATURES: {
-        AnswerName.HAIR_COARSE.value: "",
-        AnswerName.HAIR_EARLY_GRAYING.value: "",
-        AnswerName.HAIR_EARLY_BALDING.value: "",
+        AnswerName.HAIR_COARSE.value: None,
+        AnswerName.HAIR_EARLY_GRAYING.value: None,
+        AnswerName.HAIR_EARLY_BALDING.value: None,
     },
     QuestionName.FACE_SHAPE: {
         AnswerName.FACE_ROUND.value: _get_image("hair4"),
@@ -771,8 +771,8 @@ ANSWER_IMAGE_LINKS = {
         AnswerName.FACE_BROAD_RECTANGLE_SQUARE.value: _get_image("hair5"),
     },
     QuestionName.SIZE_OF_NOSE: {
-        AnswerName.NOSE_SMALL.value: "",
-        AnswerName.NOSE_LARGE.value: "",
+        AnswerName.NOSE_SMALL.value: None,
+        AnswerName.NOSE_LARGE.value: None,
     },
     QuestionName.NOSE_SHAPE: {
         AnswerName.NOSE_HUMP.value: _get_image("nose5"),
@@ -799,17 +799,17 @@ ANSWER_IMAGE_LINKS = {
     },
     QuestionName.LENGTH_OF_NECK: {
         AnswerName.NECK_LONG.value: _get_image("neck1"),
-        AnswerName.NECK_AVERAGE_LENGTH.value: "",
+        AnswerName.NECK_AVERAGE_LENGTH.value: None,
         AnswerName.NECK_SHORT.value: _get_image("neck2"),
     },
     QuestionName.THICKNESS_OF_NECK: {
         AnswerName.NECK_THICK.value: _get_image("neck4"),
-        AnswerName.NECK_AVERAGE_THICKNESS.value: "",
+        AnswerName.NECK_AVERAGE_THICKNESS.value: None,
         AnswerName.NECK_THIN.value: _get_image("neck1"),
     },
     QuestionName.SIZE_OF_PALMS: {
-        AnswerName.HANDS_LARGE.value: "",
-        AnswerName.HANDS_SMALL.value: "",
+        AnswerName.HANDS_LARGE.value: None,
+        AnswerName.HANDS_SMALL.value: None,
     },
     QuestionName.PALM_SHAPE: {
         AnswerName.HAND_SHAPE_SQUARE.value: _get_image("paml1"),
@@ -819,14 +819,14 @@ ANSWER_IMAGE_LINKS = {
         AnswerName.HAND_SHAPE_PADDLE.value: _get_image("palm5"),
     },
     QuestionName.FEATURES_OF_BRUSHES: {
-        AnswerName.HANDS_SOFT_LOOSE.value: "",
-        AnswerName.HANDS_FULL_FIRM.value: "",
-        AnswerName.HANDS_DRY.value: "",
+        AnswerName.HANDS_SOFT_LOOSE.value: None,
+        AnswerName.HANDS_FULL_FIRM.value: None,
+        AnswerName.HANDS_DRY.value: None,
     },
     QuestionName.FINGER_LENGTH: {
-        AnswerName.FINGERS_LONG.value: "",
-        AnswerName.FINGERS_AVERAGE_LENGTH.value: "",
-        AnswerName.FINGERS_SHORT.value: "",
+        AnswerName.FINGERS_LONG.value: None,
+        AnswerName.FINGERS_AVERAGE_LENGTH.value: None,
+        AnswerName.FINGERS_SHORT.value: None,
     },
     QuestionName.FINGER_SHAPE: {
         AnswerName.FINGERS_STRAIGHT.value: _get_image("finger1"),
@@ -835,8 +835,8 @@ ANSWER_IMAGE_LINKS = {
     },
     QuestionName.FEATURES_OF_FINGERS: {
         AnswerName.FINGERS_KNOTTY.value: _get_image("finger3"),
-        AnswerName.FINGERS_DRY.value: "",
-        AnswerName.FINGERS_FLESHY.value: "",
+        AnswerName.FINGERS_DRY.value: None,
+        AnswerName.FINGERS_FLESHY.value: None,
     },
     QuestionName.NAIL_SHAPE: {
         AnswerName.SHAPE_LONG_RECTANGLE.value: _get_image("nail1"),
@@ -851,16 +851,16 @@ ANSWER_IMAGE_LINKS = {
         AnswerName.NAILS_FLAT.value: _get_image("nail_f3"),
     },
     QuestionName.MUSCLE_VOLUME: {
-        AnswerName.MUSCLES_THIN.value: "",
-        AnswerName.MUSCLES_VOLUMINOUS.value: "",
+        AnswerName.MUSCLES_THIN.value: None,
+        AnswerName.MUSCLES_VOLUMINOUS.value: None,
     },
     QuestionName.MUSCLE_DENSITY: {
-        AnswerName.MUSCLES_SOFT_LOOSE.value: "",
-        AnswerName.MUSCLES_FIRM_RUBBERY.value: "",
+        AnswerName.MUSCLES_SOFT_LOOSE.value: None,
+        AnswerName.MUSCLES_FIRM_RUBBERY.value: None,
     },
     QuestionName.FEATURES_OF_SKIN: {
-        AnswerName.SKIN_LARGE_PORES.value: "",
-        AnswerName.SKIN_EASILY_REDDENS.value: "",
-        AnswerName.SKIN_FRECKLES.value: "",
+        AnswerName.SKIN_LARGE_PORES.value: None,
+        AnswerName.SKIN_EASILY_REDDENS.value: None,
+        AnswerName.SKIN_FRECKLES.value: None,
     },
 }

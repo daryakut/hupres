@@ -37,6 +37,8 @@ class AvailableAnswer(BaseModel):
     """Representation of the available answer from questions database"""
     answer_name: str
     answer_display_name: str
+    answer_explanation: Optional[str]
+    answer_image_link: Optional[str]
 
 
 class QuizAnswer(BaseModel):

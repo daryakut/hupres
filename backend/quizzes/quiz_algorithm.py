@@ -19,7 +19,8 @@ from models.quiz_models import QuizQuestion, AvailableAnswer, Quiz, QuizAnswer
 from models.sign import Sign
 from models.token import Token
 from quizzes.quiz_steps import QuizStep, QuizSubStep
-from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName, MULTIPLE_CHOICE_QUESTIONS
+from quizzes.question_database import QUESTION_NAMES_FOR_SIGNS, ANSWER_SCORES, QuestionName, MULTIPLE_CHOICE_QUESTIONS, \
+    ANSWER_EXPLANATIONS, ANSWER_IMAGE_LINKS
 from users.sessions import session_data_provider
 
 
@@ -503,7 +504,15 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
             lambda: answer_option_scores is not None,
             f"Could not find answers for question {question_to_ask.question_name}",
         )
-        available_answers = [AvailableAnswer(answer_name=a, answer_display_name=_(a)) for a in answer_option_scores.keys()]
+
+        answer_explanations = ANSWER_EXPLANATIONS.get(question_to_ask.question_name)
+        answer_image_links = ANSWER_IMAGE_LINKS.get(question_to_ask.question_name)
+        available_answers = [AvailableAnswer(
+            answer_name=a,
+            answer_display_name=_(a),
+            answer_explanation=answer_explanations.get(a),
+            answer_image_link=answer_image_links.get(a),
+        ) for a in answer_option_scores.keys()]
         return GetNextQuizQuestionResponse(
             quiz_question=db_quiz_question.to_model(),
             available_answers=available_answers,
