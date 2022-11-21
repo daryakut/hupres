@@ -23,10 +23,10 @@ SESSION_MIDDLEWARE_CONFIG = {
 # When running in production, we need to set the SameSite attribute to 'None' and the Secure attribute to True
 # Locally we don't have secure connection and can't use SameSite=None; however, SameSite=Lax (default) would still
 # work because we're on localhost domain for both backend and frontend
-# TODO: uncomment the below code when we have HTTPS
-# if env.is_prod():
-#     SESSION_MIDDLEWARE_CONFIG["same_site"] = "none"
-#     SESSION_MIDDLEWARE_CONFIG["https_only"] = True
+# Comment the below code if we ever need to turn off HTTPS in production
+if env.is_prod():
+    SESSION_MIDDLEWARE_CONFIG["same_site"] = "none"
+    SESSION_MIDDLEWARE_CONFIG["https_only"] = True
 
 
 class SessionDataMiddleware(BaseHTTPMiddleware):
