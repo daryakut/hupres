@@ -692,3 +692,175 @@ ANSWER_CLARIFICATIONS = {
         AnswerName.SKIN_FRECKLES.value: "Веснянки можуть бути сезонними, або постійними, або проходити з віком, на обличчі, або по тілу. Важливо позначити будь-який прояв веснянок.",
     },
 }
+
+BASE_IMAGE_URL = "https://hupres.com/stand/assets/pict/"
+
+
+def _get_image(image_name: str) -> str:
+    return BASE_IMAGE_URL + image_name + ".png"
+
+
+ANSWER_IMAGE_LINKS = {
+    QuestionName.HEIGHT: {
+        AnswerName.HEIGHT_SHORT.value: "",
+        AnswerName.HEIGHT_AVERAGE.value: "",
+        AnswerName.HEIGHT_TALL.value: "",
+    },
+    QuestionName.BODY_SCHEME: {
+        AnswerName.SHAPE_SMALL_RECTANGLE.value: _get_image("telo3"),
+        AnswerName.SHAPE_NARROW_RECTANGLE.value: _get_image("telo2"),
+        AnswerName.SHAPE_LARGE_WIDE_RECTANGLE.value: _get_image("telo1"),
+        AnswerName.SHAPE_BROAD_SHOULDERS.value: _get_image("telo5"),
+        AnswerName.SHAPE_BROAD_HIPS.value: _get_image("telo4"),
+    },
+    QuestionName.BODY_FEATURES: {
+        AnswerName.BODY_DRY.value: _get_image("telo_f2"),
+        AnswerName.BODY_VOLUMINOUS.value: _get_image("telo_f1"),
+    },
+    QuestionName.WAIST: {
+        AnswerName.WAIST_DEFINED.value: _get_image("telo_fw1"),
+        AnswerName.WAIST_SMOOTHED.value: _get_image("telo_fw2"),
+    },
+    QuestionName.FAT_TISSUE: {
+        AnswerName.FAT_TISSUE_WEAK.value: "",
+        AnswerName.FAT_TISSUE_STRONG.value: "",
+    },
+    QuestionName.EYE_COLOR: {
+        AnswerName.EYES_BLUE.value: "",
+        AnswerName.EYES_GRAY.value: "",
+        AnswerName.EYES_GRAY_BLUE_DARK_SPECKS.value: "",
+        AnswerName.EYES_GRAY_BLUE_YELLOW_GREEN_ZONES.value: "",
+        AnswerName.EYES_BLACK.value: "",
+        AnswerName.EYES_BROWN.value: "",
+        AnswerName.EYES_GREEN.value: "",
+        AnswerName.EYES_YELLOW_GREEN.value: "",
+        AnswerName.EYES_HETEROCHROMATIC.value: "",
+    },
+    QuestionName.THICKNESS_OF_HAIR: {
+        AnswerName.HAIR_THIN.value: "",
+        AnswerName.HAIR_MEDIUM_THICKNESS.value: "",
+        AnswerName.HAIR_THICK.value: "",
+    },
+    QuestionName.HAIR_DENSITY: {
+        AnswerName.HAIR_SPARSE.value: "",
+        AnswerName.HAIR_DENSE.value: "",
+    },
+    QuestionName.STRUCTURE_OF_HAIR: {
+        AnswerName.HAIR_STRAIGHT.value: "",
+        AnswerName.HAIR_WAVY.value: "",
+        AnswerName.HAIR_CURLY.value: "",
+    },
+    QuestionName.HAIR_COLOR: {
+        AnswerName.HAIR_RED.value: "",
+        AnswerName.HAIR_CHESTNUT.value: "",
+        AnswerName.HAIR_BLACK.value: "",
+        AnswerName.HAIR_DARK_BLONDE.value: "",
+        AnswerName.HAIR_BLONDE.value: "",
+        AnswerName.HAIR_LIGHT.value: "",
+    },
+    QuestionName.HAIR_FEATURES: {
+        AnswerName.HAIR_COARSE.value: "",
+        AnswerName.HAIR_EARLY_GRAYING.value: "",
+        AnswerName.HAIR_EARLY_BALDING.value: "",
+    },
+    QuestionName.FACE_SHAPE: {
+        AnswerName.FACE_ROUND.value: _get_image("hair4"),
+        AnswerName.FACE_LONG_RECTANGLE.value: _get_image("hair2"),
+        AnswerName.FACE_LARGE_TRIANGLE.value: _get_image("hair1"),
+        AnswerName.FACE_SMALL_TRIANGLE.value: _get_image("hair3"),
+        AnswerName.FACE_BROAD_RECTANGLE_SQUARE.value: _get_image("hair5"),
+    },
+    QuestionName.SIZE_OF_NOSE: {
+        AnswerName.NOSE_SMALL.value: "",
+        AnswerName.NOSE_LARGE.value: "",
+    },
+    QuestionName.NOSE_SHAPE: {
+        AnswerName.NOSE_HUMP.value: _get_image("nose5"),
+        AnswerName.NOSE_HOOKED.value: _get_image("nose4"),
+        AnswerName.NOSE_STRAIGHT.value: _get_image("nose3"),
+    },
+    QuestionName.NOSTRILS: {
+        AnswerName.NOSTRILS_WIDE.value: _get_image("nose_f3"),
+        AnswerName.NOSTRILS_NARROW.value: _get_image("nose_f2"),
+    },
+    QuestionName.NOSE_TIP: {
+        AnswerName.NOSE_SHARP_TIP.value: _get_image("nose3"),
+        AnswerName.NOSE_ROUND_TIP.value: _get_image("nose_f3"),
+        AnswerName.NOSE_TURNED_UP_TIP.value: _get_image("nose2"),
+        AnswerName.NOSE_DUCKLIKE.value: _get_image("nose1"),
+    },
+    QuestionName.BACK_OF_NOSE: {
+        AnswerName.NOSE_LONG_BACK.value: _get_image("nose_f2"),
+        AnswerName.NOSE_SHORT_BACK.value: _get_image("nose_f3"),
+    },
+    QuestionName.WIDTH_OF_BACK_OF_NOSE: {
+        AnswerName.NOSE_WIDE_BACK.value: _get_image("nose_f1"),
+        AnswerName.NOSE_THIN_BACK.value: _get_image("nose_f2"),
+    },
+    QuestionName.LENGTH_OF_NECK: {
+        AnswerName.NECK_LONG.value: _get_image("neck1"),
+        AnswerName.NECK_AVERAGE_LENGTH.value: "",
+        AnswerName.NECK_SHORT.value: _get_image("neck2"),
+    },
+    QuestionName.THICKNESS_OF_NECK: {
+        AnswerName.NECK_THICK.value: _get_image("neck4"),
+        AnswerName.NECK_AVERAGE_THICKNESS.value: "",
+        AnswerName.NECK_THIN.value: _get_image("neck1"),
+    },
+    QuestionName.SIZE_OF_PALMS: {
+        AnswerName.HANDS_LARGE.value: "",
+        AnswerName.HANDS_SMALL.value: "",
+    },
+    QuestionName.PALM_SHAPE: {
+        AnswerName.HAND_SHAPE_SQUARE.value: _get_image("paml1"),
+        AnswerName.HAND_SHAPE_RECTANGLE.value: _get_image("palm2"),
+        AnswerName.HAND_SHAPE_SMALL_RECTANGLE.value: _get_image("palm3"),
+        AnswerName.HAND_SHAPE_NARROW_LONG_RECTANGLE.value: _get_image("palm4"),
+        AnswerName.HAND_SHAPE_PADDLE.value: _get_image("palm5"),
+    },
+    QuestionName.FEATURES_OF_BRUSHES: {
+        AnswerName.HANDS_SOFT_LOOSE.value: "",
+        AnswerName.HANDS_FULL_FIRM.value: "",
+        AnswerName.HANDS_DRY.value: "",
+    },
+    QuestionName.FINGER_LENGTH: {
+        AnswerName.FINGERS_LONG.value: "",
+        AnswerName.FINGERS_AVERAGE_LENGTH.value: "",
+        AnswerName.FINGERS_SHORT.value: "",
+    },
+    QuestionName.FINGER_SHAPE: {
+        AnswerName.FINGERS_STRAIGHT.value: _get_image("finger1"),
+        AnswerName.FINGERS_CONICAL.value: _get_image("finger2"),
+        AnswerName.FINGERS_CROOKED.value: _get_image("finger4"),
+    },
+    QuestionName.FEATURES_OF_FINGERS: {
+        AnswerName.FINGERS_KNOTTY.value: _get_image("finger3"),
+        AnswerName.FINGERS_DRY.value: "",
+        AnswerName.FINGERS_FLESHY.value: "",
+    },
+    QuestionName.NAIL_SHAPE: {
+        AnswerName.SHAPE_LONG_RECTANGLE.value: _get_image("nail1"),
+        AnswerName.SHAPE_SHORT_TRAPEZOID.value: _get_image("nail2"),
+        AnswerName.SHAPE_LONG_TRAPEZOID.value: _get_image("nail3"),
+        AnswerName.NAILS_COIN_LIKE.value: _get_image("nail4"),
+        AnswerName.NAILS_OVAL.value: _get_image("nail5"),
+    },
+    QuestionName.CONVEXITY_OF_NAILS: {
+        AnswerName.NAILS_CROSS_CURVED_CONVEX.value: _get_image("nail_f1"),
+        AnswerName.NAILS_CROSS_CURVED.value: _get_image("nail_f2"),
+        AnswerName.NAILS_FLAT.value: _get_image("nail_f3"),
+    },
+    QuestionName.MUSCLE_VOLUME: {
+        AnswerName.MUSCLES_THIN.value: "",
+        AnswerName.MUSCLES_VOLUMINOUS.value: "",
+    },
+    QuestionName.MUSCLE_DENSITY: {
+        AnswerName.MUSCLES_SOFT_LOOSE.value: "",
+        AnswerName.MUSCLES_FIRM_RUBBERY.value: "",
+    },
+    QuestionName.FEATURES_OF_SKIN: {
+        AnswerName.SKIN_LARGE_PORES.value: "",
+        AnswerName.SKIN_EASILY_REDDENS.value: "",
+        AnswerName.SKIN_FRECKLES.value: "",
+    },
+}
