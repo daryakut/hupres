@@ -59,6 +59,51 @@
   position: relative;
 }
 
+.quiz-answer-with-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 4px;
+}
+
+.ant-radio-button-wrapper, .ant-radio-wrapper {
+  word-wrap: break-word; /* Ensures words can break and wrap onto the next line */
+  white-space: normal;   /* Overrides any existing white-space property */
+  width: 100px;          /* Example width, adjust as needed */
+}
+
+.quiz-answer-icon {
+  cursor: pointer;
+  width: 40px;
+  height: 45px;
+  flex: 1 0 0;
+  border-radius: 10%;
+}
+
+.quiz-answer-icon-question {
+  cursor: pointer;
+  width: 40px;
+  height: 45px;
+  flex: 1 0 0;
+  border-radius: 10%;
+  font-size: 36px;
+  padding-top: 4px;
+  color: #fff;
+  background: linear-gradient(135deg, #c0c0c0, #737373);
+}
+
+.quiz-answer-icon-question > svg {
+  width: 40px;
+}
+
+.quiz-answer-icon-empty-box {
+  width: 40px;
+  flex: 1 0 auto;
+}
+
+.quiz-answer-with-icon-item {
+  margin-top: 10px;
+}
 
 .quiz-hr {
   width: 100%;
@@ -149,6 +194,7 @@
   font-weight: normal;
   //color: #fff;
   margin-left: 10px;
+  margin-top: 8px;
   margin-bottom: 10px;
   cursor: pointer;
   //background-color: #009BDB;

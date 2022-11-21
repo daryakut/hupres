@@ -5,11 +5,44 @@ import QueueAnim from "rc-queue-anim";
 import {useHistory} from 'react-router-dom';
 import {createQuiz, getNextQuizQuestion, getQuiz, submitQuizAnswer, updateQuiz} from "../api/quizzes_api";
 import Text from "antd/es/typography/Text";
-import {RightOutlined} from "@ant-design/icons";
+import {QuestionOutlined, RightOutlined} from "@ant-design/icons";
 import Header from "../Home/Header";
 import QuizContainer from "./QuizContainer";
+import { motion } from 'framer-motion';
 
 const HARD_TO_SAY_ANSWER_NAME = 'Затрудняюсь ответить'
+
+const QuizAnswerWithIcon = ({children, answerImageLink, answerExplanation, onClick }) => {
+  return (
+    <div className="quiz-answer-with-icon">
+      {answerImageLink ? (
+        <motion.img
+          src={answerImageLink}
+          alt="Натисніть для пояснення"
+          className="quiz-answer-icon"
+          onClick={onClick}
+          initial={{ x: -40, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        />
+      ) : answerExplanation ? (
+        // <motion.img
+        //   src="https://hupres.com/image/assistant.png"
+        //   alt="Натисніть для пояснення"
+        //   className="quiz-answer-icon"
+        //   onClick={onClick}
+        //   initial={{ x: -40, opacity: 0 }}
+        //   animate={{ x: 0, opacity: 1 }}
+        //   transition={{ duration: 0.5 }}
+        // />
+        <QuestionOutlined className="quiz-answer-icon-question" />
+      ) : (
+        <div className="quiz-answer-icon-empty-box"/>
+      )}
+      {children}
+    </div>
+  )
+}
 
 const Quiz = ({match}) => {
   let history = useHistory();
@@ -200,7 +233,7 @@ const Quiz = ({match}) => {
               <div key="question" className="quiz-question-container">
                 <h2 className="quiz-question quiz-font-lg">{displayQuestion}</h2>
                 <h5 className="quiz-font-md text-align-center quiz-question-clarification">
-                  { isMultipleChoice ? "Виберіть всі що підходять" : "Виберіть один варіант" }
+                  {isMultipleChoice ? "Виберіть всі що підходять" : "Виберіть один варіант"}
                 </h5>
                 <hr className="quiz-hr"/>
               </div>
@@ -211,16 +244,21 @@ const Quiz = ({match}) => {
                 >
                   {
                     answers.map((answer, index) => (
-                      <Checkbox
+                      <QuizAnswerWithIcon
                         key={`answer-${index}`}
-                        className="quiz-answer quiz-font-md"
-                        checked={!!selectedAnswers[answer.answer_name]}
-                        onChange={() => onMultipleChoiceAnswerClick(answer.answer_name)}>
-                        {answer.answer_display_name}
-                      </Checkbox>
+                        answerExplanation={answer.answer_explanation}
+                        answerImageLink={answer.answer_image_link}
+                      >
+                        <Checkbox
+                          className="quiz-answer quiz-font-md"
+                          checked={!!selectedAnswers[answer.answer_name]}
+                          onChange={() => onMultipleChoiceAnswerClick(answer.answer_name)}>
+                          {answer.answer_display_name}
+                        </Checkbox>
+                      </QuizAnswerWithIcon>
                     ))
                   }
-                  <div className="box-md" />
+                  <div className="box-md"/>
                   <Button
                     key="button"
                     className="quiz-get-summary-button quiz-font-md"
@@ -237,18 +275,23 @@ const Quiz = ({match}) => {
                     type="left"
                     delay={300}
                   >
-                  {
-                    answers.map((answer, index) => (
-                      <Radio
-                        key={`answer-${index}`}
-                        className="quiz-answer quiz-font-md"
-                        value={answer.answer_name}
-                        onChange={() => onSingleChoiceAnswerClick(answer.answer_name)}
-                      >
-                        {answer.answer_display_name}
-                      </Radio>
-                    ))
-                  }
+                    {
+                      answers.map((answer, index) => (
+                        <QuizAnswerWithIcon
+                          key={`answer-${index}`}
+                          answerExplanation={answer.answer_explanation}
+                          answerImageLink={answer.answer_image_link}
+                        >
+                          <Radio
+                            className="quiz-answer quiz-font-md"
+                            value={answer.answer_name}
+                            onChange={() => onSingleChoiceAnswerClick(answer.answer_name)}
+                          >
+                            {answer.answer_display_name}
+                          </Radio>
+                        </QuizAnswerWithIcon>
+                      ))
+                    }
                   </QueueAnim>
                 </Radio.Group>
               )}
