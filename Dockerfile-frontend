@@ -16,13 +16,16 @@ RUN yarn install
 COPY frontend/ .
 RUN yarn build
 
-# Copy SSL certificates for nginx
-COPY secrets/certificates/origin.pem /etc/ssl/certs/
-COPY secrets/certificates/private.key /etc/ssl/private/
-
 # Serve stage
 FROM nginx:stable-alpine
+
+# Copy nginx config
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY ./nginx-config /etc/nginx/conf.d
+
+# Copy SSL certificates for nginx
+COPY secrets/certificates/hupres_origin.pem /etc/ssl/certs/hupres_origin.pem
+COPY secrets/certificates/hupres_private.key /etc/ssl/private/hupres_private.key
+
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

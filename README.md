@@ -145,6 +145,20 @@ To shut down docker, run from `~/hupres-monorepo`:
 
     docker-compose down
 
+### Update server
+
+Push the recent images:
+
+    ./build-docker-prod-no-cache.sh
+
+If you have changed `docker-compose.yml`, make sure to push it as well:
+
+    scp -i /path/to/key.pem docker-compose.yml ec2-user@3.16.83.5:~/hupres-monorepo
+
+Then, on the server restart the app:
+
+    cd hupres-monorepo && prod-update.sh && tail -f docker-compose.log
+
 # Development
 
 Favicon, a few nice resources:
