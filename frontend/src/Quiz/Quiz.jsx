@@ -10,6 +10,7 @@ import Header from "../Home/Header";
 import QuizContainer from "./QuizContainer";
 import {motion} from 'framer-motion';
 import {getBaseUrl} from "../api/server";
+import {useMediaQuery} from "react-responsive";
 
 const HARD_TO_SAY_ANSWER_NAME = 'Затрудняюсь ответить'
 
@@ -59,6 +60,9 @@ const Quiz = ({match}) => {
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [explanationModalContent, setExplanationModalContent] = useState(null);
+  // const isTabletOrMobile = useMediaQuery({query: '(max-width: 992px)'})
+  // const isTabletOrMobile = useMediaQuery({query: '(max-width: 992px)'})
+
 
   const selectedAnswersList = Object.keys(selectedAnswers).filter(answer => selectedAnswers[answer]);
 
@@ -70,7 +74,7 @@ const Quiz = ({match}) => {
   console.log('quizQuestionToken', quizQuestionToken)
   console.log('question', question)
 
-  const marginTop = Math.max(10, 360 - answers.length * 16);
+  const marginTop = Math.max(10, 360 - answers.length * 25);
 
   useEffect(() => {
     console.log("!!!! USE EFFECT")
