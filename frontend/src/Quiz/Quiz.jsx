@@ -9,7 +9,6 @@ import {QuestionOutlined, RightOutlined} from "@ant-design/icons";
 import Header from "../Home/Header";
 import QuizContainer from "./QuizContainer";
 import {motion} from 'framer-motion';
-import {getBaseUrl} from "../api/server";
 import {useMediaQuery} from "react-responsive";
 
 const HARD_TO_SAY_ANSWER_NAME = 'Затрудняюсь ответить'
@@ -69,7 +68,7 @@ const Quiz = ({match}) => {
   const quizToken = match?.params?.quizToken;
   const quizQuestionToken = question?.token
 
-  const baseMargin = isMobile ? 290 : isTablet ? 310 : 340
+  const baseMargin = (isMobile ? 290 : isTablet ? 310 : 340) - 80;
   const marginTop = Math.max(10, baseMargin - answers.length * 20);
 
   useEffect(() => {
@@ -230,7 +229,8 @@ const Quiz = ({match}) => {
   return (
     <>
       <Header/>
-      <div className="fullscreen-div">
+      <div className="fullscreen-div"/>
+      <div className="fullscreen-div-scrollable">
         <QuizContainer>
           <div className="quiz-container" style={{marginTop}}>
             <QueueAnim
