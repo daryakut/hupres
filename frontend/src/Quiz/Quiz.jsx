@@ -60,8 +60,8 @@ const Quiz = ({match}) => {
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [explanationModalContent, setExplanationModalContent] = useState(null);
-  // const isTabletOrMobile = useMediaQuery({query: '(max-width: 992px)'})
-  // const isTabletOrMobile = useMediaQuery({query: '(max-width: 992px)'})
+  const isMobile = useMediaQuery({query: '(max-width: 768px)'})
+  const isTablet = useMediaQuery({query: '(min-width:768px) and (max-width:992px)'})
 
 
   const selectedAnswersList = Object.keys(selectedAnswers).filter(answer => selectedAnswers[answer]);
@@ -69,12 +69,8 @@ const Quiz = ({match}) => {
   const quizToken = match?.params?.quizToken;
   const quizQuestionToken = question?.token
 
-  // const quizQuestionToken = match?.params?.quizQuestionToken;
-  console.log('quizToken', quizToken)
-  console.log('quizQuestionToken', quizQuestionToken)
-  console.log('question', question)
-
-  const marginTop = Math.max(10, 360 - answers.length * 25);
+  const baseMargin = isMobile ? 290 : isTablet ? 310 : 340
+  const marginTop = Math.max(10, baseMargin - answers.length * 20);
 
   useEffect(() => {
     console.log("!!!! USE EFFECT")
