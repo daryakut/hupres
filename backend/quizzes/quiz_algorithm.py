@@ -344,15 +344,13 @@ def find_next_non_asked_question_name_for_sign(
         session: Session,
         db_quiz_questions: List[DbQuizQuestion],
         sign: Sign,
-) -> str:
+) -> Optional[str]:
     sign_question_names = QUESTION_NAMES_FOR_SIGNS[sign.value]
     already_asked_question_names = set(db_quiz_question.question_name for db_quiz_question in db_quiz_questions)
     question_name_to_ask = next(
         (question_name for question_name in sign_question_names if question_name not in already_asked_question_names),
         None,
     )
-    if question_name_to_ask is None:
-        raise Exception(f"Could not find next question for sign {sign}")
     return question_name_to_ask
 
 
@@ -405,6 +403,9 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
             db_quiz_questions,
             next_sign_to_ask_question,
         )
+        if not next_question_name:
+            print("WARN: could not find next question name for sign", next_sign_to_ask_question)
+            return None
         # we carry over the last step and substep, since we're still asking questions from the same substep
         return QuestionToAsk(
             question_name=next_question_name,
@@ -452,6 +453,9 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
         db_quiz_questions,
         next_sign_to_ask_question,
     )
+    if not next_question_name:
+        print("WARN: could not find next question name for sign", next_sign_to_ask_question)
+        return None
 
     # next_question_token = get_next_non_asked_question_for_sign(next_sign)
     # return QuestionToken(value=next_question_token), next_step, next_substep
