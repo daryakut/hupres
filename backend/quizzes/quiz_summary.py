@@ -29,14 +29,17 @@ def api_generate_quiz_summary(quiz_token: Token[Quiz]) -> QuizSummary:
         check_not_none(db_last_answer, "Cannot find last answer for quiz")
 
         db_last_question: DbQuizQuestion = db_last_answer.quiz_question
-        check(
-            lambda: db_last_question.quiz_step == QuizStep.STEP_6 and
-                    db_last_question.quiz_substep == QuizSubStep.STEP6_SUBSTEP_10_20_30,
-            "Quiz is not finished yet, cannot generate the summary"
-        )
+        # TODO: fix this so that it works when no questions are left for a sign
+        if (db_last_question.quiz_step != QuizStep.STEP_6
+                or db_last_question.quiz_substep != QuizSubStep.STEP6_SUBSTEP_10_20_30):
+            print("WARN: Quiz is not finished yet, perhaps there were no questions available for sign")
+        # check(
+        #     lambda: db_last_question.quiz_step == QuizStep.STEP_6 and
+        #             db_last_question.quiz_substep == QuizSubStep.STEP6_SUBSTEP_10_20_30,
+        #     "Quiz is not finished yet, cannot generate the summary"
+        # )
 
         last_sign_scores = db_last_answer.current_sign_scores
-        respondent_name = db_quiz.subject_name
         respondent_pronounce = db_quiz.pronounce
 
     if respondent_pronounce == Pronounce.SHE_HER:
