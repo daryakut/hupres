@@ -1,5 +1,6 @@
-export const getBaseUrl = () => {
-  let baseUrl;
+let baseUrl = undefined;
+
+const updateBaseUrl = () => {
   if (process.env.HUPRES_ENV === 'production') {
     console.log('Connecting to production server')
     baseUrl = `${process.env.HUPRES_PROD_HOSTNAME}:${process.env.HUPRES_APP_PORT}`
@@ -13,5 +14,14 @@ export const getBaseUrl = () => {
     baseUrl = 'http://localhost:8000';
   }
   console.log(`Connecting to server in ${process.env.HUPRES_ENV} environment on ${baseUrl}`)
+  return baseUrl;
+}
+
+// Lazy initialization of baseUrl in case environment variables aren't available at startup.
+// TODO: remove this as I think they should be
+export const getBaseUrl = () => {
+  if (!baseUrl) {
+    updateBaseUrl();
+  }
   return baseUrl;
 }
