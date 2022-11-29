@@ -26,7 +26,6 @@ const User = ({match}) => {
   console.log('question', question)
 
   useEffect(() => {
-    console.log("!!!! USE EFFECT")
     if (!quizToken) {
       createQuizAndNavigate();
     } else {

@@ -72,7 +72,6 @@ const Quiz = ({match}) => {
   const marginTop = Math.max(10, baseMargin - answers.length * 20);
 
   useEffect(() => {
-    console.log("!!!! USE EFFECT")
     if (!quizToken) {
       createQuizAndNavigate();
     } else {
@@ -102,7 +101,6 @@ const Quiz = ({match}) => {
     try {
       setIsLoading(true);
       const response = await getNextQuizQuestion(quizToken);
-      console.log('response', response)
       setQuestion(response.quiz_question);
       setIsMultipleChoice(response.is_multiple_choice);
       setAnswers(response.available_answers);

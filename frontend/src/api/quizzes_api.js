@@ -79,6 +79,7 @@ export async function submitQuizAnswer(quizQuestionToken, answerNames) {
     const response = await axiosInstance.post(`/quiz-questions/${quizQuestionToken}/submit-answer`, {
       answer_names: answerNames,
     });
+    console.log(`Знаки ${response.data.current_sign_scores}`);
     return response.data;
   } catch (error) {
     console.error(`There was an error submitting the answer for question token ${quizQuestionToken}:`, error);

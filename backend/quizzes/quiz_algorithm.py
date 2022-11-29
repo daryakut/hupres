@@ -526,6 +526,7 @@ def api_get_next_question(quiz_token: Token[Quiz]) -> GetNextQuizQuestionRespons
 
 class SubmitAnswerResponse(BaseModel):
     quiz_answer: QuizAnswer
+    current_sign_scores: List[int]
 
 
 def api_submit_answers(quiz_question_token: Token[QuizQuestion], answer_names: List[str]) -> SubmitAnswerResponse:
@@ -572,4 +573,5 @@ def api_submit_answers(quiz_question_token: Token[QuizQuestion], answer_names: L
         )
         return SubmitAnswerResponse(
             quiz_answer=db_quiz_answer.to_model(),
+            current_sign_scores=current_sign_scores,
         )
