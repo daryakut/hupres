@@ -388,8 +388,13 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
     last_substep = db_last_question.quiz_substep
 
     already_determined_signs = db_last_question_answer.signs_for_next_questions[:]
+    if not db_last_question_answer.is_all_zeros and already_determined_signs:
+        # If the last answer was not all zeros, we need to ask the followup questions
+        # Otherwise we ask for the same sign again
+        already_determined_signs.pop(0)
+
     if already_determined_signs:
-        next_sign_to_ask_question = already_determined_signs.pop(0)
+        next_sign_to_ask_question = already_determined_signs[0]
         # TODO: return already_determined_signs that still has the questions we need to ask in next rounds
         # TODO: where do we track already_determined_signs, on question or answer?
         next_question_name = find_next_non_asked_question_name_for_sign(
@@ -441,7 +446,7 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
         last_question=db_last_question,
         last_answer=db_last_question_answer,
     )
-    next_sign_to_ask_question = next_signs.pop(0)
+    next_sign_to_ask_question = next_signs[0]
     next_question_name = find_next_non_asked_question_name_for_sign(
         session,
         db_quiz_questions,

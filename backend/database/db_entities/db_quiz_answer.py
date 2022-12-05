@@ -27,7 +27,14 @@ class DbQuizAnswer(DbTimestampedEntity, DbBase):
     quiz_question_id = Column(Integer, ForeignKey('quiz_questions.id'))
     answer_names = Column(JSON)
     is_all_zeros = Column(Boolean)
+
+    # A list of signs, for which we should be asking questions, *including* this answer's question
+    # We need to keep track of this question for is_all_zero answers, for which we should ask next question
+    # for the same sign as previous one
+    # TODO: we probably don't need this as it's the same as followup_question_signs
     current_sign_scores = Column(JSON)
+
+    # TODO: deprecated, remove
     original_sign_scores = Column(JSON)
     signs_for_next_questions = Column(JsonEnumListDbType(Sign))
 

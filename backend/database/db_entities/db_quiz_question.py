@@ -28,6 +28,10 @@ class DbQuizQuestion(DbTimestampedEntity, DbBase):
     question_name = Column(StringEnumDbType(QuestionName))
     quiz_step = Column(StringEnumDbType(QuizStep))
     quiz_substep = Column(StringEnumDbType(QuizSubStep))
+
+    # A list of signs, for which we should be asking questions, *including* this question
+    # We need to keep track of this question for is_all_zero answers, for which we should ask next question
+    # for the same sign as previous one
     followup_question_signs = Column(JsonEnumListDbType(Sign))
 
     quiz = relationship('DbQuiz', back_populates='quiz_questions', lazy='select')
