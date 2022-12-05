@@ -124,7 +124,7 @@ def get_next_signs_for_questions_step1(
     if last_substep == QuizSubStep.STEP1_SUBSTEP_40:
         # Step 1.1
         # We have just received answers for first 4 tablet questions
-        if dm.score > zn2.score + 5:
+        if dm.score > zn2.score + 3:
             # Step 1.1a
             # Dm is already determined known, moving to step 2
             quiz.dm_after_step_1 = dm.sign
@@ -135,20 +135,20 @@ def get_next_signs_for_questions_step1(
                 last_answer=last_answer,
             )
 
-        if dm.score == zn2.score:
-            # Step 1.1b
-            # We need more information to determined Dm on step 1
-            return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_50_60
+        # Step 1.1b
+        # We need more information to determined Dm on step 1
+        return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_50_60
 
-        # Step 1.1c
-        first_two_non_zero_tablet_answers = QuizAnswerQueries.get_first_two_non_zero_tablet_answers(session, quiz.token)
-        if len(first_two_non_zero_tablet_answers) < 2:
-            raise Exception("Not enough information to proceed with the quiz")
-        # We store the original sign scores for the last answer just in case
-        last_answer.original_sign_scores = last_answer.current_sign_scores
-        # We redefined the original sign scores for the last answer based on the first two questions
-        # Scores in the second of the two questions is going to contain the sum of scores for both
-        last_answer.current_sign_scores = first_two_non_zero_tablet_answers[1].current_sign_scores
+        # TODO: deprecated logic, remove
+        # # Step 1.1c
+        # first_two_non_zero_tablet_answers = QuizAnswerQueries.get_first_two_non_zero_tablet_answers(session, quiz.token)
+        # if len(first_two_non_zero_tablet_answers) < 2:
+        #     raise Exception("Not enough information to proceed with the quiz")
+        # # We store the original sign scores for the last answer just in case
+        # last_answer.original_sign_scores = last_answer.current_sign_scores
+        # # We redefined the original sign scores for the last answer based on the first two questions
+        # # Scores in the second of the two questions is going to contain the sum of scores for both
+        # last_answer.current_sign_scores = first_two_non_zero_tablet_answers[1].current_sign_scores
 
     if last_substep == QuizSubStep.STEP1_SUBSTEP_40 or last_substep == QuizSubStep.STEP1_SUBSTEP_50_60:
         # Step 2.2
