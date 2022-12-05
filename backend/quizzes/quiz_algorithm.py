@@ -251,14 +251,8 @@ def get_next_signs_for_questions_step3(
         # Step 3.1a
         return [zn2.sign, zn2.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_10_20
 
-    if dm.score > zn2.score + 5:
-        # Step 3.1b
-        return [zn2.sign, zn3.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_30_40
-
-    # Step 3.1c
-    # this has exactly the same logic as the substep before, but just to be consistent with the Notion doc
-    # we are writing it as a separate condition
-    return [zn2.sign, zn3.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_50_60
+    # Step 3.1b
+    return [zn2.sign, zn3.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_30_40
 
 
 def get_next_signs_for_questions_step4(
