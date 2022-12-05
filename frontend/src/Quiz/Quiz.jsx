@@ -128,7 +128,7 @@ const Quiz = ({match}) => {
   };
 
   const submitAnswersAndFetchNext = async (answerNames) => {
-    await submitQuizAnswer(quizQuestionToken, answerNames);
+    await submitQuizAnswer(quizQuestionToken, question?.question_name, answerNames);
     setSelectedAnswers({})
     await fetchNextQuestion();
   }

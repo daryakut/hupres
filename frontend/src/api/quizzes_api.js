@@ -74,12 +74,12 @@ export async function getNextQuizQuestion(quizToken) {
   }
 }
 
-export async function submitQuizAnswer(quizQuestionToken, answerNames) {
+export async function submitQuizAnswer(quizQuestionToken, questionName, answerNames) {
   try {
     const response = await axiosInstance.post(`/quiz-questions/${quizQuestionToken}/submit-answer`, {
       answer_names: answerNames,
     });
-    console.log(`${Date.now()}: Знаки ${response.data.current_sign_scores}`);
+    console.log(`${Date.now()}: Знаки ${response.data.current_sign_scores}. ${questionName}: ${answerNames}. `);
     return response.data;
   } catch (error) {
     console.error(`There was an error submitting the answer for question token ${quizQuestionToken}:`, error);
