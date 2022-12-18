@@ -42,6 +42,10 @@ Next, add prod credentials to your `~/.bashrc`:
     export HUPRES_POSTGRES_PORT="5432"
     export HUPRES_POSTGRES_DATABASE_NAME="hupres_prod"
 
+When developing locally, you'd want to create the create `hupres` user (in AWS it should be created from the UI):
+
+    createuser --username=postgres --no-superuser --pwprompt --createdb hupres
+
 Then, run `bash` to reload the environment variables and try accessing the database:
 
     psql -U $HUPRES_POSTGRES_USERNAME -h $HUPRES_POSTGRES_HOSTNAME -p 5432 -d postgres
