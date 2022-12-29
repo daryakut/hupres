@@ -20,7 +20,7 @@ class DbUser(DbBase):
     email_address: str = Column(String, nullable=False)
     role: UserRole = Column(StringEnumDbType(UserRole), nullable=False)
 
-    quizzes = relationship('DbQuiz', back_populates='user', lazy='select')
+    quizzes = relationship('DbQuiz', back_populates='user', lazy='select', order_by='DbQuiz.id')
 
     def to_model(self) -> User:
         return User(

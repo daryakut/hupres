@@ -7,6 +7,7 @@ from models.token import Token
 
 class TokenDbType(TypeDecorator):
     impl = String(64)
+    cache_ok = True
 
     def process_bind_param(self, value: Optional[Token], dialect) -> Optional[str]:
         if value is None:

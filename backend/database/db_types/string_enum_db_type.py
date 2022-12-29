@@ -6,6 +6,7 @@ from sqlalchemy.types import TypeDecorator, String
 
 class StringEnumDbType(TypeDecorator):
     impl = String(50)
+    cache_ok = True
 
     def __init__(self, enum_type, *args, **kwargs):
         super(StringEnumDbType, self).__init__(*args, **kwargs)

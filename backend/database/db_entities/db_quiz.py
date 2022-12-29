@@ -31,10 +31,10 @@ class DbQuiz(DbTimestampedEntity, DbBase):
     dm_after_step_4 = Column(StringEnumDbType(Sign))
 
     user = relationship('DbUser', lazy='select')
-    quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select')
-    quiz_answers = relationship('DbQuizAnswer', back_populates='quiz', lazy='select')
-    quiz_summaries = relationship('DbQuizSummary', back_populates='quiz', lazy='select')
-    quiz_free_form_questions = relationship('DbQuizFreeFormQuestion', back_populates='quiz', lazy='select')
+    quiz_questions = relationship('DbQuizQuestion', back_populates='quiz', lazy='select', order_by='DbQuizQuestion.id')
+    quiz_answers = relationship('DbQuizAnswer', back_populates='quiz', lazy='select', order_by='DbQuizAnswer.id')
+    quiz_summaries = relationship('DbQuizSummary', back_populates='quiz', lazy='select', order_by='DbQuizSummary.id')
+    quiz_free_form_questions = relationship('DbQuizFreeFormQuestion', back_populates='quiz', lazy='select', order_by='DbQuizFreeFormQuestion.id')
 
     def to_model(self) -> Quiz:
         return Quiz(

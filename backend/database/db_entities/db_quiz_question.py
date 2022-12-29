@@ -37,7 +37,7 @@ class DbQuizQuestion(DbTimestampedEntity, DbBase):
     quiz = relationship('DbQuiz', back_populates='quiz_questions', lazy='select')
 
     # there should be max one answer per question, so we expose it via property
-    _quiz_answers = relationship('DbQuizAnswer', back_populates='quiz_question', lazy='select')
+    _quiz_answers = relationship('DbQuizAnswer', back_populates='quiz_question', lazy='select', order_by='DbQuizAnswer.id')
 
     @property
     def answer(self) -> 'DbAnswer':

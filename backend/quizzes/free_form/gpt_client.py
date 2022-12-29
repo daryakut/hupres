@@ -5,16 +5,22 @@ from typing import Optional
 
 from openai import OpenAI, OpenAIError, RateLimitError
 
+from common.env import env
 from models.pronounce import Pronounce
+from tests.quizzes.free_form.fake_gpt_client import fake_ask_gpt
 
-client = OpenAI(
-    api_key=os.environ.get("HUPRES_OPENAI_API_KEY"),
-)
+client = None
 
 GPT_TIMEOUT_SECONDS = 10
 
 
 def _call_completions_api(messages) -> Optional[str]:
+    global client
+    if not client:
+        client = OpenAI(
+            api_key=os.environ.get("HUPRES_OPENAI_API_KEY"),
+        )
+
     try:
         # Start a conversation
         response = client.chat.completions.create(
@@ -67,7 +73,7 @@ def _call_completions_api_with_timeout(messages, timeout_seconds=GPT_TIMEOUT_SEC
     return response_container[0] if response_container else f"Будь ласка, спробуйте ще раз"
 
 
-def ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: str, pronounce: Pronounce):
+def _real_ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: str, pronounce: Pronounce):
     if pronounce == Pronounce.HE_HIM:
         whom = "Його"
         whose = "нього"
@@ -99,3 +105,6 @@ def ask_gpt(respondent_summary: str, free_form_question: str, respondent_name: s
         ]
     )
     return gpt_response
+
+
+ask_gpt = _real_ask_gpt if env.is_not_test() else fake_ask_gpt

@@ -43,6 +43,7 @@ def api_ask_free_form_question(quiz_token: Token[Quiz], free_form_question: str)
         respondent_name=respondent_name,
         pronounce=pronounce,
     )
+    # free_form_answer = "Тестова відповідь"
     print("GPT responded:\n", free_form_answer)
 
     with transaction() as session:

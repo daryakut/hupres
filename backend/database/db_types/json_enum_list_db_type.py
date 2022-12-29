@@ -7,6 +7,7 @@ from sqlalchemy.types import TypeDecorator, String
 
 class JsonEnumListDbType(TypeDecorator):
     impl = String(100)
+    cache_ok = True
 
     def __init__(self, enum_type, *args, **kwargs):
         super(JsonEnumListDbType, self).__init__(*args, **kwargs)
