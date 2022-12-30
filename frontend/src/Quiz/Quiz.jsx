@@ -201,7 +201,7 @@ const Quiz = ({match}) => {
                   onChange={setPronounce}
                 >
                   <Select.Option value="HE_HIM">Чоловічий</Select.Option>
-                  <Select.Option value="SHE_HER">Жінойчий</Select.Option>
+                  <Select.Option value="SHE_HER">Жіночий</Select.Option>
                   <Select.Option value="THEY_THEM">Інше</Select.Option>
                   <Select.Option value="PREFER_NOT_TO_SAY">Не має значення</Select.Option>
                 </Select>

@@ -253,7 +253,7 @@ msgid "Ранняя седина"
 msgstr "Рання сивина"
 
 msgid "Ранние залысины"
-msgstr "ранні залисини"
+msgstr "Ранні залисини"
 
 
 # Facial Shape Descriptors
