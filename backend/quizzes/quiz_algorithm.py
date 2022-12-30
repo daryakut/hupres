@@ -50,19 +50,19 @@ def get_dominant(scores: List[int]) -> Tuple[SignWithScore, SignWithScore, SignW
 
 def get_next_signs_for_questions(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
 
     # First four questions of Step 1 are handled separately, so here we only handle the remaining questions in it
     if last_step == QuizStep.STEP_1:
         return get_next_signs_for_questions_step1(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     # We don't have conditions to get to step 2 in this exact method because `get_next_signs_for_questions_step1`
@@ -71,33 +71,33 @@ def get_next_signs_for_questions(
     if last_step == QuizStep.STEP_2:
         return get_next_signs_for_questions_step3(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     if last_step == QuizStep.STEP_3:
         return get_next_signs_for_questions_step4(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     if last_step == QuizStep.STEP_4:
         return get_next_signs_for_questions_step5(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     if last_step == QuizStep.STEP_5:
         return get_next_signs_for_questions_step6(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     raise Exception("Unknown step")
@@ -105,14 +105,14 @@ def get_next_signs_for_questions(
 
 def get_next_signs_for_questions_step1(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_1, "Step 1 is not active")
 
-    last_substep = last_question.quiz_substep
+    last_substep = db_last_question.quiz_substep
     # check(lambda: int(last_substep) > int(QuizSubStep.STEP1_SUBSTEP_40), "First 4 questions are asked elsewhere")
     check(
         lambda: last_substep not in [QuizSubStep.STEP1_SUBSTEP_10, QuizSubStep.STEP1_SUBSTEP_20,
@@ -120,19 +120,19 @@ def get_next_signs_for_questions_step1(
         "First 4 questions are asked elsewhere"
     )
 
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
     if last_substep == QuizSubStep.STEP1_SUBSTEP_40:
         # Step 1.1
         # We have just received answers for first 4 tablet questions
         if dm.score > zn2.score + 3:
             # Step 1.1a
             # Dm is already determined known, moving to step 2
-            quiz.dm_after_step_1 = dm.sign
+            db_quiz.dm_after_step_1 = dm.sign
             return get_next_signs_for_questions_step2(
                 session=session,
-                quiz=quiz,
-                last_question=last_question,
-                last_answer=last_answer,
+                db_quiz=db_quiz,
+                db_last_question=db_last_question,
+                db_last_answer=db_last_answer,
             )
 
         # Step 1.1b
@@ -152,17 +152,17 @@ def get_next_signs_for_questions_step1(
 
     if last_substep == QuizSubStep.STEP1_SUBSTEP_40 or last_substep == QuizSubStep.STEP1_SUBSTEP_50_60:
         # Step 2.2
-        dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
+        dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
         if dm.score > zn2.score:
             # Step 2.2a
             # TODO: here we need to record that DM is dm
             # Dm is determined to be the largest one, moving to step 2
-            quiz.dm_after_step_1 = dm.sign
+            db_quiz.dm_after_step_1 = dm.sign
             return get_next_signs_for_questions_step2(
                 session=session,
-                quiz=quiz,
-                last_question=last_question,
-                last_answer=last_answer,
+                db_quiz=db_quiz,
+                db_last_question=db_last_question,
+                db_last_answer=db_last_answer,
             )
 
         # Step 2.2b
@@ -170,17 +170,17 @@ def get_next_signs_for_questions_step1(
         return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_70_80
 
     if last_substep == QuizSubStep.STEP1_SUBSTEP_70_80:
-        dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
+        dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
         if dm.score > zn2.score:
             # Step 2.2b.i
             # TODO: here we need to record that DM is dm
             # Dm is determined to be the largest one, moving to step 2
-            quiz.dm_after_step_1 = dm.sign
+            db_quiz.dm_after_step_1 = dm.sign
             return get_next_signs_for_questions_step2(
                 session=session,
-                quiz=quiz,
-                last_question=last_question,
-                last_answer=last_answer,
+                db_quiz=db_quiz,
+                db_last_question=db_last_question,
+                db_last_answer=db_last_answer,
             )
 
         # Step 2.2b.ii
@@ -188,14 +188,14 @@ def get_next_signs_for_questions_step1(
         return [dm.sign, zn2.sign], QuizStep.STEP_1, QuizSubStep.STEP1_SUBSTEP_90_100
 
     if last_substep == QuizSubStep.STEP1_SUBSTEP_90_100:
-        dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
-        quiz.dm_after_step_1 = dm.sign
+        dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
+        db_quiz.dm_after_step_1 = dm.sign
         # TODO: here we need to record that DM is dm
         return get_next_signs_for_questions_step2(
             session=session,
-            quiz=quiz,
-            last_question=last_question,
-            last_answer=last_answer,
+            db_quiz=db_quiz,
+            db_last_question=db_last_question,
+            db_last_answer=db_last_answer,
         )
 
     raise Exception("Unknown substep")
@@ -203,30 +203,30 @@ def get_next_signs_for_questions_step1(
 
 def get_next_signs_for_questions_step2(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_1, "Step 1 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
     return [dm.sign, dm.sign], QuizStep.STEP_2, QuizSubStep.STEP2_SUBSTEP_10_20
 
 
 def get_next_signs_for_questions_step3(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_2, "Step 2 is not active")
 
     # It means that we have answers for both questions for Step 2
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
-    quiz.dm_after_step_2 = dm.sign
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
+    db_quiz.dm_after_step_2 = dm.sign
 
     # Now we are on Step 3
     if dm.score == zn2.score and zn2.score == zn3.score:
@@ -236,13 +236,13 @@ def get_next_signs_for_questions_step3(
     if dm.score == zn2.score:
         # Step 3.3
         # We want to ask two questions to the sign that was not dominant on Step 1
-        if quiz.dm_after_step_1 == dm.sign:
+        if db_quiz.dm_after_step_1 == dm.sign:
             new_dm = zn2.sign
         else:
             new_dm = dm.sign
         return [new_dm, new_dm], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_90_100
 
-    if quiz.dm_after_step_1 != dm.sign:
+    if db_quiz.dm_after_step_1 != dm.sign:
         # Step 3.2
         return [dm.sign, dm.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_70_80
 
@@ -257,23 +257,23 @@ def get_next_signs_for_questions_step3(
 
 def get_next_signs_for_questions_step4(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_3, "Step 3 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
-    quiz.dm_after_step_3 = dm.sign
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
+    db_quiz.dm_after_step_3 = dm.sign
 
     if dm.score == zn2.score:
         # Step 4.3
         return [dm.sign, zn2.sign], QuizStep.STEP_4, QuizSubStep.STEP4_SUBSTEP_70_80
 
-    if quiz.dm_after_step_3 != dm.sign:
+    if db_quiz.dm_after_step_2 != dm.sign:
         # Step 4.2
         return [dm.sign, dm.sign], QuizStep.STEP_4, QuizSubStep.STEP4_SUBSTEP_50_60
 
@@ -288,23 +288,23 @@ def get_next_signs_for_questions_step4(
 
 def get_next_signs_for_questions_step5(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_4, "Step 4 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
-    quiz.dm_after_step_4 = dm.sign
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
+    db_quiz.dm_after_step_4 = dm.sign
 
     if dm.score == zn2.score:
         # Step 5.3
         return [dm.sign, zn2.sign], QuizStep.STEP_5, QuizSubStep.STEP5_SUBSTEP_90_100
 
-    if quiz.dm_after_step_4 != dm.sign:
+    if db_quiz.dm_after_step_3 != dm.sign:
         # Step 5.2
         return [dm.sign, dm.sign], QuizStep.STEP_5, QuizSubStep.STEP5_SUBSTEP_70_80
 
@@ -314,16 +314,16 @@ def get_next_signs_for_questions_step5(
 
 def get_next_signs_for_questions_step6(
         session: Session,
-        quiz: DbQuiz,
-        last_question: DbQuizQuestion,
-        last_answer: DbQuizAnswer,
+        db_quiz: DbQuiz,
+        db_last_question: DbQuizQuestion,
+        db_last_answer: DbQuizAnswer,
 ) -> Tuple[List[Sign], QuizStep, QuizSubStep]:
-    last_step = last_question.quiz_step
+    last_step = db_last_question.quiz_step
     check(lambda: last_step == QuizStep.STEP_5, "Step 5 is not active")
 
     # On the first step we have determined Dm, now we ask additional questions
     # In the doc this is still at the end of Step 3
-    dm, zn2, zn3 = get_dominant(last_answer.current_sign_scores)
+    dm, zn2, zn3 = get_dominant(db_last_answer.current_sign_scores)
     return [dm.sign, zn2.sign, zn3.sign], QuizStep.STEP_6, QuizSubStep.STEP6_SUBSTEP_10_20_30
 
 
@@ -442,9 +442,9 @@ def get_next_question_to_ask(session: Session, db_quiz: DbQuiz) -> Optional[Ques
     # (next_signs, next_step, next_substep) = get_next_signs_for_questions(
     next_signs, quiz_step, quiz_substep = get_next_signs_for_questions(
         session=session,
-        quiz=db_quiz,
-        last_question=db_last_question,
-        last_answer=db_last_question_answer,
+        db_quiz=db_quiz,
+        db_last_question=db_last_question,
+        db_last_answer=db_last_question_answer,
     )
     next_sign_to_ask_question = next_signs[0]
     next_question_name = find_next_non_asked_question_name_for_sign(
