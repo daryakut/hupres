@@ -247,6 +247,10 @@ def get_next_signs_for_questions_step3(
         return [dm.sign, dm.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_70_80
 
     # Step 3.1
+    if dm.score == zn2.score:
+        # Step 3.1c
+        return [dm.sign, zn2.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_50_60
+
     if dm.score > zn2.score + 5 and zn2.score > zn3.score + 3:
         # Step 3.1a
         return [zn2.sign, zn2.sign], QuizStep.STEP_3, QuizSubStep.STEP3_SUBSTEP_10_20
